@@ -10,6 +10,8 @@ Arnau Closa Manteca - 1535791
 
 Victor Castro García - 1494644
 
+David Méndez Ribera - 1420576
+
 ## Recomendaciones
 A continuación se listan un conjunto de recomendaciones para que podamos trabajar todos juntos con menos dolores de cabeza.
 
