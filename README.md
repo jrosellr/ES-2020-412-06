@@ -8,6 +8,8 @@ Lucas Gonzalo Priego - 1492658
 
 Arnau Closa Manteca - 1535791
 
+Victor Castro García - 1494644
+
 ## Recomendaciones
 A continuación se listan un conjunto de recomendaciones para que podamos trabajar todos juntos con menos dolores de cabeza.
 
