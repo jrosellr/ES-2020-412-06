@@ -6,3 +6,7 @@ class User:
         self.address = address
         self.mobile_number = mobile_number
         self.email = email
+
+    def get_full_name(self):
+        return self.full_name
+
