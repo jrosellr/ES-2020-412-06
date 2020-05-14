@@ -29,3 +29,10 @@ Para instalar los packages que necesitemos es tan sencillo como ejecutar el sigu
 ``` pip install -r requirements.txt ```
 
 Una vez pip termine de instalar los packages el entorno ya estará listo y todas las dependencias quedarán resueltas.
+
+### 1.0 Uso de pytest
+Para utilizar pytest es recomendable usar el siguiente comando:
+
+``` python -m pytest tests/ ```
+
+***IMPORTANTE Debeis ejecutarlo desde el directorio raíz del proyecto***
