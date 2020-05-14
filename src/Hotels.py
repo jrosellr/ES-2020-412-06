@@ -1,4 +1,7 @@
-class Hotels:
+class Hotels:  # FIXME: This is supposed to be a Hotel aggregation
+    """ A Value-Object used to hold the Hotel(s) an user wants to reserve
+
+    """
 
     def __init__(self, code, name, num_clients, num_rooms, days_reserved):
         self.code = code
