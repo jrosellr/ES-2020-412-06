@@ -1,15 +1,15 @@
-from . import User
-from . import PaymentData
+from src.User import User
+from src.PaymentData import PaymentData
 
 
 class Bank:
-    """
-    Encapsula l'accés a la plataforma bancària per realitzar pagaments
+    """ Wrapper for VISA and MASTERCARD APIs
 
     """
 
     def __init__(self):
         pass
 
+    @staticmethod
     def do_payment(self, user: User, payment_data: PaymentData):
         return True

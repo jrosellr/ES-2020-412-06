@@ -1,5 +1,7 @@
 class User:
+    """ A Value-Object used to hold the user data
 
+    """
     def __init__(self, full_name: str, nif: str, address: str, mobile_number: str, email: str):
         self.full_name = full_name
         self.nif = nif
