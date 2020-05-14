@@ -1,6 +1,4 @@
-
-import User
-import pytest
+from src.User import User
 import os
 
 def example1():
@@ -34,12 +32,13 @@ def example_full_name():
     Returns:
         Current directory
     """
-    name = User.get_full_name()
-    return name
+    usr = User('Bob', '', '', '', '')
+    return usr.get_full_name()
+
 
 def test_user(monkeypatch):
-    def mock_get_user_name():
+    def mock_get_user_name(*args):
         return 'Antonio Buenaonda'
 
-    monkeypatch.setattr(User, 'get_full_name', mock_get_user_name())
+    monkeypatch.setattr(User, 'get_full_name', mock_get_user_name)
     assert example_full_name() == 'Antonio Buenaonda'

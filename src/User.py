@@ -7,6 +7,6 @@ class User:
         self.mobile_number = mobile_number
         self.email = email
 
-    def get_full_name(self):
+    def get_full_name(self) -> str:
         return self.full_name
 
