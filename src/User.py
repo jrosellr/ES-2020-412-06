@@ -8,7 +8,3 @@ class User:
         self.address = address
         self.mobile_number = mobile_number
         self.email = email
-
-    def get_full_name(self) -> str:
-        return self.full_name
-
