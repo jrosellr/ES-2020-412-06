@@ -1,6 +1,7 @@
 from src.Flights import Flights
 import copy
 
+
 class Travel:
 
     def __init__(self, flights: Flights, hotels=None, cars=None):
