@@ -34,3 +34,6 @@ class Reservation:
 
     def add_flight(self, new_flight):
         self.travel.add_flight(new_flight)
+
+    def delete_flight(self, code):
+        self.travel.delete_flight(code)

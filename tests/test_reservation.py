@@ -65,6 +65,28 @@ def test_reservation_add_flight_empty_travel():
     assert new_len == old_len + 1
 
 
+def test_reservation_delete_flights_existing_flight():
+    usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
+    travel = Travel(Flights([
+        Flight('00', 'test', 0)
+    ]))
+    reservation = Reservation(travel, usr)
+    reservation.delete_flight('00')
+    assert len(reservation.travel.flights.flights) != 1
+    assert len(reservation.travel.flights.flights) == 0
+
+
+def test_reservation_delete_flights_non_existing_flight():
+    usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
+    travel = Travel(Flights([
+        Flight('00', 'test', 0)
+    ]))
+    reservation = Reservation(travel, usr)
+    reservation.delete_flight('01')
+    assert len(reservation.travel.flights.flights) == 1
+    assert len(reservation.travel.flights.flights) != 0
+
+
 def test_reservation_calculate_flights_price_no_flights():
     """ Unit test for Reservation.calculate_flights_price(**)
 
