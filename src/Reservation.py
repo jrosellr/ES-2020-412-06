@@ -1,17 +1,19 @@
 from src.Travel import Travel
 from src.User import User
 from src.PaymentData import PaymentData
+import copy
 
 
 class Reservation:
+    """ Handles reservation data and reservation confirmation
 
-    def __init__(self, travel: Travel, user: User, payment_data: PaymentData):
-        self.travel = travel
-        self.user = user
-        self.payment_data = payment_data
+    """
+    def __init__(self, travel: Travel, user: User):
+        self.travel = copy.deepcopy(travel)
+        self.user = copy.deepcopy(user)
         self.total_price = 0.0  # Just in case, if the module fails the price should be at least 0
 
-    def calculate_flights_price(self, price):
+    def calculate_flights_price(self, price) -> float:
         return price * len(self.travel.flights.flights) * self.travel.flights.flights[0].num_clients
 
     def calculate_hotels_price(self, price):
