@@ -97,3 +97,30 @@ def test_modify_flight_invalid_code():
 
     flights.modify_flight('04', new_destination='Stockholm', new_num_clients=5)
     assert '05' not in flights.flights
+
+
+def test_add_flight_empty_flights():
+    new_flight = Flight('00', '', 0)
+    flights = Flights([])
+    flights.add_flight(new_flight)
+    assert len(flights.flights) != 0
+    assert len(flights.flights) == 1
+
+
+def test_add_flight_same_flight():
+    new_flight = Flight('00', '', 0)
+    flights = Flights([Flight('00', '', 0)])
+    old_len = len(flights.flights)
+    flights.add_flight(new_flight)
+    assert old_len != 0
+    assert len(flights.flights) == old_len
+
+
+def test_add_flight_new_flight():
+    new_flight = Flight('01', '', 0)
+    flights = Flights([Flight('00', '', 0)])
+    old_len = len(flights.flights)
+    flights.add_flight(new_flight)
+    assert old_len != 0
+    assert len(flights.flights) != old_len
+    assert len(flights.flights) == old_len + 1
