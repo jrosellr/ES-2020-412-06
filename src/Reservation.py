@@ -18,10 +18,9 @@ class Reservation:
 
     def calculate_flights_price(self, price) -> float:
         total_price = 0
-        num_flights = len(self.travel.flights.flights)
-        if num_flights != 0:
-            num_clients = self.travel.flights.flights[0].num_clients
-            total_price = price * num_flights * num_clients
+        if len(self.travel.flights.flights) != 0:
+            num_clients = self.travel.get_num_clients()
+            total_price = price * num_clients
         return total_price
 
     def calculate_hotels_price(self, price):
