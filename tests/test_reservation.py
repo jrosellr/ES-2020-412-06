@@ -18,7 +18,7 @@ def test_reservation_ctor():
     ]))
     payment = PaymentData('Test', '000000', '000', 5)
     reservation = Reservation(travel, usr, payment)
-    travel.flights.modify_flight('00', new_destination='Berlin')
     assert isinstance(reservation, Reservation)
-    assert reservation.travel == travel
+
+    travel.flights.modify_flight('00', new_destination='Berlin')
     assert reservation.travel.flights.flights['00'] != travel.flights.flights['00']
