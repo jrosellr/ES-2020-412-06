@@ -124,3 +124,15 @@ def test_add_flight_new_flight():
     assert old_len != 0
     assert len(flights.flights) != old_len
     assert len(flights.flights) == old_len + 1
+
+
+def test_delete_existing_flight():
+    flights = Flights([Flight('00', '', 0)])
+    flights.delete_flight('00')
+    assert len(flights.flights) == 0
+
+def test_delete_nonexisting_flight():
+    flights = Flights([Flight('00', '', 0)])
+    flights.delete_flight('01')
+    assert len(flights.flights) != 0
+    assert len(flights.flights) == 1

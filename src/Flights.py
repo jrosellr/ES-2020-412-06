@@ -24,3 +24,7 @@ class Flights:
     def add_flight(self, flight: Flight):
         if flight.code not in self.flights:
             self.flights[flight.code] = flight
+
+    def delete_flight(self, code):
+        if code in self.flights:
+            del self.flights[code]
