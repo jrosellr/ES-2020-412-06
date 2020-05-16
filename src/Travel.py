@@ -17,3 +17,6 @@ class Travel:
 
     def add_flight(self, new_flight):
         self.flights.add_flight(new_flight)
+
+    def delete_flight(self, code):
+        self.flights.delete_flight(code)
