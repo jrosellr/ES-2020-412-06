@@ -1,3 +1,6 @@
+from src.Flight import Flight
+
+
 class Flights:
     """ A Value-Object used to hold the different flights a user wants to reserve
 
@@ -17,3 +20,11 @@ class Flights:
         if code in self.flights:
             self.flights[code].destination = new_destination if new_destination else self.flights[code].destination
             self.flights[code].num_clients = new_num_clients if new_num_clients else self.flights[code].num_clients
+
+    def add_flight(self, flight: Flight):
+        if flight.code not in self.flights:
+            self.flights[flight.code] = flight
+
+    def delete_flight(self, code):
+        if code in self.flights:
+            del self.flights[code]
