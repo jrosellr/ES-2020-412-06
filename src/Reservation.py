@@ -13,8 +13,16 @@ class Reservation:
         self.user = copy.deepcopy(user)
         self.total_price = 0.0  # Just in case, if the module fails the price should be at least 0
 
+    def confirm(self):
+        pass
+
     def calculate_flights_price(self, price) -> float:
-        return price * len(self.travel.flights.flights) * self.travel.flights.flights[0].num_clients
+        total_price = 0
+        num_flights = len(self.travel.flights.flights)
+        if num_flights != 0:
+            num_clients = self.travel.flights.flights[0].num_clients
+            total_price = price * num_flights * num_clients
+        return total_price
 
     def calculate_hotels_price(self, price):
         return 0
