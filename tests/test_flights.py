@@ -3,12 +3,13 @@ from src.Flights import Flights
 
 
 def test_flights_ctor():
-    """ Test case for flight.__init__(**) method
+    """ Test case for flights.__init__(**) method
 
         ---
 
         :return: None
     """
+
     f1 = Flight('00', 'Berlin', 4)
     f2 = Flight('01', 'Berlin', 4)
     f3 = Flight('03', 'Berlin', 4)
