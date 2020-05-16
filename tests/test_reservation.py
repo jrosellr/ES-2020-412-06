@@ -144,4 +144,22 @@ def test_reservation_calculate_flights_price_add_flight():
     reservation = Reservation(travel, usr)
     assert reservation.calculate_flights_price(5) == 20  # 2 Flights * 2 Clients per Flight * 5 = 20
     reservation.add_flight(Flight('02', '', 2))
-    assert reservation.calculate_flights_price(5) == 30
+    assert reservation.calculate_flights_price(5) == 30  # 3 Flights * 2 Clients per Flight * 5 = 30
+
+
+def test_reservation_calculate_flights_price_delete_flight():
+    """ Unit test for Reservation.calculate_flights_price(**)
+
+        Calculated price should be number of clients * price of flight per client * number of flights
+        :return: None
+    """
+
+    usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
+    travel = Travel(Flights([
+        Flight('00', 'Berlin', 2),
+        Flight('01', 'Roma', 2)
+    ]))
+    reservation = Reservation(travel, usr)
+    assert reservation.calculate_flights_price(5) == 20  # 2 Flights * 2 Clients per Flight * 5 = 20
+    reservation.delete_flight('00')
+    assert reservation.calculate_flights_price(5) == 10  # 1 Flight * 2 Clients per Flight * 5 = 10
