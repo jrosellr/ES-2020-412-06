@@ -39,7 +39,7 @@ def test_reservation_calculate_flights_price_no_flights():
 def test_reservation_calculate_flights_price_no_clients():
     """ Unit test for Reservation.calculate_flights_price(**)
 
-        Calculated price should be zero when there are no destinations
+        Calculated price should be zero when there are no clients
         :return: None
     """
 
