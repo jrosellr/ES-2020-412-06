@@ -23,6 +23,48 @@ def test_reservation_ctor():
     assert reservation.travel.flights.flights['00'] != travel.flights.flights['00']
 
 
+def test_reservation_add_new_flight():
+    usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
+    travel = Travel(Flights([
+        Flight('00', 'test', 0)
+    ]))
+    reservation = Reservation(travel, usr)
+    old_len = len(reservation.travel.flights.flights)
+    new_flight = Flight('01', '', 0)
+    reservation.add_flight(new_flight)
+    new_len = len(reservation.travel.flights.flights)
+    assert new_len != 0
+    assert new_len != old_len
+    assert new_len == old_len + 1
+
+
+def test_reservation_add_same_flight():
+    usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
+    travel = Travel(Flights([
+        Flight('00', 'test', 0)
+    ]))
+    reservation = Reservation(travel, usr)
+    old_len = len(reservation.travel.flights.flights)
+    new_flight = Flight('00', '', 0)
+    reservation.add_flight(new_flight)
+    new_len = len(reservation.travel.flights.flights)
+    assert new_len != 0
+    assert new_len == old_len
+
+
+def test_reservation_add_flight_empty_travel():
+    usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
+    travel = Travel(Flights([]))
+    reservation = Reservation(travel, usr)
+    old_len = len(reservation.travel.flights.flights)
+    new_flight = Flight('00', '', 0)
+    reservation.add_flight(new_flight)
+    new_len = len(reservation.travel.flights.flights)
+    assert new_len != 0
+    assert new_len != old_len
+    assert new_len == old_len + 1
+
+
 def test_reservation_calculate_flights_price_no_flights():
     """ Unit test for Reservation.calculate_flights_price(**)
 

@@ -31,3 +31,6 @@ class Reservation:
 
     def calculate_total_price(self, flights_price, hotels_price, cars_price):
         self.total_price = self.calculate_flights_price(flights_price) + self.calculate_hotels_price(hotels_price) + self.calculate_cars_price(cars_price)
+
+    def add_flight(self, new_flight):
+        self.travel.add_flight(new_flight)
