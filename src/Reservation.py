@@ -1,7 +1,7 @@
 class Reservation:
 
-    def __init__(self, trabel: Trabel, user: User, payment_data: PaymentData):
-        self.trabel = trabel
+    def __init__(self, travel: Travel, user: User, payment_data: PaymentData):
+        self.travel = travel
         self.user = user
         self.payment_data = payment_data
 
