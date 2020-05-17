@@ -2,11 +2,12 @@ from src.Flight import Flight
 
 
 class Flights:
-    """ A Value-Object used to hold the different flights a user wants to reserve
+    """ A Value-Object that holds the different flights a user wants to reserve
 
-    ---
+    ----
 
-    :var flights: uses a dictionary to enforce the singularity of each flight
+        Instance variables:
+            flights: uses a dictionary to enforce the singularity of each flight
     """
 
     def __init__(self, flights: list):
@@ -14,6 +15,7 @@ class Flights:
 
         :param flights: a list of objects of type Flight
         """
+
         self.flights = {flight.code: flight for flight in flights}
 
     def modify_flight(self, code: str, new_destination=None, new_num_clients=None):
