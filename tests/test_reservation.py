@@ -24,6 +24,11 @@ def test_reservation_ctor():
 
 
 def test_reservation_add_new_flight():
+    """ Unit test for Reservation.add_flights(**) for new flight
+
+        Length of flights list should be old_len + 1 new element
+        :return: None
+    """
     usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
     travel = Travel(Flights([
         Flight('00', 'test', 0)
@@ -39,6 +44,11 @@ def test_reservation_add_new_flight():
 
 
 def test_reservation_add_same_flight():
+    """ Unit test for Reservation.add_flights(**) for same flight
+
+        Length of flights list should be the same as old_len
+        :return: None
+    """
     usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
     travel = Travel(Flights([
         Flight('00', 'test', 0)
@@ -53,6 +63,11 @@ def test_reservation_add_same_flight():
 
 
 def test_reservation_add_flight_empty_travel():
+    """ Unit test for Reservation.add_flights(**) from empty travel
+
+        Length of flights list should be old_len + 1 new element
+        :return: None
+    """
     usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
     travel = Travel(Flights([]))
     reservation = Reservation(travel, usr)
@@ -66,6 +81,11 @@ def test_reservation_add_flight_empty_travel():
 
 
 def test_reservation_delete_flights_existing_flight():
+    """ Unit test for Reservation.delete_flights(**) with existing flight code
+
+        Length of flights list should be 0 after existing deletion
+        :return: None
+    """
     usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
     travel = Travel(Flights([
         Flight('00', 'test', 0)
@@ -77,6 +97,11 @@ def test_reservation_delete_flights_existing_flight():
 
 
 def test_reservation_delete_flights_non_existing_flight():
+    """ Unit test for Reservation.delete_flights(**) with non existing flight code
+
+        Length of flights list should be 1 after non existing deletion
+        :return: None
+    """
     usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
     travel = Travel(Flights([
         Flight('00', 'test', 0)
@@ -185,6 +210,11 @@ def test_reservation_calculate_flights_price_delete_all_flights():
 
 
 def test_reservation_process_payment_data():
+    """ Unit test for Reservation._process_payment_data()
+
+        Amount in payment_data should be != 0 and == number of flights * flight price
+        :return: None
+    """
     usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
     travel = Travel(Flights([
         Flight('00', 'Berlin', 2),
@@ -198,6 +228,11 @@ def test_reservation_process_payment_data():
 
 
 def test_confirm_payment_error(monkeypatch):
+    """ Mock test for Reservation.confirm() when Bank.do_payment == False
+
+        reservation.confirm() should be False
+        :return: None
+    """
     def mock_do_payment(*args):
         return False
 
@@ -214,6 +249,11 @@ def test_confirm_payment_error(monkeypatch):
 
 
 def test_confirm_payment_done(monkeypatch):
+    """ Mock test for Reservation.confirm() when Bank.do_payment == True
+
+        reservation.confirm() should be True
+        :return: None
+    """
     def mock_do_payment(*args):
         return True
 
