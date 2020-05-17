@@ -14,10 +14,7 @@ class Flights:
 
         :param flights: a list of objects of type Flight
         """
-        if flights == None:
-            self.flights = {}
-        else:
-            self.flights = {flight.code: flight for flight in flights}
+        self.flights = {flight.code: flight for flight in flights}
 
     def modify_flight(self, code: str, new_destination=None, new_num_clients=None):
         if code in self.flights:

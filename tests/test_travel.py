@@ -96,9 +96,3 @@ def test_travel_delete_flight_non_existing_flight():
     travel.delete_flight('03')
     assert len(travel.flights.flights) == 2
     assert len(travel.flights.flights) != 1
-
-
-def test_travel_initialization_non_existing_flights():
-    travel = Travel(Flights(list()))
-    assert isinstance(travel.flights, Flights)
-    assert travel.flights.flights == dict()
