@@ -24,9 +24,7 @@ class Reservation:
 
         if Bank.do_payment(self.user, payment_data):
             confirm_flights = Skyscanner.confirm_reserve(self.user, self.travel.flights)
-
         return confirm_flights
-
 
 
     def calculate_flights_price(self, price) -> float:

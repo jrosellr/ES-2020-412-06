@@ -202,17 +202,28 @@ def test_confirm_payment_error(monkeypatch):
         return False
 
     monkeypatch.setattr(Bank, "do_payment", mock_do_payment)
-    assert Bank.do_payment() == False
-
     usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
     travel = Travel(Flights([
         Flight('00', 'Berlin', 2),
         Flight('01', 'Roma', 2)
     ]))
     reservation = Reservation(travel, usr)
-
     assert reservation.confirm('Test_card', '', '123') != None
     assert reservation.confirm('Test_card', '', '123') != True
     assert reservation.confirm('Test_card', '', '123') == False
 
 
+def test_confirm_payment_done(monkeypatch):
+    def mock_do_payment(*args):
+        return True
+
+    monkeypatch.setattr(Bank, "do_payment", mock_do_payment)
+    usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
+    travel = Travel(Flights([
+        Flight('00', 'Berlin', 2),
+        Flight('01', 'Roma', 2)
+    ]))
+    reservation = Reservation(travel, usr)
+    assert reservation.confirm('Test_card', '', '123') != None
+    assert reservation.confirm('Test_card', '', '123') != False
+    assert reservation.confirm('Test_card', '', '123') == True
