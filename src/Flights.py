@@ -28,3 +28,7 @@ class Flights:
     def delete_flight(self, code):
         if code in self.flights:
             del self.flights[code]
+
+    def __getitem__(self, code):
+        if code in self.flights:
+            return self.flights[code]
