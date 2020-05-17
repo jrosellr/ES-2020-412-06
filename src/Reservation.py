@@ -8,6 +8,9 @@ class Reservation:
     """ Handles reservation data and reservation confirmation
 
     """
+
+    FLIGHT_PRICE = 5.0
+
     def __init__(self, travel: Travel, user: User):
         self.travel = copy.deepcopy(travel)
         self.user = copy.deepcopy(user)
@@ -37,3 +40,7 @@ class Reservation:
 
     def delete_flight(self, code):
         self.travel.delete_flight(code)
+
+    def _process_payment_data(self, name: str, card_number: str, security_code: str):
+        amount = self.calculate_flights_price(self.FLIGHT_PRICE)
+        return PaymentData(name, card_number, security_code, amount)

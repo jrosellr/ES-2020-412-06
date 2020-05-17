@@ -182,3 +182,16 @@ def test_reservation_calculate_flights_price_delete_all_flights():
     reservation.delete_flight('00')
     reservation.delete_flight('01')
     assert reservation.calculate_flights_price(5) == 0  # 0 Flight * 0 Clients per Flight * 5 = 0
+
+
+def test_reservation_process_payment_data():
+    usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
+    travel = Travel(Flights([
+        Flight('00', 'Berlin', 2),
+        Flight('01', 'Roma', 2)
+    ]))
+    reservation = Reservation(travel, usr)
+    payment_data = reservation._process_payment_data('Test', '000000', '000')
+    assert isinstance(payment_data, PaymentData)
+    assert payment_data.amount != 0
+    assert payment_data.amount == (4*Reservation.FLIGHT_PRICE)
