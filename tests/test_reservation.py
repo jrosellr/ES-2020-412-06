@@ -235,7 +235,7 @@ def test_reservation_process_payment_data():
     payment_data = reservation._process_payment_data('Test', '000000', '000')
     assert isinstance(payment_data, PaymentData)
     assert payment_data.amount != 0
-    assert payment_data.amount == (4*Reservation.FLIGHT_PRICE)
+    assert payment_data.amount == (4 * Reservation._flight_price)
 
 
 def test_confirm_payment_error(monkeypatch):
