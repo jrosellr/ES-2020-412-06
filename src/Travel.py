@@ -17,11 +17,11 @@ class Travel:
         ----
 
         Instance variables:
-            flights: collection of objects of type Flight
+            flights
 
-            hotels: collection of objects of type Hotel
+            hotels
 
-            cars: collection of objects of type Car
+            cars
     """
 
     def __init__(self, flights: Flights, hotels=None, cars=None):

@@ -6,6 +6,7 @@ from src.Flight import Flight
 from src.PaymentData import PaymentData
 from src.Bank import Bank
 
+
 def test_reservation_ctor():
     """ Unit test for Reservation.__init__(**)
 
@@ -29,6 +30,7 @@ def test_reservation_add_new_flight():
         Length of flights list should be old_len + 1 new element
         :return: None
     """
+
     usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
     travel = Travel(Flights([
         Flight('00', 'test', 0)
@@ -49,6 +51,7 @@ def test_reservation_add_same_flight():
         Length of flights list should be the same as old_len
         :return: None
     """
+
     usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
     travel = Travel(Flights([
         Flight('00', 'test', 0)
@@ -68,6 +71,7 @@ def test_reservation_add_flight_empty_travel():
         Length of flights list should be old_len + 1 new element
         :return: None
     """
+
     usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
     travel = Travel(Flights([]))
     reservation = Reservation(travel, usr)
@@ -83,25 +87,31 @@ def test_reservation_add_flight_empty_travel():
 def test_reservation_delete_flights_existing_flight():
     """ Unit test for Reservation.delete_flights(**) with existing flight code
 
-        Length of flights list should be 0 after existing deletion
+        Length of flights list should be old_len - 1 after existing deletion
         :return: None
     """
+
     usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
     travel = Travel(Flights([
         Flight('00', 'test', 0)
     ]))
+
     reservation = Reservation(travel, usr)
+    old_len = len(reservation.travel.flights.flights)
+
     reservation.delete_flight('00')
-    assert len(reservation.travel.flights.flights) != 1
-    assert len(reservation.travel.flights.flights) == 0
+
+    assert len(reservation.travel.flights.flights) != old_len
+    assert len(reservation.travel.flights.flights) == old_len - 1
 
 
 def test_reservation_delete_flights_non_existing_flight():
     """ Unit test for Reservation.delete_flights(**) with non existing flight code
 
-        Length of flights list should be 1 after non existing deletion
+        Length of flights list should be the same after a failed deletion
         :return: None
     """
+
     usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
     travel = Travel(Flights([
         Flight('00', 'test', 0)
@@ -215,6 +225,7 @@ def test_reservation_process_payment_data():
         Amount in payment_data should be != 0 and == number of flights * flight price
         :return: None
     """
+
     usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
     travel = Travel(Flights([
         Flight('00', 'Berlin', 2),
@@ -224,15 +235,16 @@ def test_reservation_process_payment_data():
     payment_data = reservation._process_payment_data('Test', '000000', '000')
     assert isinstance(payment_data, PaymentData)
     assert payment_data.amount != 0
-    assert payment_data.amount == (4*Reservation.FLIGHT_PRICE)
+    assert payment_data.amount == (4 * Reservation._flight_price)
 
 
 def test_confirm_payment_error(monkeypatch):
-    """ Mock test for Reservation.confirm() when Bank.do_payment == False
+    """ Unit test for Reservation.confirm() when Bank.do_payment returns False
 
         reservation.confirm() should be False
         :return: None
     """
+
     def mock_do_payment(*args):
         return False
 
@@ -243,17 +255,18 @@ def test_confirm_payment_error(monkeypatch):
         Flight('01', 'Roma', 2)
     ]))
     reservation = Reservation(travel, usr)
-    assert reservation.confirm('Test_card', '', '123') != None
-    assert reservation.confirm('Test_card', '', '123') != True
-    assert reservation.confirm('Test_card', '', '123') == False
+    assert reservation.confirm('Test_card', '', '123') is not None
+    assert reservation.confirm('Test_card', '', '123') is not True
+    assert reservation.confirm('Test_card', '', '123') is False
 
 
 def test_confirm_payment_done(monkeypatch):
-    """ Mock test for Reservation.confirm() when Bank.do_payment == True
+    """ Mock test for Reservation.confirm() when Bank.do_payment returns True
 
         reservation.confirm() should be True
         :return: None
     """
+
     def mock_do_payment(*args):
         return True
 
@@ -264,6 +277,6 @@ def test_confirm_payment_done(monkeypatch):
         Flight('01', 'Roma', 2)
     ]))
     reservation = Reservation(travel, usr)
-    assert reservation.confirm('Test_card', '', '123') != None
-    assert reservation.confirm('Test_card', '', '123') != False
-    assert reservation.confirm('Test_card', '', '123') == True
+    assert reservation.confirm('Test_card', '', '123') is not None
+    assert reservation.confirm('Test_card', '', '123') is not False
+    assert reservation.confirm('Test_card', '', '123') is True
