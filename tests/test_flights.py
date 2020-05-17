@@ -16,6 +16,7 @@ def test_flights_ctor():
     flights = Flights([f1, f2, f3])
     assert len(flights) != 0
     assert len(flights) == 3
+    assert flights.passengers_per_flight == 4
 
     f1 = Flight('00', 'Berlin', 4)
     f2 = Flight('00', 'Berlin', 4)
@@ -24,6 +25,7 @@ def test_flights_ctor():
     assert len(flights) != 0
     assert len(flights) != 3
     assert len(flights) == 1
+    assert flights.passengers_per_flight == 4
 
 
 def test_modify_flight_destination():

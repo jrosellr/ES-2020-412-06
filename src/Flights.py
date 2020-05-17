@@ -17,8 +17,12 @@ class Flights:
         :param flights: a list of objects of type Flight
         """
 
-        self.flights = {flight.code: flight for flight in flights}
-        self.passengers_per_flight: int = flights[0].num_clients
+        if len(flights) != 0:
+            self.flights = {flight.code: flight for flight in flights}
+            self.passengers_per_flight: int = flights[0].num_clients
+        else:
+            self.flights: dict = {}
+            self.passengers_per_flight: int = 0
 
     def modify_flight(self, code: str, new_destination=None, new_num_clients=None):
         if code in self.flights:
