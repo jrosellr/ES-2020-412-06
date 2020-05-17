@@ -8,6 +8,7 @@ class Flights:
 
         Instance variables:
             flights: uses a dictionary to enforce the singularity of each flight
+            passengers_per_flight: the number of passengers of each flight
     """
 
     def __init__(self, flights: list):
@@ -17,6 +18,7 @@ class Flights:
         """
 
         self.flights = {flight.code: flight for flight in flights}
+        self.passengers_per_flight: int = flights[0].num_clients
 
     def modify_flight(self, code: str, new_destination=None, new_num_clients=None):
         if code in self.flights:
