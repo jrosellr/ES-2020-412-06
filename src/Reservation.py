@@ -1,6 +1,8 @@
 from src.Travel import Travel
 from src.User import User
 from src.PaymentData import PaymentData
+from src.Skyscanner import Skyscanner
+from src.Bank import Bank
 import copy
 
 
@@ -8,13 +10,22 @@ class Reservation:
     """ Handles reservation data and reservation confirmation
 
     """
+
+    FLIGHT_PRICE = 5.0
+
     def __init__(self, travel: Travel, user: User):
         self.travel = copy.deepcopy(travel)
         self.user = copy.deepcopy(user)
         self.total_price = 0.0  # Just in case, if the module fails the price should be at least 0
 
-    def confirm(self):
-        pass
+    def confirm(self, name, card_number, security_code):
+        payment_data = self._process_payment_data(name, card_number, security_code)
+        confirm_flights = False
+
+        if Bank.do_payment(self.user, payment_data):
+            confirm_flights = Skyscanner.confirm_reserve(self.user, self.travel.flights)
+        return confirm_flights
+
 
     def calculate_flights_price(self, price) -> float:
         total_price = 0
@@ -37,3 +48,7 @@ class Reservation:
 
     def delete_flight(self, code):
         self.travel.delete_flight(code)
+
+    def _process_payment_data(self, name: str, card_number: str, security_code: str):
+        amount = self.calculate_flights_price(self.FLIGHT_PRICE)
+        return PaymentData(name, card_number, security_code, amount)
