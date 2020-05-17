@@ -60,7 +60,7 @@ class Reservation:
 
         total_price = 0
         if len(self.travel.flights.flights) != 0:
-            num_clients = self.travel.get_num_clients()
+            num_clients = self.travel.num_travelers
             total_price = price * num_clients
         return total_price
 
