@@ -11,5 +11,5 @@ class Bank:
         pass
 
     @staticmethod
-    def do_payment(self, user: User, payment_data: PaymentData):
+    def do_payment(user: User, payment_data: PaymentData):
         return True

@@ -10,5 +10,5 @@ class Skyscanner:
         pass
 
     @staticmethod
-    def confirm_reserve(self, user: User, flights: Flights) -> bool:
+    def confirm_reserve(user: User, flights: Flights) -> bool:
         return True
