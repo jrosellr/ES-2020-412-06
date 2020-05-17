@@ -42,4 +42,5 @@ class Reservation:
         self.travel.delete_flight(code)
 
     def _process_payment_data(self, name: str, card_number: str, security_code: str):
-        amount = self.calculate_flights_price()
+        amount = self.calculate_flights_price(self.FLIGHT_PRICE)
+        return PaymentData(name, card_number, security_code, amount)
