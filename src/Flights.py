@@ -32,3 +32,6 @@ class Flights:
     def __getitem__(self, code):
         if code in self.flights:
             return self.flights[code]
+
+    def __len__(self):
+        return len(self.flights)
