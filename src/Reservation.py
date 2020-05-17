@@ -20,9 +20,12 @@ class Reservation:
 
     def confirm(self, name, card_number, security_code):
         payment_data = self._process_payment_data(name, card_number, security_code)
+        confirm_flights = False
 
         if Bank.do_payment(self.user, payment_data):
-            return Skyscanner.confirm_reserve(self.user, self.travel.flights)
+            confirm_flights = Skyscanner.confirm_reserve(self.user, self.travel.flights)
+
+        return confirm_flights
 
 
 

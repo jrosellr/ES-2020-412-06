@@ -4,7 +4,7 @@ from src.User import User
 from src.Flights import Flights
 from src.Flight import Flight
 from src.PaymentData import PaymentData
-
+from src.Bank import Bank
 
 def test_reservation_ctor():
     """ Unit test for Reservation.__init__(**)
@@ -196,12 +196,23 @@ def test_reservation_process_payment_data():
     assert payment_data.amount != 0
     assert payment_data.amount == (4*Reservation.FLIGHT_PRICE)
 
-def test_confirm():
+
+def test_confirm_payment_error(monkeypatch):
+    def mock_do_payment(*args):
+        return False
+
+    monkeypatch.setattr(Bank, "do_payment", mock_do_payment)
+    assert Bank.do_payment() == False
+
     usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
     travel = Travel(Flights([
         Flight('00', 'Berlin', 2),
         Flight('01', 'Roma', 2)
     ]))
     reservation = Reservation(travel, usr)
-    assert reservation.confirm(paymentData) == True
-    assert reservation.confirm(paymentData) != False
+
+    assert reservation.confirm('Test_card', '', '123') != None
+    assert reservation.confirm('Test_card', '', '123') != True
+    assert reservation.confirm('Test_card', '', '123') == False
+
+
