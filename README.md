@@ -38,6 +38,4 @@ Para utilizar pytest es recomendable usar el siguiente comando:
 ***IMPORTANTE Debeis ejecutarlo desde el directorio raíz del proyecto***
 
 ## Diagrama de clases
-
-![Alt text](Diagrama de clases)
 <img src="./class_diagram.png">
