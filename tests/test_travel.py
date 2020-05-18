@@ -70,7 +70,7 @@ def test_travel_get_num_clients_no_flights():
 
     flights = Flights([])
     travel = Travel(flights)
-    assert travel.get_num_clients() == 0
+    assert travel.num_travelers == 0
 
 
 def test_travel_get_num_clients_no_clients():
@@ -84,7 +84,7 @@ def test_travel_get_num_clients_no_clients():
         Flight('01', '', 0)
     ])
     travel = Travel(flights)
-    assert travel.get_num_clients() == 0
+    assert travel.num_travelers == 0
 
 
 def test_travel_get_num_clients():
@@ -98,7 +98,7 @@ def test_travel_get_num_clients():
         Flight('01', '', 4)
     ])
     travel = Travel(flights)
-    assert travel.get_num_clients() == 8
+    assert travel.num_travelers == 8
 
 
 def test_travel_get_num_clients_add_flight():
@@ -113,7 +113,7 @@ def test_travel_get_num_clients_add_flight():
     ])
     travel = Travel(flights)
     travel.add_flight(Flight('02', '', 4))
-    assert travel.get_num_clients() == 12
+    assert travel.num_travelers == 12
 
 
 def test_travel_delete_flight_existing_flight():

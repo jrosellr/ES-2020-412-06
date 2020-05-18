@@ -21,7 +21,7 @@ def test_reservation_ctor():
     assert isinstance(reservation, Reservation)
 
     travel.flights.modify_flight('00', new_destination='Berlin')
-    assert reservation.travel.flights.flights['00'] != travel.flights.flights['00']
+    assert reservation.travel.flights['00'] != travel.flights['00']
 
 
 def test_reservation_add_new_flight():
@@ -36,10 +36,10 @@ def test_reservation_add_new_flight():
         Flight('00', 'test', 0)
     ]))
     reservation = Reservation(travel, usr)
-    old_len = len(reservation.travel.flights.flights)
+    old_len = len(reservation.travel.flights)
     new_flight = Flight('01', '', 0)
     reservation.add_flight(new_flight)
-    new_len = len(reservation.travel.flights.flights)
+    new_len = len(reservation.travel.flights)
     assert new_len != 0
     assert new_len != old_len
     assert new_len == old_len + 1
@@ -57,10 +57,10 @@ def test_reservation_add_same_flight():
         Flight('00', 'test', 0)
     ]))
     reservation = Reservation(travel, usr)
-    old_len = len(reservation.travel.flights.flights)
+    old_len = len(reservation.travel.flights)
     new_flight = Flight('00', '', 0)
     reservation.add_flight(new_flight)
-    new_len = len(reservation.travel.flights.flights)
+    new_len = len(reservation.travel.flights)
     assert new_len != 0
     assert new_len == old_len
 
@@ -75,10 +75,10 @@ def test_reservation_add_flight_empty_travel():
     usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
     travel = Travel(Flights([]))
     reservation = Reservation(travel, usr)
-    old_len = len(reservation.travel.flights.flights)
+    old_len = len(reservation.travel.flights)
     new_flight = Flight('00', '', 0)
     reservation.add_flight(new_flight)
-    new_len = len(reservation.travel.flights.flights)
+    new_len = len(reservation.travel.flights)
     assert new_len != 0
     assert new_len != old_len
     assert new_len == old_len + 1
@@ -97,12 +97,12 @@ def test_reservation_delete_flights_existing_flight():
     ]))
 
     reservation = Reservation(travel, usr)
-    old_len = len(reservation.travel.flights.flights)
+    old_len = len(reservation.travel.flights)
 
     reservation.delete_flight('00')
 
-    assert len(reservation.travel.flights.flights) != old_len
-    assert len(reservation.travel.flights.flights) == old_len - 1
+    assert len(reservation.travel.flights) != old_len
+    assert len(reservation.travel.flights) == old_len - 1
 
 
 def test_reservation_delete_flights_non_existing_flight():
@@ -118,8 +118,8 @@ def test_reservation_delete_flights_non_existing_flight():
     ]))
     reservation = Reservation(travel, usr)
     reservation.delete_flight('01')
-    assert len(reservation.travel.flights.flights) == 1
-    assert len(reservation.travel.flights.flights) != 0
+    assert len(reservation.travel.flights) == 1
+    assert len(reservation.travel.flights) != 0
 
 
 def test_reservation_calculate_flights_price_no_flights():

@@ -36,3 +36,6 @@ Para utilizar pytest es recomendable usar el siguiente comando:
 ``` python -m pytest tests/ ```
 
 ***IMPORTANTE Debeis ejecutarlo desde el directorio raíz del proyecto***
+
+## Diagrama de clases
+<img src="./class_diagram.png" width="auto">

@@ -1,0 +1,207 @@
+@startuml
+package Confirmar_Viatges
+{
+    class Flights
+    {
+        + __init__(flights: list<Flight>): Flights
+        + __len__(): int
+        + __getitem__(code: str) : Flight
+        + __setitem__(code: str, flight: Flight): None
+        + __delitem__(code: str): None
+        + tickets_to_reserve: int
+        ------
+        - _passengers_per_flight: int
+        - _flights: dict<str, Flight>
+    }
+
+    class Flight
+    {
+        + __init__(code: str, destination: str, passengers: int): Flight
+        + code: str
+        + destination: str
+        + passengers: int
+        ----
+        - _code: str
+        - _destination: str
+        - _passengers: int
+    }
+
+    class Hotels
+    {
+        + __init__(hotels: list<Hotel>): Hotels
+        + __len__(): int
+        + __getitem__(code: str) : Hotel
+        + __setitem__(code: str, new_hotel: Hotel): None
+        + __delitem__(code: str): None
+        + rooms_to_reserve: int
+        ------
+        - _rooms_to_reserve: int
+        - _hotels: dict<str, Hotel>
+    }
+
+    class Hotel
+    {
+        + __init__(code: str, name: str,
+            clients: int, days_reserved: int): Flight
+        + code: str
+        + name: str
+        + rooms_to_reserve: int
+        + days_reserved: int
+        ----
+        - _code: str
+        - _name: str
+        - _rooms_to_reserve: int
+        - _days_reserved: int
+        - _clients: int
+    }
+
+    class Cars
+    {
+        + __init__(cars: list<Car>): Cars
+        + __len__(): int
+        + __getitem__(code: str) : Car
+        + __setitem__(code: str, new_car: Car): None
+        + __delitem__(code: str): None
+        + cars_to_reserve: int
+        ------
+        - _cars_to_reserve: int
+        - _cars: dict<str, Car>
+    }
+
+    class Car
+    {
+        + __init__(code: str, brand: str, pick_up_place: str, days_reserved: int): Car
+        + code: str
+        + brand: str
+        + pick_up_place: str
+        + days_reserved: int
+        ----
+        - _code: str
+        - _brand: str
+        - _pick_up_place: str
+        - _days_reserved: int
+    }
+
+    class Travel
+    {
+        + __init__(flights: Flights, hotels: Hotels, cars: Cars): Travel
+        + cost: float
+        + ticket_price: float
+        + room_price: float
+        + car_price: float
+        ----
+        - _calculate_ticket_cost(): float
+        - _calculate_room_cost(): float
+        - _calculate_car_cost(): float
+        - _flights: Flights
+        - _hotels: Hotels
+        - _cars: Cars
+        - _ticket_price: float
+        - _room_price: float
+        - _car_price: float
+    }
+
+    class Reservation
+    {
+        + __init__(travel: Travel, user: User) : Reservation
+        + confirm(name: str, card_number: str, security_code: str): bool
+        ----
+        - _process_payment_data(name: str, card_number: str, security_code: str): PaymentData
+        - _configure_travel(): None
+        - _fetch_ticket_price(flight_code: str): float
+        - _fetch_room_price(hotel_code: str): float
+        - _fetch_car_price(car_code: str): float
+        - _travel: Travel
+        - _user: User
+    }
+
+    class PaymentData
+    {
+        + __init__(user_name: str, card_number: str, security_code: str,
+            amount: float, credit_card_type: Enum<CardType>) : PaymentData
+        + user_name: str
+        + card_number: str
+        + security_code: str
+        + amount: float
+        + credit_card_type: Enum<CardType>
+        ----
+        - _user_name: str
+        - _card_number: str
+        - _security_code: str
+        - _amount: float
+        - _credit_card_type: Enum<CardType>
+    }
+
+    class User
+    {
+        + __init__(full_name: str, nif: str, address: str,
+            mobile_number: str, email: str): User
+        + full_name: str
+        + dni: str
+        + address: str
+        + mobile_number: str
+        + email: str
+        ----
+        - full_name: str
+        - dni: str
+        - address: str
+        - mobile_number: str
+        - email: str
+    }
+}
+
+package Wrappers
+{
+    class Bank
+    {
+        + {static} do_payment(user: User, payment_data: PaymentData): bool
+    }
+
+    class Skyscanner
+    {
+        + {static} confirm_reserve(user: User, flights: Flights): bool
+        + {static} fetch_ticket_price(flight_code: str): float
+    }
+
+    class Booking
+    {
+        + {static} confirm_reserve(user: User, hotels: Hotels): bool
+        + {static} fetch_room_price(hotel_code: str): float
+    }
+
+    class Rentalcars
+    {
+        + {static} confirm_reserve(user: User, cars: Cars): bool
+        + {static} fetch_car_price(car_code: str): float
+    }
+}
+
+package Utilities
+{
+    class Validator
+    {
+        + {static} validate_email(email): bool
+        + {static} validate_credit_card_number(car_number: str): float
+        + {static} validate_credit_card_sec_code(card_sec_code: str): float
+        ----
+        - _email_regexp: str
+        - _credit_card_number_regexp: str
+        - _credit_card_sec_code_regexp: str
+    }
+}
+
+Flights "1..*" *-- "0..*" Flight
+Hotels "1..*" *-- "0..*" Hotel
+Cars "1..*" *-- "0..*" Car
+Travel "1..*" *-- "0..1" Flights
+Travel "1..*" *-- "0..1" Hotels
+Travel "1..*" *-- "0..1" Cars
+Reservation "1..*" *-left-- "0..1" Travel
+Reservation "1..*" *-- "0..1" User
+Reservation "1" -up- "1" Bank
+Reservation "1" -up- "1" Skyscanner
+Reservation "1" -up- "1" Rentalcars
+Reservation "1" -up- "1" Booking
+Reservation "1" -up- "1" Validator
+Reservation "1" --> "1" PaymentData
+@enduml

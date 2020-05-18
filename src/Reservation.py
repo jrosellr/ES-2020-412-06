@@ -60,7 +60,7 @@ class Reservation:
 
         total_price = 0
         if len(self.travel.flights.flights) != 0:
-            num_clients = self.travel.get_num_clients()
+            num_clients = self.travel.num_travelers
             total_price = price * num_clients
         return total_price
 
@@ -96,7 +96,7 @@ class Reservation:
 
         self.travel.delete_flight(code)
 
-    def _process_payment_data(self, name: str, card_number: str, security_code: str):
+    def _process_payment_data(self, name: str, card_number: str, security_code: str) -> PaymentData:
         """ Call calculate_flights_price and create an instance of PaymentData with the amount calculated.
 
         :param name: string with the name of the card holder

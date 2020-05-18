@@ -36,7 +36,8 @@ class Travel:
         self.hotels = copy.deepcopy(hotels)
         self.cars = copy.deepcopy(cars)
 
-    def get_num_clients(self) -> int:
+    @property
+    def num_travelers(self) -> int:
         """Return the total number of passengers.
 
             :return: int
