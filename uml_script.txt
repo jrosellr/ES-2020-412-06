@@ -41,7 +41,8 @@ package Confirmar_Viatges
 
     class Hotel
     {
-        + __init__(code: str, name: str, clients: int, days_reserved: int): Flight
+        + __init__(code: str, name: str,
+            clients: int, days_reserved: int): Flight
         + code: str
         + name: str
         + rooms_to_reserve: int
@@ -133,7 +134,8 @@ package Confirmar_Viatges
 
     class User
     {
-        + __init__(full_name: str, nif: str, address: str, mobile_number: str, email: str): User
+        + __init__(full_name: str, nif: str, address: str,
+            mobile_number: str, email: str): User
         + full_name: str
         + dni: str
         + address: str
