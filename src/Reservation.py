@@ -2,6 +2,8 @@ from src.Travel import Travel
 from src.User import User
 from src.PaymentData import PaymentData
 from src.Skyscanner import Skyscanner
+from src.Booking import Booking
+from src.Rentalcars import Rentalcars
 from src.Bank import Bank
 import copy
 
@@ -82,12 +84,12 @@ class Reservation:
 
     @staticmethod
     def _fetch_ticket_price() -> float:
-        pass
+        return Skyscanner.fetch_ticket_price()
 
     @staticmethod
     def _fetch_room_price() -> float:
-        pass
+        return Booking.fetch_room_price()
 
     @staticmethod
     def _fetch_car_price() -> float:
-        pass
+        return Rentalcars.fetch_car_price()

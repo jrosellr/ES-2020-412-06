@@ -1,5 +1,5 @@
 import pytest
-from src.Reservation import Reservation
+from src.Skyscanner import Skyscanner
 from src.Bank import Bank
 from .test_constants import *
 
@@ -10,7 +10,7 @@ def mock_fetch_prices(monkeypatch):
     def mock_fetch_ticket_price(*args):
         return MOCKED_TICKET_PRICE
 
-    monkeypatch.setattr(Reservation, "_fetch_ticket_price", mock_fetch_ticket_price)
+    monkeypatch.setattr(Skyscanner, "fetch_ticket_price", mock_fetch_ticket_price)
 
 
 @pytest.fixture
