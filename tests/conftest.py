@@ -18,3 +18,11 @@ def mock_bank_error(monkeypatch):
         return MOCKED_BANK_ERROR_RET
 
     monkeypatch.setattr(Bank, "do_payment", mock_do_payment_error)
+
+
+@pytest.fixture
+def mock_bank_success(monkeypatch):
+    def mock_do_payment_succesful(*args):
+        return MOCKED_BANK_SUCCESS_RET
+
+    monkeypatch.setattr(Bank, "do_payment", mock_do_payment_succesful)

@@ -190,7 +190,7 @@ def test_reservation_process_payment_data(mock_fetch_prices):
     assert payment_data.amount == MOCKED_TICKET_PRICE * num_travelers * num_flights
 
 
-def test_confirm_payment_error(monkeypatch, mock_fetch_prices, mock_bank_error):
+def test_confirm_payment_error(mock_fetch_prices, mock_bank_error):
     """ Unit test for Reservation.confirm() when Bank.do_payment returns False
 
         reservation.confirm() should be False
@@ -208,17 +208,13 @@ def test_confirm_payment_error(monkeypatch, mock_fetch_prices, mock_bank_error):
     assert reservation.confirm('Test_card', '', '123') is False
 
 
-def test_confirm_payment_done(monkeypatch, mock_fetch_prices):
+def test_confirm_payment_done(mock_fetch_prices, mock_bank_success):
     """ Mock test for Reservation.confirm() when Bank.do_payment returns True
 
         reservation.confirm() should be True
         :return: None
     """
 
-    def mock_do_payment(*args):
-        return True
-
-    monkeypatch.setattr(Bank, "do_payment", mock_do_payment)
     usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
     travel = Travel(Flights([
         Flight('00', 'Berlin', 2),
