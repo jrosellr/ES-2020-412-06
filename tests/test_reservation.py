@@ -122,28 +122,6 @@ def test_reservation_delete_flights_non_existing_flight():
     assert len(reservation._travel._flights) != 0
 
 
-def test_confirm_payment_done(monkeypatch):
-    """ Mock test for Reservation.confirm() when Bank.do_payment returns True
-
-        reservation.confirm() should be True
-        :return: None
-    """
-
-    def mock_do_payment(*args):
-        return True
-
-    monkeypatch.setattr(Bank, "do_payment", mock_do_payment)
-    usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
-    travel = Travel(Flights([
-        Flight('00', 'Berlin', 2),
-        Flight('01', 'Roma', 2)
-    ]))
-    reservation = Reservation(travel, usr)
-    assert reservation.confirm('Test_card', '', '123') is not None
-    assert reservation.confirm('Test_card', '', '123') is not False
-    assert reservation.confirm('Test_card', '', '123') is True
-
-
 def test_mocked_fetch_ticket_price(monkeypatch):
     def mock_fetch_ticket_price(*args):
         return 0.0
@@ -211,6 +189,7 @@ def test_reservation_process_payment_data(monkeypatch):
     ]))
 
     reservation = Reservation(travel, usr)
+
     # 2. Process the payment data:
     payment_data = reservation._process_payment_data('Test', '000000', '000')
 
@@ -219,7 +198,7 @@ def test_reservation_process_payment_data(monkeypatch):
     assert payment_data.amount == mocked_ticket_price * num_travelers * num_flights
 
 
-def test_confirm_payment_error(monkeypatch):  # FIXME: should use monkeypatched calls
+def confirm_payment_error(monkeypatch):  # FIXME: should use monkeypatched calls
     """ Unit test for Reservation.confirm() when Bank.do_payment returns False
 
         reservation.confirm() should be False
@@ -239,4 +218,27 @@ def test_confirm_payment_error(monkeypatch):  # FIXME: should use monkeypatched 
     assert reservation.confirm('Test_card', '', '123') is not None
     assert reservation.confirm('Test_card', '', '123') is not True
     assert reservation.confirm('Test_card', '', '123') is False
+
+
+def confirm_payment_done(monkeypatch):  # FIXME: should use monkeypatched calls
+    """ Mock test for Reservation.confirm() when Bank.do_payment returns True
+
+        reservation.confirm() should be True
+        :return: None
+    """
+
+    def mock_do_payment(*args):
+        return True
+
+    monkeypatch.setattr(Bank, "do_payment", mock_do_payment)
+    usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
+    travel = Travel(Flights([
+        Flight('00', 'Berlin', 2),
+        Flight('01', 'Roma', 2)
+    ]))
+    reservation = Reservation(travel, usr)
+    assert reservation.confirm('Test_card', '', '123') is not None
+    assert reservation.confirm('Test_card', '', '123') is not False
+    assert reservation.confirm('Test_card', '', '123') is True
+
 

@@ -80,12 +80,14 @@ class Reservation:
     def _configure_travel(self):
         self._travel.ticket_price = self._fetch_ticket_price()
 
-    @classmethod
-    def _fetch_ticket_price(cls) -> float:
-        return 2.0
-
-    def _fetch_room_price(self) -> float:
+    @staticmethod
+    def _fetch_ticket_price() -> float:
         pass
 
-    def _fetch_car_price(self) -> float:
+    @staticmethod
+    def _fetch_room_price() -> float:
+        pass
+
+    @staticmethod
+    def _fetch_car_price() -> float:
         pass
