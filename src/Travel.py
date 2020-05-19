@@ -36,18 +36,6 @@ class Travel:
         self.hotels = copy.deepcopy(hotels)
         self.cars = copy.deepcopy(cars)
 
-    @property
-    def num_travelers(self) -> int:
-        """Return the total number of passengers.
-
-            :return: int
-         """
-
-        num_clients = 0
-        for code, flight in self.flights.flights.items():
-            num_clients += flight.num_clients
-        return num_clients
-
     def add_flight(self, new_flight) -> None:
         """Add a new flight.
 
@@ -57,7 +45,7 @@ class Travel:
             :return: None
         """
 
-        self.flights.add_flight(new_flight)
+        self.flights[new_flight.code]= new_flight
 
     def delete_flight(self, code) -> None:
         """Delete an existing flight.
@@ -65,4 +53,4 @@ class Travel:
             :return: None
         """
 
-        self.flights.delete_flight(code)
+        del self.flights[code]

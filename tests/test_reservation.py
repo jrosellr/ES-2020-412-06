@@ -20,7 +20,7 @@ def test_reservation_ctor():
     reservation = Reservation(travel, usr)
     assert isinstance(reservation, Reservation)
 
-    travel.flights.modify_flight('00', new_destination='Berlin')
+    travel.flights['00'].destination = 'Berlin'
     assert reservation.travel.flights['00'] != travel.flights['00']
 
 

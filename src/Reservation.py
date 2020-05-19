@@ -52,17 +52,7 @@ class Reservation:
         return confirm_flights
 
     def calculate_flights_price(self, price: float) -> float:
-        """ Calculate the total price from given price by flight and the number of clients
-
-        :param price: price per client, equal for all flights
-        :return: float
-        """
-
-        total_price = 0
-        if len(self.travel.flights.flights) != 0:
-            num_clients = self.travel.num_travelers
-            total_price = price * num_clients
-        return total_price
+        pass
 
     def calculate_hotels_price(self, price):
         return 0

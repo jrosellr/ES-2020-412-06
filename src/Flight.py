@@ -6,4 +6,4 @@ class Flight:
     def __init__(self, code: str, destination: str, num_clients: int):
         self.code = code
         self.destination = destination
-        self.num_clients = num_clients
+        self.passengers = num_clients

@@ -18,28 +18,23 @@ class Flights:
         """
 
         if len(flights) != 0:
-            self.flights = {flight.code: flight for flight in flights}
-            self.passengers_per_flight: int = flights[0].num_clients
+            self.__flights = {flight.code: flight for flight in flights}
+            self.passengers_per_flight: int = flights[0].passengers
         else:
-            self.flights: dict = {}
+            self.__flights: dict = {}
             self.passengers_per_flight: int = 0
 
-    def modify_flight(self, code: str, new_destination=None, new_num_clients=None):
-        if code in self.flights:
-            self.flights[code].destination = new_destination if new_destination else self.flights[code].destination
-            self.flights[code].num_clients = new_num_clients if new_num_clients else self.flights[code].num_clients
+    def __getitem__(self, key: str):
+        if key in self.__flights:
+            return self.__flights[key]
 
-    def add_flight(self, flight: Flight):
-        if flight.code not in self.flights:
-            self.flights[flight.code] = flight
+    def __setitem__(self, key: str, value: Flight):
+        if key not in self.__flights:
+            self.__flights[key] = value
 
-    def delete_flight(self, code):
-        if code in self.flights:
-            del self.flights[code]
-
-    def __getitem__(self, code):
-        if code in self.flights:
-            return self.flights[code]
+    def __delitem__(self, key: str):
+        if key in self.__flights:
+            del self.__flights[key]
 
     def __len__(self):
-        return len(self.flights)
+        return len(self.__flights)
