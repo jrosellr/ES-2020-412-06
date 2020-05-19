@@ -84,8 +84,16 @@ class Travel:
 
     @property
     def cost(self):
-        total_ticket_price = self._ticket_price * self._num_travelers * len(self._flights)
+        total_ticket_price = self._calculate_ticket_cost()
         return total_ticket_price
+
+    def _calculate_ticket_cost(self) -> float:
+        """ Calculate the total cost of the flights
+
+        :return: total cost of the flights
+        """
+
+        return self._ticket_price * self._num_travelers * len(self._flights)
 
     def add_flight(self, new_flight) -> None:
         """Add a new flight.

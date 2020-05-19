@@ -48,16 +48,6 @@ class Reservation:
             confirm_flights = Skyscanner.confirm_reserve(self._user, self._travel._flights)
         return confirm_flights
 
-    def calculate_total_price(self, flights_price, hotels_price, cars_price):
-        """ Calculates the total price of the reservation from the price of the flights, hotels and cars
-
-        :param flights_price: price of the flights
-        :param hotels_price: price of the hotels
-        :param cars_price: price of the cars
-        """
-
-        self.total_price = self.calculate_flights_price(flights_price) + self.calculate_hotels_price(hotels_price) + self.calculate_cars_price(cars_price)
-
     def add_flight(self, new_flight):
         """ Call the method add_flight from Travel class
 
@@ -83,11 +73,16 @@ class Reservation:
         :return: instance of PaymentData with the total amount of money to pay and client information
         """
 
-        amount = 0
-        return PaymentData(name, card_number, security_code, amount)
+        self._configure_travel()
+        # TODO: add user input validation before returning the PaymentData instance
+        return PaymentData(name, card_number, security_code, self._travel.cost)
 
-    def _fetch_ticket_price(self) -> float:
-        pass
+    def _configure_travel(self):
+        self._travel.ticket_price = self._fetch_ticket_price()
+
+    @classmethod
+    def _fetch_ticket_price(cls) -> float:
+        return 2.0
 
     def _fetch_room_price(self) -> float:
         pass
