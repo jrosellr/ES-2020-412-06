@@ -85,3 +85,12 @@ class Reservation:
 
         amount = 0
         return PaymentData(name, card_number, security_code, amount)
+
+    def _fetch_ticket_price(self) -> float:
+        pass
+
+    def _fetch_room_price(self) -> float:
+        pass
+
+    def _fetch_car_price(self) -> float:
+        pass
