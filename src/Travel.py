@@ -32,7 +32,29 @@ class Travel:
         :param cars: Cars
         """
 
-        self._flights = copy.deepcopy(flights)
+        self._flights: Flights = copy.deepcopy(flights)
+        self._ticket_price: float = 0.0
+        self._room_price: float = 0.0
+        self._car_price: float = 0.0
+
+    @property
+    def ticket_price(self):
+        return self._ticket_price
+
+    @ticket_price.setter
+    def ticket_price(self, val):
+        if val > 0.0:
+            self._ticket_price = val
+        else:
+            raise ValueError("price can't be lower than zero")
+
+    @property
+    def room_price(self):
+        return self._room_price
+
+    @property
+    def car_price(self):
+        return self._car_price
 
     def add_flight(self, new_flight) -> None:
         """Add a new flight.

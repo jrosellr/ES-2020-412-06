@@ -1,6 +1,7 @@
 from src.Travel import Travel
 from src.Flights import Flights
 from src.Flight import Flight
+import pytest
 
 
 def test_travel_ctor():
@@ -15,6 +16,67 @@ def test_travel_ctor():
     travel = Travel(flights)
     assert isinstance(travel, Travel)
     assert len(travel._flights) != 0
+    assert travel.ticket_price == 0.0
+
+
+def test_travel_set_positive_value_to_ticket_property():
+    flights = Flights([
+        Flight('00', '', 0)
+    ])
+    travel = Travel(flights)
+    travel.ticket_price = 5.0
+    assert travel._ticket_price != 0.0
+    assert travel._ticket_price == 5.0
+
+
+def test_travel_set_negative_value_to_ticket_property():
+    flights = Flights([
+        Flight('00', '', 0)
+    ])
+    travel = Travel(flights)
+
+    with pytest.raises(ValueError):
+        travel.ticket_price = -1
+
+
+def test_travel_set_positive_value_to_room_property():
+    flights = Flights([
+        Flight('00', '', 0)
+    ])
+    travel = Travel(flights)
+    travel.room_price = 5.0
+    assert travel._room_price != 0.0
+    assert travel._room_price == 5.0
+
+
+def test_travel_set_negative_value_to_room_property():
+    flights = Flights([
+        Flight('00', '', 0)
+    ])
+    travel = Travel(flights)
+
+    with pytest.raises(ValueError):
+        travel.room_price = -1
+
+
+def test_travel_set_positive_value_to_car_property():
+    flights = Flights([
+        Flight('00', '', 0)
+    ])
+    travel = Travel(flights)
+    travel.car_price = 5.0
+    assert travel._car_price != 0.0
+    assert travel._car_price == 5.0
+
+
+def test_travel_set_negative_value_to_car_property():
+    flights = Flights([
+        Flight('00', '', 0)
+    ])
+    travel = Travel(flights)
+
+    with pytest.raises(ValueError):
+        travel.car_price = -1
 
 
 def test_travel_add_flight_empty_flights():
