@@ -17,14 +17,14 @@ class Travel:
         ----
 
         Instance variables:
-            flights
+            __flights
 
-            hotels
+            __hotels
 
-            cars
+            __cars
     """
 
-    def __init__(self, flights: Flights, hotels=None, cars=None):
+    def __init__(self, flights: Flights):
         """ Construct a Travel object
 
         :param flights: Flights
@@ -32,9 +32,7 @@ class Travel:
         :param cars: Cars
         """
 
-        self.flights = copy.deepcopy(flights)
-        self.hotels = copy.deepcopy(hotels)
-        self.cars = copy.deepcopy(cars)
+        self._flights = copy.deepcopy(flights)
 
     def add_flight(self, new_flight) -> None:
         """Add a new flight.
@@ -45,7 +43,7 @@ class Travel:
             :return: None
         """
 
-        self.flights[new_flight.code]= new_flight
+        self._flights[new_flight.code] = new_flight
 
     def delete_flight(self, code) -> None:
         """Delete an existing flight.
@@ -53,4 +51,4 @@ class Travel:
             :return: None
         """
 
-        del self.flights[code]
+        del self._flights[code]

@@ -18,23 +18,23 @@ class Flights:
         """
 
         if len(flights) != 0:
-            self.__flights = {flight.code: flight for flight in flights}
+            self._flights = {flight.code: flight for flight in flights}
             self.passengers_per_flight: int = flights[0].passengers
         else:
-            self.__flights: dict = {}
+            self._flights: dict = {}
             self.passengers_per_flight: int = 0
 
     def __getitem__(self, key: str):
-        if key in self.__flights:
-            return self.__flights[key]
+        if key in self._flights:
+            return self._flights[key]
 
     def __setitem__(self, key: str, value: Flight):
-        if key not in self.__flights:
-            self.__flights[key] = value
+        if key not in self._flights:
+            self._flights[key] = value
 
     def __delitem__(self, key: str):
-        if key in self.__flights:
-            del self.__flights[key]
+        if key in self._flights:
+            del self._flights[key]
 
     def __len__(self):
-        return len(self.__flights)
+        return len(self._flights)

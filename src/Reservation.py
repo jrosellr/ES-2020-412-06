@@ -22,8 +22,6 @@ class Reservation:
         user: The User object who makes the reservation
     """
 
-    _flight_price = 5.0
-
     def __init__(self, travel: Travel, user: User):
         """ Copies a travel and user instance and initializes the total_price at 0
 
@@ -31,9 +29,8 @@ class Reservation:
         :param user: copy of User instance
         """
 
-        self.travel = copy.deepcopy(travel)
-        self.user = copy.deepcopy(user)
-        self.total_price = 0.0  # Just in case, if the module fails the price should be at least 0
+        self._travel = copy.deepcopy(travel)
+        self._user = copy.deepcopy(user)
 
     def confirm(self, name: str, card_number: str, security_code: str) -> bool:
         """ Takes the payment data with the total price and proceeds to do the payment and flights confirmation
@@ -47,8 +44,8 @@ class Reservation:
         payment_data = self._process_payment_data(name, card_number, security_code)
         confirm_flights = False
 
-        if Bank.do_payment(self.user, payment_data):
-            confirm_flights = Skyscanner.confirm_reserve(self.user, self.travel.flights)
+        if Bank.do_payment(self._user, payment_data):
+            confirm_flights = Skyscanner.confirm_reserve(self._user, self._travel.__flights)
         return confirm_flights
 
     def calculate_flights_price(self, price: float) -> float:
@@ -76,7 +73,7 @@ class Reservation:
         :param new_flight: instance of Flight to be added
         """
 
-        self.travel.add_flight(new_flight)
+        self._travel.add_flight(new_flight)
 
     def delete_flight(self, code):
         """ Call the method delete_flight from Travel class
@@ -84,7 +81,7 @@ class Reservation:
         :param code: code of an instance of Flight to be deleted
         """
 
-        self.travel.delete_flight(code)
+        self._travel.delete_flight(code)
 
     def _process_payment_data(self, name: str, card_number: str, security_code: str) -> PaymentData:
         """ Call calculate_flights_price and create an instance of PaymentData with the amount calculated.

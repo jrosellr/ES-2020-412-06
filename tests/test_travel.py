@@ -14,7 +14,7 @@ def test_travel_ctor():
     ])
     travel = Travel(flights)
     assert isinstance(travel, Travel)
-    assert len(travel.flights) != 0
+    assert len(travel._flights) != 0
 
 
 def test_travel_add_flight_empty_flights():
@@ -27,8 +27,8 @@ def test_travel_add_flight_empty_flights():
     flights = Flights([])
     travel = Travel(flights)
     travel.add_flight(new_flight)
-    assert len(travel.flights) != 0
-    assert len(travel.flights) == 1
+    assert len(travel._flights) != 0
+    assert len(travel._flights) == 1
 
 
 def test_add_flight_same_flight():
@@ -40,10 +40,10 @@ def test_add_flight_same_flight():
     new_flight = Flight('00', '', 0)
     flights = Flights([Flight('00', '', 0)])
     travel = Travel(flights)
-    old_len = len(travel.flights)
+    old_len = len(travel._flights)
     travel.add_flight(new_flight)
     assert old_len != 0
-    assert len(travel.flights) == old_len
+    assert len(travel._flights) == old_len
 
 
 def test_add_flight_new_flight():
@@ -55,11 +55,11 @@ def test_add_flight_new_flight():
     new_flight = Flight('01', '', 0)
     flights = Flights([Flight('00', '', 0)])
     travel = Travel(flights)
-    old_len = len(travel.flights)
+    old_len = len(travel._flights)
     travel.add_flight(new_flight)
     assert old_len != 0
-    assert len(travel.flights) != old_len
-    assert len(travel.flights) == old_len + 1
+    assert len(travel._flights) != old_len
+    assert len(travel._flights) == old_len + 1
 
 
 def test_travel_delete_flight_existing_flight():
@@ -74,8 +74,8 @@ def test_travel_delete_flight_existing_flight():
     ])
     travel = Travel(flights)
     travel.delete_flight('00')
-    assert len(travel.flights) != 2
-    assert len(travel.flights) == 1
+    assert len(travel._flights) != 2
+    assert len(travel._flights) == 1
 
 
 def test_travel_delete_flight_non_existing_flight():
@@ -90,5 +90,5 @@ def test_travel_delete_flight_non_existing_flight():
     ])
     travel = Travel(flights)
     travel.delete_flight('03')
-    assert len(travel.flights) == 2
-    assert len(travel.flights) != 1
+    assert len(travel._flights) == 2
+    assert len(travel._flights) != 1
