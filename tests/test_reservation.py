@@ -5,7 +5,7 @@ from src.Flights import Flights
 from src.Flight import Flight
 from src.PaymentData import PaymentData
 from src.Bank import Bank
-import pytest
+from .test_constants import *
 
 
 def test_reservation_ctor():
@@ -165,17 +165,6 @@ def test_mocked_fetch_car_price(monkeypatch):
     assert reservation._fetch_car_price() == 0.0
 
 
-MOCKED_TICKET_PRICE = 5.0
-
-
-@pytest.fixture
-def mock_fetch_prices(monkeypatch):
-    def mock_fetch_ticket_price(*args):
-        return MOCKED_TICKET_PRICE
-
-    monkeypatch.setattr(Reservation, "_fetch_ticket_price", mock_fetch_ticket_price)
-
-
 def test_reservation_process_payment_data(mock_fetch_prices):
     """ Unit test for Reservation._process_payment_data()
 
@@ -201,17 +190,13 @@ def test_reservation_process_payment_data(mock_fetch_prices):
     assert payment_data.amount == MOCKED_TICKET_PRICE * num_travelers * num_flights
 
 
-def test_confirm_payment_error(monkeypatch, mock_fetch_prices):
+def test_confirm_payment_error(monkeypatch, mock_fetch_prices, mock_bank_error):
     """ Unit test for Reservation.confirm() when Bank.do_payment returns False
 
         reservation.confirm() should be False
         :return: None
     """
 
-    def mock_do_payment(*args):
-        return False
-
-    monkeypatch.setattr(Bank, "do_payment", mock_do_payment)
     usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
     travel = Travel(Flights([
         Flight('00', 'Berlin', 2),
