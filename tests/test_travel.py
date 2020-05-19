@@ -36,7 +36,7 @@ def test_travel_set_negative_value_to_ticket_property():
     travel = Travel(flights)
 
     with pytest.raises(ValueError):
-        travel.ticket_price = -1
+        travel.ticket_price = -1.0
 
 
 def test_travel_set_positive_value_to_room_property():
@@ -56,7 +56,7 @@ def test_travel_set_negative_value_to_room_property():
     travel = Travel(flights)
 
     with pytest.raises(ValueError):
-        travel.room_price = -1
+        travel.room_price = -1.0
 
 
 def test_travel_set_positive_value_to_car_property():
@@ -76,7 +76,34 @@ def test_travel_set_negative_value_to_car_property():
     travel = Travel(flights)
 
     with pytest.raises(ValueError):
-        travel.car_price = -1
+        travel.car_price = -1.0
+
+
+def test_travel_ticket_price_set_wrong_type():
+    flights = Flights([
+        Flight('00', '', 0)
+    ])
+    travel = Travel(flights)
+    with pytest.raises(TypeError):
+        travel.ticket_price = 5
+
+
+def test_travel_room_price_set_wrong_type():
+    flights = Flights([
+        Flight('00', '', 0)
+    ])
+    travel = Travel(flights)
+    with pytest.raises(TypeError):
+        travel.room_price = 5
+
+
+def test_travel_car_price_set_wrong_type():
+    flights = Flights([
+        Flight('00', '', 0)
+    ])
+    travel = Travel(flights)
+    with pytest.raises(TypeError):
+        travel.car_price = 5
 
 
 def test_travel_add_flight_empty_flights():
@@ -154,3 +181,42 @@ def test_travel_delete_flight_non_existing_flight():
     travel.delete_flight('03')
     assert len(travel._flights) == 2
     assert len(travel._flights) != 1
+
+
+def test_travel_cost_only_flights():
+    passengers = 5
+    num_flights = 2
+    ticket_price = 5.0
+    expected_cost = passengers * num_flights * ticket_price
+    flights = Flights([
+        Flight('00', '', passengers),
+        Flight('01', '', passengers)
+    ])
+
+    travel = Travel(flights)
+    travel.ticket_price = ticket_price
+
+    assert travel.cost == expected_cost
+
+
+def test_travel_cost_cannot_be_set():
+    passengers = 2
+    flights = Flights([
+        Flight('00', '', passengers),
+        Flight('01', '', passengers)
+    ])
+
+    travel = Travel(flights)
+    with pytest.raises(AttributeError):
+        travel.cost = float()
+
+
+def test_default_travel_cost():
+    passengers = 2
+    flights = Flights([
+        Flight('00', '', passengers),
+        Flight('01', '', passengers)
+    ])
+
+    travel = Travel(flights)
+    assert travel.cost == 0
