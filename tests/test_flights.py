@@ -28,7 +28,7 @@ def test_flights_ctor():
     assert flights.passengers_per_flight == 4
 
 
-def test_setitem_same_flight():
+def test_setitem_same_flight():  # TODO: add documentation
     new_flight = Flight('00', '', 0)
     flights = Flights([Flight('00', '', 0)])
     old_len = len(flights)
@@ -37,7 +37,7 @@ def test_setitem_same_flight():
     assert len(flights) == old_len
 
 
-def test_setitem_new_flight():
+def test_setitem_new_flight():  # TODO: add documentation
     new_flight = Flight('01', '', 0)
     flights = Flights([Flight('00', '', 0)])
     old_len = len(flights)
@@ -47,13 +47,13 @@ def test_setitem_new_flight():
     assert len(flights) == old_len + 1
 
 
-def test_delitem_existing_flight():
+def test_delitem_existing_flight():  # TODO: add documentation
     flights = Flights([Flight('00', '', 0)])
     del flights['00']
     assert len(flights) == 0
 
 
-def test_delitem_non_existing_flight():
+def test_delitem_non_existing_flight():  # TODO: add documentation
     flights = Flights([Flight('00', '', 0)])
     del flights['01']
     assert len(flights) != 0

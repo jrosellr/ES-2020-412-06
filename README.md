@@ -33,9 +33,9 @@ Una vez pip termine de instalar los packages el entorno ya estará listo y todas
 ### 1.0 Uso de pytest
 Para utilizar pytest es recomendable usar el siguiente comando:
 
-``` python -m pytest tests/ ```
+``` python -m pytest ```
 
 ***IMPORTANTE Debeis ejecutarlo desde el directorio raíz del proyecto***
 
 ## Diagrama de clases
-<img src="./uml_class_diagram.png">
+Está la imagen y el script de PlantUML subidos en el directorio raíz del repo

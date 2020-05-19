@@ -3,6 +3,7 @@ from src.Reservation import Reservation
 from src.Bank import Bank
 from .test_constants import *
 
+# TODO: add documentation to fixtures
 
 @pytest.fixture
 def mock_fetch_prices(monkeypatch):

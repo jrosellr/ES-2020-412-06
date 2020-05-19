@@ -4,8 +4,9 @@ from src.User import User
 from src.Flights import Flights
 from src.Flight import Flight
 from src.PaymentData import PaymentData
-from src.Bank import Bank
 from .test_constants import *
+
+# TODO: add documentation about fixture usage
 
 
 def test_reservation_ctor():
