@@ -12,3 +12,7 @@ class Booking:
     @staticmethod
     def confirm_reserve(self, user: User, hotels: Hotels) -> bool:
         return True
+
+    @staticmethod
+    def fetch_room_price() -> float:
+        pass
