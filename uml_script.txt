@@ -10,7 +10,7 @@ package Confirmar_Viatges
         + __delitem__(code: str): None
         + passengers_per_flight: int
         ------
-        - __flights: dict<str, Flight>
+        - _flights: dict<str, Flight>
     }
 
     class Flight
@@ -30,7 +30,7 @@ package Confirmar_Viatges
         + __setitem__(code: str, new_hotel: Hotel): None
         + __delitem__(code: str): None
         ------
-        - __hotels: dict<str, Hotel>
+        - _hotels: dict<str, Hotel>
     }
 
     class Hotel
@@ -51,7 +51,7 @@ package Confirmar_Viatges
         + __setitem__(code: str, new_car: Car): None
         + __delitem__(code: str): None
         ------
-        - __cars: dict<str, Car>
+        - _cars: dict<str, Car>
     }
 
     class Car
@@ -72,16 +72,16 @@ package Confirmar_Viatges
         + room_price: float
         + car_price: float
         ----
-        - __calculate_ticket_cost(): float
-        - __calculate_room_cost(): float
-        - __calculate_car_cost(): float
-        - __flights: Flights
-        - __hotels: Hotels
-        - __cars: Cars
-        - __num_travelers: int
-        - __ticket_price: float
-        - __room_price: float
-        - __car_price: float
+        - _calculate_ticket_cost(): float
+        - _calculate_room_cost(): float
+        - _calculate_car_cost(): float
+        - _flights: Flights
+        - _hotels: Hotels
+        - _cars: Cars
+        - _num_travelers: int
+        - _ticket_price: float
+        - _room_price: float
+        - _car_price: float
     }
 
     class Reservation
@@ -89,13 +89,13 @@ package Confirmar_Viatges
         + __init__(travel: Travel, user: User) : Reservation
         + confirm(name: str, card_number: str, security_code: str): bool
         ----
-        - __process_payment_data(name: str, card_number: str, security_code: str): PaymentData
-        - __configure_travel(): None
-        - __fetch_ticket_price(): float
-        - __fetch_room_price(): float
-        - __fetch_car_price(): float
-        - __travel: Travel
-        - __user: User
+        - _process_payment_data(name: str, card_number: str, security_code: str): PaymentData
+        - _configure_travel(): None
+        - _fetch_ticket_price(): float
+        - _fetch_room_price(): float
+        - _fetch_car_price(): float
+        - _travel: Travel
+        - _user: User
     }
 
     class PaymentData
@@ -133,19 +133,19 @@ package Wrappers
     class Skyscanner
     {
         + {static} confirm_reserve(user: User, flights: Flights): bool
-        + {static} fetch_ticket_price(flight_code: str): float
+        + {static} fetch_ticket_price(): float
     }
 
     class Booking
     {
         + {static} confirm_reserve(user: User, hotels: Hotels): bool
-        + {static} fetch_room_price(hotel_code: str): float
+        + {static} fetch_room_price(): float
     }
 
     class Rentalcars
     {
         + {static} confirm_reserve(user: User, cars: Cars): bool
-        + {static} fetch_car_price(car_code: str): float
+        + {static} fetch_car_price(): float
     }
 }
 
@@ -153,8 +153,8 @@ package Utilities
 {
     class Validator
     {
-        + {static} validate_email(email): bool
-        + {static} validate_credit_card_number(car_number: str): float
+        + {static} validate_email(email: str): bool
+        + {static} validate_credit_card_number(card_number: str): float
         + {static} validate_credit_card_sec_code(card_sec_code: str): float
         ----
         - _email_regexp: str
@@ -166,15 +166,15 @@ package Utilities
 Flights "1..*" *-- "0..*" Flight
 Hotels "1..*" *-- "0..*" Hotel
 Cars "1..*" *-- "0..*" Car
-Travel "1..*" *-- "0..1" Flights
+Travel "1..*" *-- "1" Flights
 Travel "1..*" *-- "0..1" Hotels
 Travel "1..*" *-- "0..1" Cars
-Reservation "1..*" *-left-- "0..1" Travel
-Reservation "1..*" *-- "0..1" User
-Reservation "1" -up- "1" Bank
-Reservation "1" -up- "1" Skyscanner
-Reservation "1" -up- "1" Rentalcars
-Reservation "1" -up- "1" Booking
-Reservation "1" -up- "1" Validator
-Reservation "1" --> "1" PaymentData
+Reservation "1..*" *-left-- "1" Travel
+Reservation "1..*" *-- "1" User
+Reservation "1" -up-> "1" Bank : uses
+Reservation "1" -up-> "1" Skyscanner : uses
+Reservation "1" -up-> "1" Rentalcars : uses
+Reservation "1" -up-> "1" Booking : uses
+Reservation "1" -up-> "1" Validator : uses
+Reservation "1" --> "1" PaymentData : creates
 @enduml
