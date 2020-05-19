@@ -45,17 +45,8 @@ class Reservation:
         confirm_flights = False
 
         if Bank.do_payment(self._user, payment_data):
-            confirm_flights = Skyscanner.confirm_reserve(self._user, self._travel.__flights)
+            confirm_flights = Skyscanner.confirm_reserve(self._user, self._travel._flights)
         return confirm_flights
-
-    def calculate_flights_price(self, price: float) -> float:
-        pass
-
-    def calculate_hotels_price(self, price):
-        return 0
-
-    def calculate_cars_price(self, price):
-        return 0
 
     def calculate_total_price(self, flights_price, hotels_price, cars_price):
         """ Calculates the total price of the reservation from the price of the flights, hotels and cars
@@ -92,5 +83,5 @@ class Reservation:
         :return: instance of PaymentData with the total amount of money to pay and client information
         """
 
-        amount = self.calculate_flights_price(self._flight_price)
+        amount = 0
         return PaymentData(name, card_number, security_code, amount)
