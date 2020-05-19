@@ -5,6 +5,7 @@ from src.Flights import Flights
 from src.Flight import Flight
 from src.PaymentData import PaymentData
 from src.Bank import Bank
+import pytest
 
 
 def test_reservation_ctor():
@@ -164,22 +165,24 @@ def test_mocked_fetch_car_price(monkeypatch):
     assert reservation._fetch_car_price() == 0.0
 
 
-def test_reservation_process_payment_data(monkeypatch):
+MOCKED_TICKET_PRICE = 5.0
+
+
+@pytest.fixture
+def mock_fetch_prices(monkeypatch):
+    def mock_fetch_ticket_price(*args):
+        return MOCKED_TICKET_PRICE
+
+    monkeypatch.setattr(Reservation, "_fetch_ticket_price", mock_fetch_ticket_price)
+
+
+def test_reservation_process_payment_data(mock_fetch_prices):
     """ Unit test for Reservation._process_payment_data()
 
         Amount in payment_data should be != 0 and == number of flights * flight price
         :return: None
     """
 
-    # 0. Mock the fetch calls:
-    mocked_ticket_price = 5.0
-
-    def mock_fetch_ticket_price(cls) -> float:
-        return mocked_ticket_price
-
-    monkeypatch.setattr(Reservation, "_fetch_ticket_price", mock_fetch_ticket_price)
-
-    # 1. Instance a Reservation object:
     num_travelers = 2
     num_flights = 2
     usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
@@ -195,10 +198,10 @@ def test_reservation_process_payment_data(monkeypatch):
 
     assert isinstance(payment_data, PaymentData)
     assert payment_data.amount != 0.0
-    assert payment_data.amount == mocked_ticket_price * num_travelers * num_flights
+    assert payment_data.amount == MOCKED_TICKET_PRICE * num_travelers * num_flights
 
 
-def confirm_payment_error(monkeypatch):  # FIXME: should use monkeypatched calls
+def test_confirm_payment_error(monkeypatch, mock_fetch_prices):
     """ Unit test for Reservation.confirm() when Bank.do_payment returns False
 
         reservation.confirm() should be False
@@ -220,7 +223,7 @@ def confirm_payment_error(monkeypatch):  # FIXME: should use monkeypatched calls
     assert reservation.confirm('Test_card', '', '123') is False
 
 
-def confirm_payment_done(monkeypatch):  # FIXME: should use monkeypatched calls
+def test_confirm_payment_done(monkeypatch, mock_fetch_prices):
     """ Mock test for Reservation.confirm() when Bank.do_payment returns True
 
         reservation.confirm() should be True
