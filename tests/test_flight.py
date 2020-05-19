@@ -10,6 +10,6 @@ def test_flight_ctor():
     """
 
     f = Flight('', '', 0)
-    assert f.num_clients == 0
+    assert f.passengers == 0
     assert f.code == ''
     assert f.destination == ''

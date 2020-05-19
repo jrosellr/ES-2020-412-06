@@ -8,23 +8,25 @@ class Travel:
         ------
 
         Public methods:
-            get_num_clients(self): accessor
 
             add_flight(self, new_flight): mutator
 
             delete_flight(self, code): mutator
 
-        ----
+        Properties:
+            cost: the total cost of the Travel
 
-        Instance variables:
-            flights
+            ticket_price: the price of a single ticket
 
-            hotels
+            room_price: the cost of a single hotel room
 
-            cars
+            car_price: the cost of a single car
+
+        Property restrictions:
+            All properties should be positive float values as they represent prices
     """
 
-    def __init__(self, flights: Flights, hotels=None, cars=None):
+    def __init__(self, flights: Flights):
         """ Construct a Travel object
 
         :param flights: Flights
@@ -32,21 +34,66 @@ class Travel:
         :param cars: Cars
         """
 
-        self.flights = copy.deepcopy(flights)
-        self.hotels = copy.deepcopy(hotels)
-        self.cars = copy.deepcopy(cars)
+        self._flights: Flights = copy.deepcopy(flights)
+        self._num_travelers: int = self._flights.passengers_per_flight
+        self._ticket_price: float = float()
+        self._room_price: float = float()
+        self._car_price: float = float()
 
     @property
-    def num_travelers(self) -> int:
-        """Return the total number of passengers.
+    def ticket_price(self) -> float:
+        return self._ticket_price
 
-            :return: int
-         """
+    @ticket_price.setter
+    def ticket_price(self, val):
+        if type(val) != float:
+            raise TypeError("price should be a float value")
 
-        num_clients = 0
-        for code, flight in self.flights.flights.items():
-            num_clients += flight.num_clients
-        return num_clients
+        if val > 0.0:
+            self._ticket_price = val
+        else:
+            raise ValueError("price can't be negative")
+
+    @property
+    def room_price(self):
+        return self._room_price
+
+    @room_price.setter
+    def room_price(self, val):
+        if type(val) != float:
+            raise TypeError("price should be a float value")
+
+        if val > 0.0:
+            self._room_price = val
+        else:
+            raise ValueError("price can't be negative")
+
+    @property
+    def car_price(self):
+        return self._car_price
+
+    @car_price.setter
+    def car_price(self, val):
+        if type(val) != float:
+            raise TypeError("price should be a float value")
+
+        if val > 0.0:
+            self._car_price = val
+        else:
+            raise ValueError("price can't be negative")
+
+    @property
+    def cost(self):
+        total_ticket_price = self._calculate_ticket_cost()
+        return total_ticket_price
+
+    def _calculate_ticket_cost(self) -> float:
+        """ Calculate the total cost of the flights
+
+        :return: total cost of the flights
+        """
+
+        return self._ticket_price * self._num_travelers * len(self._flights)
 
     def add_flight(self, new_flight) -> None:
         """Add a new flight.
@@ -57,7 +104,7 @@ class Travel:
             :return: None
         """
 
-        self.flights.add_flight(new_flight)
+        self._flights[new_flight.code] = new_flight
 
     def delete_flight(self, code) -> None:
         """Delete an existing flight.
@@ -65,4 +112,4 @@ class Travel:
             :return: None
         """
 
-        self.flights.delete_flight(code)
+        del self._flights[code]
