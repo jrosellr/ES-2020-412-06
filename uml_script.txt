@@ -8,10 +8,9 @@ package Confirmar_Viatges
         + __getitem__(code: str) : Flight
         + __setitem__(code: str, flight: Flight): None
         + __delitem__(code: str): None
-        + tickets_to_reserve: int
+        + passengers_per_flight: int
         ------
-        - _passengers_per_flight: int
-        - _flights: dict<str, Flight>
+        - __flights: dict<str, Flight>
     }
 
     class Flight
@@ -21,9 +20,6 @@ package Confirmar_Viatges
         + destination: str
         + passengers: int
         ----
-        - _code: str
-        - _destination: str
-        - _passengers: int
     }
 
     class Hotels
@@ -33,10 +29,8 @@ package Confirmar_Viatges
         + __getitem__(code: str) : Hotel
         + __setitem__(code: str, new_hotel: Hotel): None
         + __delitem__(code: str): None
-        + rooms_to_reserve: int
         ------
-        - _rooms_to_reserve: int
-        - _hotels: dict<str, Hotel>
+        - __hotels: dict<str, Hotel>
     }
 
     class Hotel
@@ -45,14 +39,8 @@ package Confirmar_Viatges
             clients: int, days_reserved: int): Flight
         + code: str
         + name: str
-        + rooms_to_reserve: int
         + days_reserved: int
         ----
-        - _code: str
-        - _name: str
-        - _rooms_to_reserve: int
-        - _days_reserved: int
-        - _clients: int
     }
 
     class Cars
@@ -62,10 +50,8 @@ package Confirmar_Viatges
         + __getitem__(code: str) : Car
         + __setitem__(code: str, new_car: Car): None
         + __delitem__(code: str): None
-        + cars_to_reserve: int
         ------
-        - _cars_to_reserve: int
-        - _cars: dict<str, Car>
+        - __cars: dict<str, Car>
     }
 
     class Car
@@ -76,10 +62,6 @@ package Confirmar_Viatges
         + pick_up_place: str
         + days_reserved: int
         ----
-        - _code: str
-        - _brand: str
-        - _pick_up_place: str
-        - _days_reserved: int
     }
 
     class Travel
@@ -90,15 +72,16 @@ package Confirmar_Viatges
         + room_price: float
         + car_price: float
         ----
-        - _calculate_ticket_cost(): float
-        - _calculate_room_cost(): float
-        - _calculate_car_cost(): float
-        - _flights: Flights
-        - _hotels: Hotels
-        - _cars: Cars
-        - _ticket_price: float
-        - _room_price: float
-        - _car_price: float
+        - __calculate_ticket_cost(): float
+        - __calculate_room_cost(): float
+        - __calculate_car_cost(): float
+        - __flights: Flights
+        - __hotels: Hotels
+        - __cars: Cars
+        - __num_travelers: int
+        - __ticket_price: float
+        - __room_price: float
+        - __car_price: float
     }
 
     class Reservation
@@ -106,13 +89,13 @@ package Confirmar_Viatges
         + __init__(travel: Travel, user: User) : Reservation
         + confirm(name: str, card_number: str, security_code: str): bool
         ----
-        - _process_payment_data(name: str, card_number: str, security_code: str): PaymentData
-        - _configure_travel(): None
-        - _fetch_ticket_price(flight_code: str): float
-        - _fetch_room_price(hotel_code: str): float
-        - _fetch_car_price(car_code: str): float
-        - _travel: Travel
-        - _user: User
+        - __process_payment_data(name: str, card_number: str, security_code: str): PaymentData
+        - __configure_travel(): None
+        - __fetch_ticket_price(): float
+        - __fetch_room_price(): float
+        - __fetch_car_price(): float
+        - __travel: Travel
+        - __user: User
     }
 
     class PaymentData
@@ -125,11 +108,6 @@ package Confirmar_Viatges
         + amount: float
         + credit_card_type: Enum<CardType>
         ----
-        - _user_name: str
-        - _card_number: str
-        - _security_code: str
-        - _amount: float
-        - _credit_card_type: Enum<CardType>
     }
 
     class User
@@ -142,11 +120,6 @@ package Confirmar_Viatges
         + mobile_number: str
         + email: str
         ----
-        - full_name: str
-        - dni: str
-        - address: str
-        - mobile_number: str
-        - email: str
     }
 }
 
