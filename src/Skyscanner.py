@@ -12,3 +12,7 @@ class Skyscanner:
     @staticmethod
     def confirm_reserve(user: User, flights: Flights) -> bool:
         return True
+
+    @staticmethod
+    def fetch_ticket_price() -> float:
+        pass
