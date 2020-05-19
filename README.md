@@ -38,4 +38,4 @@ Para utilizar pytest es recomendable usar el siguiente comando:
 ***IMPORTANTE Debeis ejecutarlo desde el directorio raíz del proyecto***
 
 ## Diagrama de clases
-<img src="./uml_class_diagram.svg">
+<img src="./uml_class_diagram.png">
