@@ -35,6 +35,7 @@ class Travel:
         """
 
         self._flights: Flights = copy.deepcopy(flights)
+        self._num_travelers: int = self._flights.passengers_per_flight
         self._ticket_price: float = float()
         self._room_price: float = float()
         self._car_price: float = float()
@@ -83,7 +84,7 @@ class Travel:
 
     @property
     def cost(self):
-        total_ticket_price = self._ticket_price * self._flights.passengers_per_flight * len(self._flights)
+        total_ticket_price = self._ticket_price * self._num_travelers * len(self._flights)
         return total_ticket_price
 
     def add_flight(self, new_flight) -> None:
