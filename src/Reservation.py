@@ -44,11 +44,24 @@ class Reservation:
         """
 
         payment_data = self._process_payment_data(name, card_number, security_code)
-        confirm_flights = False
+        reservation_confirmation = False
+        try:
+            if Bank.do_payment(self._user, payment_data):
+                if self._confirm_flights():
+                    reservation_confirmation = True
+        except ConnectionRefusedError:
+            pass
 
-        if Bank.do_payment(self._user, payment_data):
-            confirm_flights = Skyscanner.confirm_reserve(self._user, self._travel._flights)
-        return confirm_flights
+        return reservation_confirmation
+
+    def _confirm_flights(self) -> bool:
+        retries = 0
+        while retries < 3:
+            try:
+                return Skyscanner.confirm_reserve(self._user, self._travel._flights)
+            except ConnectionRefusedError:
+                retries += 1
+
 
     def _process_payment_data(self, name: str, card_number: str, security_code: str) -> PaymentData:
         """ Call calculate_flights_price and create an instance of PaymentData with the amount calculated.

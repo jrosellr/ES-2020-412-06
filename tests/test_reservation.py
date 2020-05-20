@@ -5,6 +5,7 @@ from src.Flights import Flights
 from src.Flight import Flight
 from src.PaymentData import PaymentData
 from .test_constants import *
+import pytest
 
 # TODO: add documentation about fixture usage
 
@@ -127,3 +128,14 @@ def test_confirm_payment_done(mock_fetch_prices, mock_bank_success):
     assert reservation.confirm('Test_card', '', '123') is not None
     assert reservation.confirm('Test_card', '', '123') is not False
     assert reservation.confirm('Test_card', '', '123') is True
+
+
+def test_retries_confirm_flights(mock_confirm_reserve_return_retries, mock_fetch_prices, mock_skyscanner_error):
+    usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
+    travel = Travel(Flights([
+        Flight('00', 'Berlin', 2),
+        Flight('01', 'Roma', 2)
+    ]))
+    reservation = Reservation(travel, usr)
+    assert reservation._confirm_flights() == 3
+
