@@ -7,17 +7,32 @@ class Validator:
         self._credit_card_number_regexp = None
         self._credit_card_sec_code_regexp = None
 
-    def validate_full_name(self, name: str):
-        result = re.fullmatch('[A-Za-z ]{1,30}', name)
+    def _validate_full_name(name: str):
+        if re.fullmatch('[A-Za-z ]{1,30}', name) is not None:
+            return True
+        else:
+            return False
 
-    def validate_dni(self, dni: str):
-        result = re.fullmatch('\d{8}[A-Z]', dni)
+    def _validate_dni(dni: str):
+        if re.fullmatch('\d{8}[A-Z]', dni) is not None:
+            return True
+        else:
+            return False
 
-    def validate_email(email: str):
-        result = re.fullmatch('\w{1,30}@\w{2,20}\.\w{2,5}', email)
+    def _validate_email(email: str):
+        if re.fullmatch('\w{1,30}@\w{2,20}\.\w{2,5}', email) is not None:
+            return True
+        else:
+            return False
 
-    def validate_credit_card_number(self, card_number: str):
-        result = re.fullmatch('\d{4} \d{4} \d{4} \d{4}', card_number)
+    def _validate_credit_card_number(card_number: str):
+        if re.fullmatch('\d{4} \d{4} \d{4} \d{4}', card_number) is not None:
+            return True
+        else:
+            return False
 
-    def validate_credit_security_code(self, security_code: str):
-        result = re.fullmatch('\d\d\d', security_code)
+    def _validate_credit_security_code(security_code: str):
+        if re.fullmatch('\d\d\d', security_code) is not None:
+            return True
+        else:
+            return False
