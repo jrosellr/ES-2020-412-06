@@ -1,6 +1,6 @@
 from src.PaymentData import PaymentData
 
-
+# TODO: add fixtures for PaymentData unit tests
 def test_payment_data_ctor():
     """ Test case for payment_data.__init__(**) method
 
