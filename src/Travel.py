@@ -94,22 +94,3 @@ class Travel:
         """
 
         return self._ticket_price * self._num_travelers * len(self._flights)
-
-    def add_flight(self, new_flight) -> None:
-        """Add a new flight.
-
-            Restrictions:
-                The flight should not exist
-
-            :return: None
-        """
-
-        self._flights[new_flight.code] = new_flight
-
-    def delete_flight(self, code) -> None:
-        """Delete an existing flight.
-
-            :return: None
-        """
-
-        del self._flights[code]

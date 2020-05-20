@@ -50,22 +50,6 @@ class Reservation:
             confirm_flights = Skyscanner.confirm_reserve(self._user, self._travel._flights)
         return confirm_flights
 
-    def add_flight(self, new_flight):
-        """ Call the method add_flight from Travel class
-
-        :param new_flight: instance of Flight to be added
-        """
-
-        self._travel.add_flight(new_flight)
-
-    def delete_flight(self, code):
-        """ Call the method delete_flight from Travel class
-
-        :param code: code of an instance of Flight to be deleted
-        """
-
-        self._travel.delete_flight(code)
-
     def _process_payment_data(self, name: str, card_number: str, security_code: str) -> PaymentData:
         """ Call calculate_flights_price and create an instance of PaymentData with the amount calculated.
 
