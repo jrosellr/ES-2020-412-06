@@ -87,7 +87,7 @@ def test_reservation_process_payment_data(mock_fetch_prices):
     reservation = Reservation(travel, usr)
 
     # 2. Process the payment data:
-    payment_data = reservation._process_payment_data('Test', '000000', '000')
+    payment_data = reservation._process_payment_data('Test', '000000', '000', 'VISA')
 
     assert isinstance(payment_data, PaymentData)
     assert payment_data.amount != 0.0
@@ -107,9 +107,9 @@ def test_confirm_payment_error(mock_fetch_prices, mock_bank_error):
         Flight('01', 'Roma', 2)
     ]))
     reservation = Reservation(travel, usr)
-    assert reservation.confirm('Test_card', '', '123') is not None
-    assert reservation.confirm('Test_card', '', '123') is not True
-    assert reservation.confirm('Test_card', '', '123') is False
+    assert reservation.confirm('Test_card', '', '123', 'VISA') is not None
+    assert reservation.confirm('Test_card', '', '123', 'VISA') is not True
+    assert reservation.confirm('Test_card', '', '123', 'VISA') is False
 
 
 def test_confirm_payment_done(mock_fetch_prices, mock_bank_success):
@@ -125,9 +125,9 @@ def test_confirm_payment_done(mock_fetch_prices, mock_bank_success):
         Flight('01', 'Roma', 2)
     ]))
     reservation = Reservation(travel, usr)
-    assert reservation.confirm('Test_card', '', '123') is not None
-    assert reservation.confirm('Test_card', '', '123') is not False
-    assert reservation.confirm('Test_card', '', '123') is True
+    assert reservation.confirm('Test_card', '', '123', 'VISA') is not None
+    assert reservation.confirm('Test_card', '', '123', 'VISA') is not False
+    assert reservation.confirm('Test_card', '', '123', 'VISA') is True
 
 
 def test_retries_confirm_flights(mock_confirm_reserve_return_retries, mock_fetch_prices, mock_skyscanner_error):

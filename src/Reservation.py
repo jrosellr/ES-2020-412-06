@@ -34,7 +34,7 @@ class Reservation:
         self._travel = copy.deepcopy(travel)
         self._user = copy.deepcopy(user)
 
-    def confirm(self, name: str, card_number: str, security_code: str) -> bool:
+    def confirm(self, name: str, card_number: str, security_code: str, credit_card_type: str) -> bool:
         """ Takes the payment data with the total price and proceeds to do the payment and flights confirmation
 
         :param name: string with the name of the card holder
@@ -43,7 +43,7 @@ class Reservation:
         :return: bool that confirms the payment and flights reservation
         """
 
-        payment_data = self._process_payment_data(name, card_number, security_code)
+        payment_data = self._process_payment_data(name, card_number, security_code, credit_card_type)
         reservation_confirmation = False
         try:
             if Bank.do_payment(self._user, payment_data):
@@ -63,7 +63,7 @@ class Reservation:
                 retries += 1
 
 
-    def _process_payment_data(self, name: str, card_number: str, security_code: str) -> PaymentData:
+    def _process_payment_data(self, name: str, card_number: str, security_code: str, credit_card_type: str) -> PaymentData:
         """ Call calculate_flights_price and create an instance of PaymentData with the amount calculated.
 
         :param name: string with the name of the card holder
@@ -74,7 +74,7 @@ class Reservation:
 
         self._configure_travel()
         # TODO: add user input validation before returning the PaymentData instance
-        return PaymentData(name, card_number, security_code, self._travel.cost)
+        return PaymentData(name, card_number, security_code, self._travel.cost, credit_card_type)
 
     def _configure_travel(self):
         self._travel.ticket_price = self._fetch_ticket_price()
