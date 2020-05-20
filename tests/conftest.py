@@ -5,6 +5,7 @@ from src.Bank import Bank
 from src.Travel import Travel
 from src.Flight import Flight
 from src.Flights import Flights
+from src.User import User
 from .test_constants import *
 
 # TODO: add documentation to fixtures
@@ -77,3 +78,8 @@ def default_new_flight():
 @pytest.fixture
 def default_travel(default_flights):
     return Travel(default_flights)
+
+
+@pytest.fixture
+def default_user():
+    return User(DEFAULT_USER_NAME, DEFAULT_DNI, DEFAULT_ADDRESS, DEFAULT_MOBILE_NUMBER, DEFAULT_USER_EMAIL)

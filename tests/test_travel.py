@@ -3,6 +3,8 @@ from src.Flights import Flights
 from .test_constants import *
 import pytest
 
+# TODO: improve test documentation
+
 
 def test_travel_ctor(default_flights: Flights):
     """ Test Travel constructor
