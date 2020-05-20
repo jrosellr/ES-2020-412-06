@@ -16,7 +16,7 @@ def mock_fetch_prices(monkeypatch):
 @pytest.fixture
 def mock_bank_error(monkeypatch):
     def mock_do_payment_error(*args):
-        return MOCKED_BANK_ERROR_RET
+        raise ConnectionRefusedError("Connection with bank failed.")
 
     monkeypatch.setattr(Bank, "do_payment", mock_do_payment_error)
 

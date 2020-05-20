@@ -5,6 +5,7 @@ from src.Flights import Flights
 from src.Flight import Flight
 from src.PaymentData import PaymentData
 from .test_constants import *
+import pytest
 
 # TODO: add documentation about fixture usage
 
