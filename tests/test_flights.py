@@ -17,7 +17,7 @@ def test_flights_ctor(default_flights: Flights):
     assert default_flights.passengers_per_flight == DEFAULT_FLIGHT_PASSENGERS
 
 
-def test_setitem_incorrect_flight(default_flights: Flights, default_new_flight: Flight):  # TODO: add documentation
+def test_setitem_incorrect_flight(default_flights: Flights, default_new_flight: Flight):
     """ Test case for Flights.__setitem__(**) method
 
     RESTRICTION:
@@ -38,7 +38,7 @@ def test_setitem_incorrect_flight(default_flights: Flights, default_new_flight: 
     assert len(default_flights) == old_len
 
 
-def test_setitem_new_flight(default_flights: Flights, default_new_flight: Flight):  # TODO: add documentation
+def test_setitem_new_flight(default_flights: Flights, default_new_flight: Flight):
     """ Test case for Flights.__setitem__(**) method
 
     RESTRICTION:
@@ -59,7 +59,7 @@ def test_setitem_new_flight(default_flights: Flights, default_new_flight: Flight
     assert len(default_flights) == old_len + 1
 
 
-def test_delitem_existing_flight(default_flights: Flights):  # TODO: add documentation
+def test_delitem_existing_flight(default_flights: Flights):
     """ Test case for Flights.__delitem__(**) method
 
     Tests the __delitem__ mutator of Flights.
@@ -78,7 +78,7 @@ def test_delitem_existing_flight(default_flights: Flights):  # TODO: add documen
     assert len(default_flights) == DEFAULT_FLIGHTS_LEN - 1
 
 
-def test_delitem_non_existing_flight(default_flights: Flights):  # TODO: add documentation
+def test_delitem_non_existing_flight(default_flights: Flights):
     """ Test case for Flights.__delitem__(**) method
 
     RESTRICTION:

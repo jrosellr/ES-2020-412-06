@@ -8,6 +8,7 @@ from .test_constants import *
 
 # TODO: add documentation to fixtures
 
+
 @pytest.fixture
 def mock_fetch_prices(monkeypatch):
     def mock_fetch_ticket_price(*args):
@@ -65,6 +66,7 @@ def default_flight_list():
 @pytest.fixture
 def default_flights(default_flight_list):
     return Flights(default_flight_list)
+
 
 @pytest.fixture
 def default_new_flight():
