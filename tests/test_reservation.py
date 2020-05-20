@@ -10,90 +10,59 @@ import pytest
 # TODO: add documentation about fixture usage
 
 
-def test_reservation_ctor():
+def test_reservation_ctor(default_user, default_travel):
     """ Unit test for Reservation.__init__(**)
 
     :return: None
     """
 
-    usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
-    travel = Travel(Flights([
-        Flight('00', 'test', 0)
-    ]))
-    reservation = Reservation(travel, usr)
+    reservation = Reservation(default_travel, default_user)
+
     assert isinstance(reservation, Reservation)
 
-    travel._flights['00'].destination = 'Berlin'
-    assert reservation._travel._flights['00'] != travel._flights['00']
 
-
-def test_reservation_process_payment_data(mock_fetch_prices):
+def test_reservation_process_payment_data(mock_fetch_prices, default_reservation):
     """ Unit test for Reservation._process_payment_data()
 
         Amount in payment_data should be != 0 and == number of flights * flight price
         :return: None
     """
 
-    num_travelers = 2
-    num_flights = 2
-    usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
-    travel = Travel(Flights([
-        Flight('00', 'Berlin', num_travelers),
-        Flight('01', 'Roma', num_travelers)
-    ]))
-
-    reservation = Reservation(travel, usr)
-
     # 2. Process the payment data:
-    payment_data = reservation._process_payment_data('Test', '000000', '000', 'VISA')
+    default_payment_data = default_reservation._process_payment_data(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV, DEFAULT_CARD_TYPE)
 
-    assert isinstance(payment_data, PaymentData)
-    assert payment_data.amount != 0.0
-    assert payment_data.amount == MOCKED_TICKET_PRICE * num_travelers * num_flights
+    assert isinstance(default_payment_data, PaymentData)
+    assert default_payment_data.amount != 0.0
+    assert default_payment_data.amount == MOCKED_TICKET_PRICE * DEFAULT_FLIGHT_PASSENGERS * DEFAULT_FLIGHTS_LEN
 
 
-def test_confirm_payment_error(mock_fetch_prices, mock_bank_error):
+def test_confirm_payment_error(mock_fetch_prices, mock_bank_error, default_reservation):
     """ Unit test for Reservation.confirm() when Bank.do_payment returns False
 
         reservation.confirm() should be False
         :return: None
     """
+    reservation_confirmed = default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV,  DEFAULT_CARD_TYPE)
 
-    usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
-    travel = Travel(Flights([
-        Flight('00', 'Berlin', 2),
-        Flight('01', 'Roma', 2)
-    ]))
-    reservation = Reservation(travel, usr)
-    assert reservation.confirm('Test_card', '', '123', 'VISA') is not None
-    assert reservation.confirm('Test_card', '', '123', 'VISA') is not True
-    assert reservation.confirm('Test_card', '', '123', 'VISA') is False
+    assert reservation_confirmed is not None
+    assert reservation_confirmed is not True
+    assert reservation_confirmed is False
 
 
-def test_confirm_payment_done(mock_fetch_prices, mock_bank_success):
+def test_confirm_payment_done(mock_fetch_prices, mock_bank_success, default_reservation):
     """ Mock test for Reservation.confirm() when Bank.do_payment returns True
 
         reservation.confirm() should be True
         :return: None
     """
 
-    usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
-    travel = Travel(Flights([
-        Flight('00', 'Berlin', 2),
-        Flight('01', 'Roma', 2)
-    ]))
-    reservation = Reservation(travel, usr)
-    assert reservation.confirm('Test_card', '', '123', 'VISA') is not None
-    assert reservation.confirm('Test_card', '', '123', 'VISA') is not False
-    assert reservation.confirm('Test_card', '', '123', 'VISA') is True
+    reservation_confirmed = default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV,  DEFAULT_CARD_TYPE)
+
+    assert reservation_confirmed is not None
+    assert reservation_confirmed is not False
+    assert reservation_confirmed is True
 
 
-def test_retries_confirm_flights(mock_confirm_reserve_return_retries, mock_fetch_prices, mock_skyscanner_error):
-    usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
-    travel = Travel(Flights([
-        Flight('00', 'Berlin', 2),
-        Flight('01', 'Roma', 2)
-    ]))
-    reservation = Reservation(travel, usr)
-    assert reservation._confirm_flights() == 3
+def test_retries_confirm_flights(mock_confirm_reserve_return_retries, mock_fetch_prices, mock_skyscanner_error, default_reservation):
 
+    assert default_reservation._confirm_flights() == 3

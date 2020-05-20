@@ -83,3 +83,8 @@ def default_travel(default_flights):
 @pytest.fixture
 def default_user():
     return User(DEFAULT_USER_NAME, DEFAULT_DNI, DEFAULT_ADDRESS, DEFAULT_MOBILE_NUMBER, DEFAULT_USER_EMAIL)
+
+
+@pytest.fixture
+def default_reservation(default_travel, default_user):
+    return Reservation(default_travel, default_user)
