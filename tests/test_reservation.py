@@ -27,48 +27,6 @@ def test_reservation_ctor():
     assert reservation._travel._flights['00'] != travel._flights['00']
 
 
-def test_mocked_fetch_ticket_price(monkeypatch):
-    def mock_fetch_ticket_price(*args):
-        return 0.0
-
-    monkeypatch.setattr(Reservation, "_fetch_ticket_price", mock_fetch_ticket_price)
-    usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
-    travel = Travel(Flights([
-        Flight('00', 'Berlin', 2),
-        Flight('01', 'Roma', 2)
-    ]))
-    reservation = Reservation(travel, usr)
-    assert reservation._fetch_ticket_price() == 0.0
-
-
-def test_mocked_fetch_room_price(monkeypatch):
-    def mock_fetch_room_price(*args):
-        return 0.0
-
-    monkeypatch.setattr(Reservation, "_fetch_room_price", mock_fetch_room_price)
-    usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
-    travel = Travel(Flights([
-        Flight('00', 'Berlin', 2),
-        Flight('01', 'Roma', 2)
-    ]))
-    reservation = Reservation(travel, usr)
-    assert reservation._fetch_room_price() == 0.0
-
-
-def test_mocked_fetch_car_price(monkeypatch):
-    def mock_fetch_car_price(*args):
-        return 0.0
-
-    monkeypatch.setattr(Reservation, "_fetch_car_price", mock_fetch_car_price)
-    usr = User('Test', '000000', 'test/address', '666777888', 'test@example.com')
-    travel = Travel(Flights([
-        Flight('00', 'Berlin', 2),
-        Flight('01', 'Roma', 2)
-    ]))
-    reservation = Reservation(travel, usr)
-    assert reservation._fetch_car_price() == 0.0
-
-
 def test_reservation_process_payment_data(mock_fetch_prices):
     """ Unit test for Reservation._process_payment_data()
 
