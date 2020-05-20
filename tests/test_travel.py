@@ -1,6 +1,5 @@
 from src.Travel import Travel
 from src.Flights import Flights
-from src.Flight import Flight
 from .test_constants import *
 import pytest
 
