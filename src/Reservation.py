@@ -61,6 +61,7 @@ class Reservation:
                 return Skyscanner.confirm_reserve(self._user, self._travel._flights)
             except ConnectionRefusedError:
                 retries += 1
+        return False
 
 
     def _process_payment_data(self, name: str, card_number: str, security_code: str, credit_card_type: str) -> PaymentData:
