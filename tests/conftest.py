@@ -2,6 +2,7 @@ import pytest
 from src.Skyscanner import Skyscanner
 from src.Reservation import Reservation
 from src.Bank import Bank
+from src.Travel import Travel
 from src.Flight import Flight
 from src.Flights import Flights
 from .test_constants import *
@@ -71,3 +72,8 @@ def default_flights(default_flight_list):
 @pytest.fixture
 def default_new_flight():
     return Flight(DEFAULT_NEW_FLIGHT_CODE, DEFAULT_FLIGHT_DESTINATION, DEFAULT_FLIGHT_PASSENGERS)
+
+
+@pytest.fixture
+def default_travel(default_flights):
+    return Travel(default_flights)

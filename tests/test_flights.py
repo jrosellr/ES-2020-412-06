@@ -3,7 +3,7 @@ from src.Flights import Flights
 from .test_constants import *
 
 
-def test_flights_ctor(default_flights: Flights):
+def test_flights_ctor(default_flight_list: list):
     """ Test case for Flights.__init__(**) method
 
     Tests the constructor of the Flights class
@@ -12,9 +12,11 @@ def test_flights_ctor(default_flights: Flights):
         The object is instantiated with the default values
     """
 
-    assert len(default_flights) != 0
-    assert len(default_flights) == DEFAULT_FLIGHTS_LEN
-    assert default_flights.passengers_per_flight == DEFAULT_FLIGHT_PASSENGERS
+    flights = Flights(default_flight_list)
+
+    assert len(flights) != 0
+    assert len(flights) == DEFAULT_FLIGHTS_LEN
+    assert flights.passengers_per_flight == DEFAULT_FLIGHT_PASSENGERS
 
 
 def test_setitem_incorrect_flight(default_flights: Flights, default_new_flight: Flight):
