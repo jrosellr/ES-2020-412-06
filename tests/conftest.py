@@ -6,6 +6,8 @@ from src.Travel import Travel
 from src.Flight import Flight
 from src.Flights import Flights
 from src.User import User
+from src.Hotel import Hotel
+from src.Hotels import Hotels
 from .test_constants import *
 
 # TODO: add documentation to fixtures
@@ -74,6 +76,13 @@ def default_flights(default_flight_list):
 def default_new_flight():
     return Flight(DEFAULT_NEW_FLIGHT_CODE, DEFAULT_FLIGHT_DESTINATION, DEFAULT_FLIGHT_PASSENGERS)
 
+
+@pytest.fixture
+def default_hotel_list():
+    f0 = Hotel(DEFAULT_HOTEL_CODE_0, DEFAULT_HOTEL_NAME_0, DEFAULT_HOTEL_DAYS_RESERVED_0)
+    f1 = Hotel(DEFAULT_HOTEL_CODE_1, DEFAULT_HOTEL_NAME_1, DEFAULT_HOTEL_DAYS_RESERVED_0)
+    f2 = Hotel(DEFAULT_HOTEL_CODE_2, DEFAULT_HOTEL_NAME_2, DEFAULT_HOTEL_DAYS_RESERVED_0)
+    return [f0, f1, f2]
 
 @pytest.fixture
 def default_travel(default_flights):
