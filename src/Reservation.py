@@ -46,7 +46,7 @@ class Reservation:
         payment_data = self._process_payment_data(name, card_number, security_code, credit_card_type)
         reservation_confirmation = False
         try:
-            if Bank.do_payment(self._user, payment_data):
+            if Bank.do_payment(self._user, payment_data):  # FIXME: refactor into dedicated method
                 if self._confirm_flights():
                     reservation_confirmation = True
         except ConnectionRefusedError:
