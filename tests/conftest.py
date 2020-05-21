@@ -78,8 +78,8 @@ def default_flights(default_flight_list):
 def default_new_flight():
     return Flight(DEFAULT_NEW_FLIGHT_CODE, DEFAULT_FLIGHT_DESTINATION, DEFAULT_FLIGHT_PASSENGERS)
 
-  
-  @pytest.fixture
+
+@pytest.fixture
 def default_hotel_list():
     h0 = Hotel(DEFAULT_HOTEL_CODE_0, DEFAULT_HOTEL_NAME_0, DEFAULT_HOTEL_DAYS_RESERVED_0)
     h1 = Hotel(DEFAULT_HOTEL_CODE_1, DEFAULT_HOTEL_NAME_1, DEFAULT_HOTEL_DAYS_RESERVED_0)
