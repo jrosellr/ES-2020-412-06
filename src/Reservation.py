@@ -63,8 +63,7 @@ class Reservation:
                 retries += 1
         return False
 
-
-    def _process_payment_data(self, name: str, card_number: str, security_code: str, credit_card_type: str) -> PaymentData:
+    def _process_payment_data(self, name: str, card_number: str, security_code: str, credit_card_type: str) -> PaymentData:  # FIXME: update documentation
         """ Call calculate_flights_price and create an instance of PaymentData with the amount calculated.
 
         :param name: string with the name of the card holder

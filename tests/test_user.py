@@ -1,5 +1,5 @@
 from src.User import User
-
+from .test_constants import *
 
 def test_user_ctor():
     """ Test case for user.__init__(**) method
@@ -8,9 +8,10 @@ def test_user_ctor():
 
         :return: None
     """
-    user = User('Bob', '12345678A', 'C/Test, 00', '666777888', 'test@example.com')
-    assert user.full_name == 'Bob'
-    assert user.dni == '12345678A'
-    assert user.address == 'C/Test, 00'
-    assert user.mobile_number == '666777888'
-    assert user.email == 'test@example.com'
+    
+    user = User(DEFAULT_USER_NAME, DEFAULT_DNI, DEFAULT_ADDRESS, DEFAULT_MOBILE_NUMBER, DEFAULT_USER_EMAIL)
+    assert user.full_name == DEFAULT_USER_NAME
+    assert user.nif == DEFAULT_DNI
+    assert user.address == DEFAULT_ADDRESS
+    assert user.mobile_number == DEFAULT_MOBILE_NUMBER
+    assert user.email == DEFAULT_USER_EMAIL
