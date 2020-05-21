@@ -42,7 +42,7 @@ def test_confirm_payment_error(mock_fetch_prices, mock_bank_error, default_reser
         reservation.confirm() should be False
         :return: None
     """
-    reservation_confirmed = default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV,  DEFAULT_CARD_TYPE)
+    reservation_confirmed = default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV, DEFAULT_CARD_TYPE)
 
     assert reservation_confirmed is not None
     assert reservation_confirmed is not True
