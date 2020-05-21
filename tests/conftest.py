@@ -85,6 +85,16 @@ def default_car_list():
 
 
 @pytest.fixture
+def default_cars(default_car_list):
+    return Cars(default_car_list)
+
+
+@pytest.fixture
+def default_new_car():
+    return Car(DEFAULT_NEW_CAR_CODE, DEFAULT_CAR_BRAND, DEFAULT_CAR_PICK_UP_PLACE, DEFAULT_CAR_DAYS_RESERVED)
+
+
+@pytest.fixture
 def default_travel(default_flights):
     return Travel(default_flights)
 
