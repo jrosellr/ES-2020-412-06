@@ -61,11 +61,11 @@ class Travel:
             raise ValueError("price can't be negative")
 
     @property
-    def room_price(self):
+    def hotel_price(self):
         return self._room_price
 
-    @room_price.setter
-    def room_price(self, val):
+    @hotel_price.setter
+    def hotel_price(self, val):
         if type(val) != float:
             raise TypeError("price should be a float value")
 

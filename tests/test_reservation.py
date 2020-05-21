@@ -57,18 +57,3 @@ def test_confirm_payment_error(mock_fetch_prices, mock_bank_error, default_reser
 
     assert reservation_response is not ''
     assert reservation_response is Response.BANK_ERROR
-
-
-def test_confirm_payment_done(mock_fetch_prices, mock_bank_success, default_reservation):
-    """ Mock test for Reservation.confirm() when Bank.do_payment returns True
-
-        reservation.confirm() should be True
-        :return: None
-    """
-
-    reservation_response = default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV,  DEFAULT_CARD_TYPE)
-
-    assert reservation_response is not ''
-    assert reservation_response is Response.CONFIRMATION_SUCCESSFUL
-
-

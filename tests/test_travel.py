@@ -19,7 +19,7 @@ def test_travel_ctor(default_flights: Flights):
     assert isinstance(travel, Travel)
     assert len(travel._flights) != 0
     assert travel.ticket_price == travel._default_price
-    assert travel.room_price == travel._default_price
+    assert travel.hotel_price == travel._default_price
     assert travel.car_price == travel._default_price
     assert travel.cost == float()
 
@@ -61,7 +61,7 @@ def test_travel_set_positive_value_to_room_property(default_travel: Travel):
         :return: None
     """
 
-    default_travel.room_price = 5.0
+    default_travel.hotel_price = 5.0
 
     assert default_travel._room_price != 0.0
     assert default_travel._room_price == 5.0
@@ -77,7 +77,7 @@ def test_travel_set_negative_value_to_room_property(default_travel: Travel):
     """
 
     with pytest.raises(ValueError):
-        default_travel.room_price = -1.0
+        default_travel.hotel_price = -1.0
 
 
 def test_travel_set_positive_value_to_car_property(default_travel: Travel):
@@ -131,7 +131,7 @@ def test_travel_room_price_set_wrong_type(default_travel: Travel):
     """
 
     with pytest.raises(TypeError):
-        default_travel.room_price = 5
+        default_travel.hotel_price = 5
 
 
 def test_travel_car_price_set_wrong_type(default_travel: Travel):

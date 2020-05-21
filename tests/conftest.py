@@ -103,26 +103,26 @@ def mock_rentalcars_retries(monkeypatch, mock_rentalcars_error):
 
 @pytest.fixture
 def mock_skyscanner_error(monkeypatch):
-    def mock_confirm_reserve_error(*args):
+    def mock_confirm_skyscanner_error(*args):
         raise ConnectionRefusedError(Response.SKYSCANNER_ERROR)
 
-    monkeypatch.setattr(Skyscanner, "confirm_reserve", mock_confirm_reserve_error)
+    monkeypatch.setattr(Skyscanner, "confirm_reserve", mock_confirm_skyscanner_error)
 
 
 @pytest.fixture
 def mock_booking_error(monkeypatch):
-    def mock_confirm_reserve_error(*args):
+    def mock_confirm_booking_error(*args):
         raise ConnectionRefusedError(Response.BOOKING_ERROR)
 
-    monkeypatch.setattr(Skyscanner, "confirm_reserve", mock_confirm_reserve_error)
+    monkeypatch.setattr(Booking, "confirm_reserve", mock_confirm_booking_error)
 
 
 @pytest.fixture
 def mock_rentalcars_error(monkeypatch):
-    def mock_confirm_reserve_error(*args):
+    def mock_confirm_rentalcars_error(*args):
         raise ConnectionRefusedError(Response.RENTALCARS_ERROR)
 
-    monkeypatch.setattr(Skyscanner, "confirm_reserve", mock_confirm_reserve_error)
+    monkeypatch.setattr(Rentalcars, "confirm_reserve", mock_confirm_rentalcars_error)
 
 
 @pytest.fixture
@@ -161,6 +161,11 @@ def default_car_list():
 @pytest.fixture
 def default_cars(default_car_list):
     return Cars(default_car_list)
+
+
+@pytest.fixture
+def default_hotels(default_hotel_list):
+    return Hotels(default_hotel_list)
 
 
 @pytest.fixture
