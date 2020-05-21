@@ -5,6 +5,8 @@ from src.Bank import Bank
 from src.Travel import Travel
 from src.Flight import Flight
 from src.Flights import Flights
+from src.Car import Car
+from src.Cars import Cars
 from src.User import User
 from .test_constants import *
 
@@ -73,6 +75,23 @@ def default_flights(default_flight_list):
 @pytest.fixture
 def default_new_flight():
     return Flight(DEFAULT_NEW_FLIGHT_CODE, DEFAULT_FLIGHT_DESTINATION, DEFAULT_FLIGHT_PASSENGERS)
+
+
+@pytest.fixture
+def default_car_list():
+    c0 = Car(DEFAULT_CAR_CODE_0, DEFAULT_CAR_BRAND, DEFAULT_CAR_PICK_UP_PLACE, DEFAULT_CAR_DAYS_RESERVED)
+    c1 = Car(DEFAULT_CAR_CODE_1, DEFAULT_CAR_BRAND, DEFAULT_CAR_PICK_UP_PLACE, DEFAULT_CAR_DAYS_RESERVED)
+    return [c0, c1]
+
+
+@pytest.fixture
+def default_cars(default_car_list):
+    return Cars(default_car_list)
+
+
+@pytest.fixture
+def default_new_car():
+    return Car(DEFAULT_NEW_CAR_CODE, DEFAULT_CAR_BRAND, DEFAULT_CAR_PICK_UP_PLACE, DEFAULT_CAR_DAYS_RESERVED)
 
 
 @pytest.fixture
