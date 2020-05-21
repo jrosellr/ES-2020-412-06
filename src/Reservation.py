@@ -34,7 +34,7 @@ class Reservation:
         self._travel = copy.deepcopy(travel)
         self._user = copy.deepcopy(user)
 
-    def confirm(self, name: str, card_number: str, security_code: str, credit_card_type: str) -> bool:
+    def confirm(self, name: str, card_number: str, security_code: str, credit_card_type: str) -> bool:  # FIXME: change return type
         """ Takes the payment data with the total price and proceeds to do the payment and flights confirmation
 
         :param name: string with the name of the card holder
@@ -45,11 +45,12 @@ class Reservation:
 
         payment_data = self._process_payment_data(name, card_number, security_code, credit_card_type)
         reservation_confirmation = False
+
         try:
             if Bank.do_payment(self._user, payment_data):  # FIXME: refactor into dedicated method
                 if self._confirm_flights():
                     reservation_confirmation = True
-        except ConnectionRefusedError:
+        except ConnectionRefusedError as e:
             pass
 
         return reservation_confirmation
