@@ -25,6 +25,7 @@ class Travel:
         Property restrictions:
             All properties should be positive float values as they represent prices
     """
+    _default_price: float = 0.0
 
     def __init__(self, flights: Flights):
         """ Construct a Travel object
@@ -36,9 +37,9 @@ class Travel:
 
         self._flights: Flights = copy.deepcopy(flights)
         self._num_travelers: int = self._flights.passengers_per_flight
-        self._ticket_price: float = float()
-        self._room_price: float = float()
-        self._car_price: float = float()
+        self._ticket_price: float = self._default_price
+        self._room_price: float = self._default_price
+        self._car_price: float = self._default_price
 
     @property
     def ticket_price(self) -> float:

@@ -1,15 +1,17 @@
 from src.Flight import Flight
+from .test_constants import *
 
 
-def test_flight_ctor():
-    """ Test case for flight.__init__(**) method
+def test_flight_ctor(default_flight_list):
+    """ Test case for Flight.__init__(**) method
 
-        ---
+    Tests the constructor of the Flight class
 
-        :return: None
+    EXPECTED BEHAVIOUR:
+        The object is instantiated with the default values
     """
 
-    f = Flight('', '', 0)
-    assert f.passengers == 0
-    assert f.code == ''
-    assert f.destination == ''
+    default_flight_0 = default_flight_list[0]
+    assert default_flight_0.code == DEFAULT_FLIGHT_CODE_0
+    assert default_flight_0.passengers == DEFAULT_FLIGHT_PASSENGERS
+    assert default_flight_0.destination == DEFAULT_FLIGHT_DESTINATION
