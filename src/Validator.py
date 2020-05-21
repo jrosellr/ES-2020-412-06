@@ -11,7 +11,6 @@ class Validator:
     _mobile_number_regexp = r'\d\d\d\d\d\d\d\d\d'
     _credit_card_number_regexp = r'\d{4} \d{4} \d{4} \d{4}'
     _credit_card_cvv_regexp = r'\d\d\d'
-    # TODO: validate credit_card_type
 
     @staticmethod
     def validate_full_name(name: str):
@@ -51,6 +50,13 @@ class Validator:
     @staticmethod
     def validate_credit_security_code(security_code: str):
         if re.fullmatch(Validator._credit_card_cvv_regexp, security_code) is not None:
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def validate_credit_card_type(credit_card_type: str):
+        if credit_card_type is 'VISA' or credit_card_type is 'MASTERCARD':
             return True
         else:
             return False

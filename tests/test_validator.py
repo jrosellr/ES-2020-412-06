@@ -15,6 +15,7 @@ def test_validate_payment_info():
     mobile_number = '123456789'
     card_number = '1234 3456 5678 7890'
     security_code = '123'
+    credit_card_type = ['VISA', 'MASTERCARD']
 
     assert Validator.validate_full_name(name) is not None
     assert Validator.validate_full_name(name) is True
@@ -28,6 +29,8 @@ def test_validate_payment_info():
     assert Validator.validate_credit_card_number(card_number) is True
     assert Validator.validate_credit_security_code(security_code) is not None
     assert Validator.validate_credit_security_code(security_code) is True
+    assert Validator.validate_credit_card_type(credit_card_type[0]) is True
+    assert Validator.validate_credit_card_type(credit_card_type[1]) is True
 
 
 def test_validate_payment_info_error():
@@ -46,6 +49,7 @@ def test_validate_payment_info_error():
     mobile_number = '123a56aa'
     card_number = '4568 98761 234 5698'
     security_code = 'a56'
+    credit_card_type = 'EXPRESS'
 
     assert Validator.validate_full_name(name) is not None
     assert Validator.validate_full_name(name) is False
@@ -59,3 +63,4 @@ def test_validate_payment_info_error():
     assert Validator.validate_credit_card_number(card_number) is False
     assert Validator.validate_credit_security_code(security_code) is not None
     assert Validator.validate_credit_security_code(security_code) is False
+    assert Validator.validate_credit_card_type(credit_card_type[0]) is False
