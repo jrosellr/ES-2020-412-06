@@ -27,16 +27,17 @@ class Travel:
     """
     _default_price: float = 0.0
 
-    def __init__(self, flights: Flights):
+    def __init__(self, num_travelers, flights: Flights, hotels=None, cars=None):
         """ Construct a Travel object
 
+        :param num_travelers:
         :param flights: Flights
         :param hotels: Hotels
         :param cars: Cars
         """
 
         self._flights: Flights = copy.deepcopy(flights)
-        self._num_travelers: int = self._flights.passengers_per_flight
+        self._num_travelers: int = num_travelers
         self._ticket_price: float = self._default_price
         self._room_price: float = self._default_price
         self._car_price: float = self._default_price

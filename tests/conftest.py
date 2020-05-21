@@ -59,9 +59,9 @@ def mock_confirm_reserve_return_retries(monkeypatch, mock_skyscanner_error):
 
 @pytest.fixture
 def default_flight_list():
-    f0 = Flight(DEFAULT_FLIGHT_CODE_0, DEFAULT_FLIGHT_DESTINATION, DEFAULT_FLIGHT_PASSENGERS)
-    f1 = Flight(DEFAULT_FLIGHT_CODE_1, DEFAULT_FLIGHT_DESTINATION, DEFAULT_FLIGHT_PASSENGERS)
-    f2 = Flight(DEFAULT_FLIGHT_CODE_2, DEFAULT_FLIGHT_DESTINATION, DEFAULT_FLIGHT_PASSENGERS)
+    f0 = Flight(DEFAULT_FLIGHT_CODE_0, DEFAULT_FLIGHT_DESTINATION, DEFAULT_NUM_TRAVELERS)
+    f1 = Flight(DEFAULT_FLIGHT_CODE_1, DEFAULT_FLIGHT_DESTINATION, DEFAULT_NUM_TRAVELERS)
+    f2 = Flight(DEFAULT_FLIGHT_CODE_2, DEFAULT_FLIGHT_DESTINATION, DEFAULT_NUM_TRAVELERS)
     return [f0, f1, f2]
 
 
@@ -72,12 +72,12 @@ def default_flights(default_flight_list):
 
 @pytest.fixture
 def default_new_flight():
-    return Flight(DEFAULT_NEW_FLIGHT_CODE, DEFAULT_FLIGHT_DESTINATION, DEFAULT_FLIGHT_PASSENGERS)
+    return Flight(DEFAULT_NEW_FLIGHT_CODE, DEFAULT_FLIGHT_DESTINATION, DEFAULT_NUM_TRAVELERS)
 
 
 @pytest.fixture
 def default_travel(default_flights):
-    return Travel(default_flights)
+    return Travel(DEFAULT_NUM_TRAVELERS, default_flights)
 
 
 @pytest.fixture

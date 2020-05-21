@@ -33,7 +33,7 @@ def test_reservation_process_payment_data(mock_fetch_prices, default_reservation
 
     assert isinstance(default_payment_data, PaymentData)
     assert default_payment_data.amount != 0.0
-    assert default_payment_data.amount == MOCKED_TICKET_PRICE * DEFAULT_FLIGHT_PASSENGERS * DEFAULT_FLIGHTS_LEN
+    assert default_payment_data.amount == MOCKED_TICKET_PRICE * DEFAULT_NUM_TRAVELERS * DEFAULT_FLIGHTS_LEN
 
 
 def test_confirm_payment_error(mock_fetch_prices, mock_bank_error, default_reservation):
