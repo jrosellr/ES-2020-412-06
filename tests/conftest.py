@@ -5,8 +5,13 @@ from src.Bank import Bank
 from src.Travel import Travel
 from src.Flight import Flight
 from src.Flights import Flights
+from src.Car import Car
+from src.Cars import Cars
 from src.User import User
 from src.Response import Response
+from src.Hotel import Hotel
+from src.Hotels import Hotels
+
 from .test_constants import *
 
 # TODO: add documentation to fixtures
@@ -75,6 +80,31 @@ def default_flights(default_flight_list):
 def default_new_flight():
     return Flight(DEFAULT_NEW_FLIGHT_CODE, DEFAULT_FLIGHT_DESTINATION, DEFAULT_NUM_TRAVELERS)
 
+
+@pytest.fixture
+def default_hotel_list():
+    h0 = Hotel(DEFAULT_HOTEL_CODE_0, DEFAULT_HOTEL_NAME_0, DEFAULT_HOTEL_DAYS_RESERVED_0)
+    h1 = Hotel(DEFAULT_HOTEL_CODE_1, DEFAULT_HOTEL_NAME_1, DEFAULT_HOTEL_DAYS_RESERVED_0)
+    h2 = Hotel(DEFAULT_HOTEL_CODE_2, DEFAULT_HOTEL_NAME_2, DEFAULT_HOTEL_DAYS_RESERVED_0)
+    return [h0, h1, h2]
+
+  
+@pytest.fixture
+def default_car_list():
+    c0 = Car(DEFAULT_CAR_CODE_0, DEFAULT_CAR_BRAND, DEFAULT_CAR_PICK_UP_PLACE, DEFAULT_CAR_DAYS_RESERVED)
+    c1 = Car(DEFAULT_CAR_CODE_1, DEFAULT_CAR_BRAND, DEFAULT_CAR_PICK_UP_PLACE, DEFAULT_CAR_DAYS_RESERVED)
+    return [c0, c1]
+  
+
+@pytest.fixture
+def default_cars(default_car_list):
+    return Cars(default_car_list)
+
+
+@pytest.fixture
+def default_new_car():
+    return Car(DEFAULT_NEW_CAR_CODE, DEFAULT_CAR_BRAND, DEFAULT_CAR_PICK_UP_PLACE, DEFAULT_CAR_DAYS_RESERVED)
+  
 
 @pytest.fixture
 def default_travel(default_flights):
