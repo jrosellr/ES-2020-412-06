@@ -8,8 +8,10 @@ class Validator:
     _name_regexp = r'[A-Za-z ]{1,30}'
     _dni_regexp = r'\d{8}[A-Z]'
     _email_regexp = r'\w{1,30}@\w{2,20}\.\w{2,5}'
+    _mobile_number_regexp = r'\d\d\d\d\d\d\d\d\d'
     _credit_card_number_regexp = r'\d{4} \d{4} \d{4} \d{4}'
     _credit_card_cvv_regexp = r'\d\d\d'
+    # TODO: validate credit_card_type
 
     @staticmethod
     def validate_full_name(name: str):
@@ -28,6 +30,13 @@ class Validator:
     @staticmethod
     def validate_email(email: str):
         if re.fullmatch(Validator._email_regexp, email) is not None:
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def validate_mobile_number(mobile_number: str):
+        if re.fullmatch(Validator._mobile_number_regexp, mobile_number) is not None:
             return True
         else:
             return False
