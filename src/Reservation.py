@@ -46,16 +46,15 @@ class Reservation:
         :return: bool that confirms the payment and flights reservation
         """
 
-        # TODO: validate credit card type and build CardType object
         credit_card_type = CardType.VISA
-        payment_data = self._process_payment_data(name, card_number, security_code, credit_card_type)
         response = ''
 
         try:
+            payment_data = self._process_payment_data(name, card_number, security_code, credit_card_type)
             if Bank.do_payment(self._user, payment_data):
                 if self._confirm_flights():
                     response = Response.CONFIRMATION_SUCCESSFUL
-        except ConnectionRefusedError as e:
+        except Exception as e:
             response = e.args[0]
 
         return response
