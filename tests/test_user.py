@@ -8,6 +8,7 @@ def test_user_ctor():
 
         :return: None
     """
+    
     user = User(DEFAULT_USER_NAME, DEFAULT_DNI, DEFAULT_ADDRESS, DEFAULT_MOBILE_NUMBER, DEFAULT_USER_EMAIL)
     assert user.full_name == DEFAULT_USER_NAME
     assert user.nif == DEFAULT_DNI

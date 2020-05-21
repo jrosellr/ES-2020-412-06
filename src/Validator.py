@@ -1,19 +1,47 @@
 from src.Reservation import Reservation
+import re
 
 class Validator:
+    """ Handles the validation of regular expressions of paymentData
 
-    def __init__(self,_email_regexp: str,_credit_card_number_regexp: str,_credit_card_sec_code_regexp: str):
-        self._email_regexp = None
-        self._credit_card_number_regexp = None
-        self._credit_card_sec_code_regexp = None
+    """
+    _name_regexp = r'[A-Za-z ]{1,30}'
+    _dni_regexp = r'\d{8}[A-Z]'
+    _email_regexp = r'\w{1,30}@\w{2,20}\.\w{2,5}'
+    _credit_card_number_regexp = r'\d{4} \d{4} \d{4} \d{4}'
+    _credit_card_cvv_regexp = r'\d\d\d'
 
-    def validate_email(self,email: str):
+    @staticmethod
+    def validate_full_name(name: str):
+        if re.fullmatch(Validator._name_regexp, name) is not None:
+            return True
+        else:
+            return False
 
-    def validate_credit_card_number(self, card_number: str):
+    @staticmethod
+    def validate_dni(dni: str):
+        if re.fullmatch(Validator._dni_regexp, dni) is not None:
+            return True
+        else:
+            return False
 
-    def validate_credit_code(self, card_sec_code: str):
+    @staticmethod
+    def validate_email(email: str):
+        if re.fullmatch(Validator._email_regexp, email) is not None:
+            return True
+        else:
+            return False
 
+    @staticmethod
+    def validate_credit_card_number(card_number: str):
+        if re.fullmatch(Validator._credit_card_number_regexp, card_number) is not None:
+            return True
+        else:
+            return False
 
-
-
-
+    @staticmethod
+    def validate_credit_security_code(security_code: str):
+        if re.fullmatch(Validator._credit_card_cvv_regexp, security_code) is not None:
+            return True
+        else:
+            return False
