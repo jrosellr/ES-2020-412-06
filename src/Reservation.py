@@ -35,16 +35,16 @@ class Reservation:
         self._travel = copy.deepcopy(travel)
         self._user = copy.deepcopy(user)
 
-    def confirm(self, name: str, card_number: str, security_code: str, credit_card_type: CardType) -> bool:  # FIXME: change return type
+    def confirm(self, name: str, card_number: str, security_code: str, credit_card_type: str) -> bool:  # FIXME: change return type
         """ Takes the payment data with the total price and proceeds to do the payment and flights confirmation
 
-        :param credit_card_type: card type can be VISA or MASTERCARD
+        :param credit_card_type: card type can be VISA or MASTERCARD, we need to construct a CardType object
         :param name: string with the name of the card holder
         :param card_number: string containing the card number
         :param security_code: integer with the security code of the card
         :return: bool that confirms the payment and flights reservation
         """
-
+        # TODO: validate credit card type and build CardType object
         payment_data = self._process_payment_data(name, card_number, security_code, credit_card_type)
         reservation_confirmation = False
 
