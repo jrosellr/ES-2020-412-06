@@ -17,12 +17,7 @@ class Flights:
         :param flights: a list of objects of type Flight
         """
 
-        if len(flights) != 0:
-            self._flights = {flight.code: flight for flight in flights}
-            self.passengers_per_flight: int = flights[0].passengers
-        else:
-            self._flights: dict = {}
-            self.passengers_per_flight: int = 0
+        self._flights = {flight.code: flight for flight in flights}
 
     def __getitem__(self, key: str):
         if key in self._flights:

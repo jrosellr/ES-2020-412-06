@@ -14,7 +14,7 @@ def test_travel_ctor(default_flights: Flights):
     :return: None
     """
 
-    travel = Travel(default_flights)
+    travel = Travel(0, default_flights)
 
     assert isinstance(travel, Travel)
     assert len(travel._flights) != 0

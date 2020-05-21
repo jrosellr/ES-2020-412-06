@@ -16,7 +16,6 @@ def test_flights_ctor(default_flight_list: list):
 
     assert len(flights) != 0
     assert len(flights) == DEFAULT_FLIGHTS_LEN
-    assert flights.passengers_per_flight == DEFAULT_FLIGHT_PASSENGERS
 
 
 def test_setitem_incorrect_flight(default_flights: Flights, default_new_flight: Flight):

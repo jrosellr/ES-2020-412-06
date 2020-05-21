@@ -8,8 +8,10 @@ from src.Flights import Flights
 from src.Car import Car
 from src.Cars import Cars
 from src.User import User
+from src.Response import Response
 from src.Hotel import Hotel
 from src.Hotels import Hotels
+
 from .test_constants import *
 
 # TODO: add documentation to fixtures
@@ -26,7 +28,7 @@ def mock_fetch_prices(monkeypatch):
 @pytest.fixture
 def mock_bank_error(monkeypatch):
     def mock_do_payment_error(*args):
-        raise ConnectionRefusedError("Connection with bank failed.")
+        raise ConnectionRefusedError(Response.BANK_ERROR)
 
     monkeypatch.setattr(Bank, "do_payment", mock_do_payment_error)
 
@@ -42,7 +44,7 @@ def mock_bank_success(monkeypatch):
 @pytest.fixture
 def mock_skyscanner_error(monkeypatch):
     def mock_confirm_reserve_error(*args):
-        raise ConnectionRefusedError("Connection with SkyScanner failed.")
+        raise ConnectionRefusedError(Response.SKYSCANNER_ERROR)
 
     monkeypatch.setattr(Skyscanner, "confirm_reserve", mock_confirm_reserve_error)
 
@@ -63,9 +65,9 @@ def mock_confirm_reserve_return_retries(monkeypatch, mock_skyscanner_error):
 
 @pytest.fixture
 def default_flight_list():
-    f0 = Flight(DEFAULT_FLIGHT_CODE_0, DEFAULT_FLIGHT_DESTINATION, DEFAULT_FLIGHT_PASSENGERS)
-    f1 = Flight(DEFAULT_FLIGHT_CODE_1, DEFAULT_FLIGHT_DESTINATION, DEFAULT_FLIGHT_PASSENGERS)
-    f2 = Flight(DEFAULT_FLIGHT_CODE_2, DEFAULT_FLIGHT_DESTINATION, DEFAULT_FLIGHT_PASSENGERS)
+    f0 = Flight(DEFAULT_FLIGHT_CODE_0, DEFAULT_FLIGHT_DESTINATION, DEFAULT_NUM_TRAVELERS)
+    f1 = Flight(DEFAULT_FLIGHT_CODE_1, DEFAULT_FLIGHT_DESTINATION, DEFAULT_NUM_TRAVELERS)
+    f2 = Flight(DEFAULT_FLIGHT_CODE_2, DEFAULT_FLIGHT_DESTINATION, DEFAULT_NUM_TRAVELERS)
     return [f0, f1, f2]
 
 
@@ -76,7 +78,7 @@ def default_flights(default_flight_list):
 
 @pytest.fixture
 def default_new_flight():
-    return Flight(DEFAULT_NEW_FLIGHT_CODE, DEFAULT_FLIGHT_DESTINATION, DEFAULT_FLIGHT_PASSENGERS)
+    return Flight(DEFAULT_NEW_FLIGHT_CODE, DEFAULT_FLIGHT_DESTINATION, DEFAULT_NUM_TRAVELERS)
 
 
 @pytest.fixture
@@ -106,7 +108,7 @@ def default_new_car():
 
 @pytest.fixture
 def default_travel(default_flights):
-    return Travel(default_flights)
+    return Travel(DEFAULT_NUM_TRAVELERS, default_flights)
 
 
 @pytest.fixture

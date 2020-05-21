@@ -1,3 +1,6 @@
+from src.CardType import CardType
+
+
 class PaymentData:
     """ A Value-Object used to hold the payment data
 
@@ -15,7 +18,7 @@ class PaymentData:
             credit_card_type: The card can be either VISA or MASTERCARD
     """
 
-    def __init__(self, user_name: str, card_number: str, security_code: str, amount: float, credit_card_type: str):
+    def __init__(self, user_name: str, card_number: str, security_code: str, amount: float, credit_card_type: CardType):
         """ Construct a new PaymentData object
 
         :param user_name: The user's name
@@ -28,4 +31,4 @@ class PaymentData:
         self.card_number = card_number
         self.security_code = security_code
         self.amount = amount
-        self.credit_card_type = credit_card_type
+        self.credit_card_type: CardType = credit_card_type
