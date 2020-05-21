@@ -6,6 +6,7 @@ from src.Travel import Travel
 from src.Flight import Flight
 from src.Flights import Flights
 from src.User import User
+from src.Response import Response
 from .test_constants import *
 
 # TODO: add documentation to fixtures
@@ -22,7 +23,7 @@ def mock_fetch_prices(monkeypatch):
 @pytest.fixture
 def mock_bank_error(monkeypatch):
     def mock_do_payment_error(*args):
-        raise ConnectionRefusedError("Connection with bank failed.")
+        raise ConnectionRefusedError(Response.BANK_ERROR)
 
     monkeypatch.setattr(Bank, "do_payment", mock_do_payment_error)
 
@@ -38,7 +39,7 @@ def mock_bank_success(monkeypatch):
 @pytest.fixture
 def mock_skyscanner_error(monkeypatch):
     def mock_confirm_reserve_error(*args):
-        raise ConnectionRefusedError("Connection with SkyScanner failed.")
+        raise ConnectionRefusedError(Response.SKYSCANNER_ERROR)
 
     monkeypatch.setattr(Skyscanner, "confirm_reserve", mock_confirm_reserve_error)
 

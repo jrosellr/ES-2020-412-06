@@ -6,6 +6,7 @@ from src.Booking import Booking
 from src.Rentalcars import Rentalcars
 from src.Bank import Bank
 from src.CardType import CardType
+from src.Response import Response
 import copy
 
 
@@ -35,7 +36,7 @@ class Reservation:
         self._travel = copy.deepcopy(travel)
         self._user = copy.deepcopy(user)
 
-    def confirm(self, name: str, card_number: str, security_code: str, credit_card_type: str) -> bool:  # FIXME: change return type
+    def confirm(self, name: str, card_number: str, security_code: str, credit_card_type: str) -> Response:  # FIXME: change return type
         """ Takes the payment data with the total price and proceeds to do the payment and flights confirmation
 
         :param credit_card_type: card type can be VISA or MASTERCARD, we need to construct a CardType object
@@ -44,18 +45,20 @@ class Reservation:
         :param security_code: integer with the security code of the card
         :return: bool that confirms the payment and flights reservation
         """
+
         # TODO: validate credit card type and build CardType object
+        credit_card_type = CardType.VISA
         payment_data = self._process_payment_data(name, card_number, security_code, credit_card_type)
-        reservation_confirmation = False
+        response = ''
 
         try:
-            if Bank.do_payment(self._user, payment_data):  # FIXME: refactor into dedicated method
+            if Bank.do_payment(self._user, payment_data):
                 if self._confirm_flights():
-                    reservation_confirmation = True
+                    response = Response.CONFIRMATION_SUCCESSFUL
         except ConnectionRefusedError as e:
-            pass
+            response = e.args[0]
 
-        return reservation_confirmation
+        return response
 
     def _confirm_flights(self) -> bool:
         retries = 0
@@ -64,7 +67,7 @@ class Reservation:
                 return Skyscanner.confirm_reserve(self._user, self._travel._flights)
             except ConnectionRefusedError:
                 retries += 1
-        return False
+        raise ConnectionRefusedError(Response.SKYSCANNER_ERROR)
 
     def _process_payment_data(self, name: str, card_number: str, security_code: str, credit_card_type: CardType) -> PaymentData:  # FIXME: update documentation
         """ Call calculate_flights_price and create an instance of PaymentData with the amount calculated.

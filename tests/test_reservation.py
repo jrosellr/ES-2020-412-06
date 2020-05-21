@@ -5,6 +5,7 @@ from src.Flights import Flights
 from src.Flight import Flight
 from src.PaymentData import PaymentData
 from .test_constants import *
+from src.Response import Response
 import pytest
 
 # TODO: add documentation about fixture usage
@@ -42,11 +43,10 @@ def test_confirm_payment_error(mock_fetch_prices, mock_bank_error, default_reser
         reservation.confirm() should be False
         :return: None
     """
-    reservation_confirmed = default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV, DEFAULT_CARD_TYPE)
+    reservation_response = default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV, DEFAULT_CARD_TYPE)
 
-    assert reservation_confirmed is not None
-    assert reservation_confirmed is not True
-    assert reservation_confirmed is False
+    assert reservation_response is not ''
+    assert reservation_response is Response.BANK_ERROR
 
 
 def test_confirm_payment_done(mock_fetch_prices, mock_bank_success, default_reservation):
@@ -56,11 +56,10 @@ def test_confirm_payment_done(mock_fetch_prices, mock_bank_success, default_rese
         :return: None
     """
 
-    reservation_confirmed = default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV,  DEFAULT_CARD_TYPE)
+    reservation_response = default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV,  DEFAULT_CARD_TYPE)
 
-    assert reservation_confirmed is not None
-    assert reservation_confirmed is not False
-    assert reservation_confirmed is True
+    assert reservation_response is not ''
+    assert reservation_response is Response.CONFIRMATION_SUCCESSFUL
 
 
 def test_retries_confirm_flights(mock_confirm_reserve_return_retries, mock_fetch_prices, mock_skyscanner_error, default_reservation):
