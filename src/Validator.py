@@ -2,7 +2,13 @@ from src.Reservation import Reservation
 import re
 
 class Validator:
+    """ Handles the validation of regular expressions of paymentData
+
+    """
+    # FIXME: If error in _validate functions, return an exception, not a bool
+
     def __init__(self, _email_regexp: str, _credit_card_number_regexp: str, _credit_card_sec_code_regexp: str):
+        # FIXME: Variables not used in the class
         self._email_regexp = None
         self._credit_card_number_regexp = None
         self._credit_card_sec_code_regexp = None
