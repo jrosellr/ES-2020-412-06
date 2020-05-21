@@ -108,7 +108,7 @@ class Reservation:
 
     @staticmethod
     def _fetch_room_price() -> float:
-        return Booking.fetch_room_price()
+        return Booking.fetch_hotel_price()
 
     @staticmethod
     def _fetch_car_price() -> float:

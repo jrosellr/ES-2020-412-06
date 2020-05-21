@@ -31,8 +31,8 @@ def mock_fetch_prices(monkeypatch):
         return MOCKED_CAR_PRICE
 
     monkeypatch.setattr(Skyscanner, "fetch_ticket_price", mock_fetch_ticket_price)
-    monkeypatch.setattr(Skyscanner, "fetch_hotel_price", mock_fetch_hotel_price)
-    monkeypatch.setattr(Skyscanner, "fetch_car_price", mock_fetch_car_price)
+    monkeypatch.setattr(Booking, "fetch_hotel_price", mock_fetch_hotel_price)
+    monkeypatch.setattr(Rentalcars, "fetch_car_price", mock_fetch_car_price)
 
 
 @pytest.fixture
