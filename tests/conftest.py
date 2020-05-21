@@ -1,5 +1,7 @@
 import pytest
 from src.Skyscanner import Skyscanner
+from src.Booking import Booking
+from src.Rentalcars import Rentalcars
 from src.Reservation import Reservation
 from src.Bank import Bank
 from src.Travel import Travel
@@ -22,7 +24,15 @@ def mock_fetch_prices(monkeypatch):
     def mock_fetch_ticket_price(*args):
         return MOCKED_TICKET_PRICE
 
+    def mock_fetch_hotel_price(*args):
+        return MOCKED_HOTEL_PRICE
+
+    def mock_fetch_car_price(*args):
+        return MOCKED_CAR_PRICE
+
     monkeypatch.setattr(Skyscanner, "fetch_ticket_price", mock_fetch_ticket_price)
+    monkeypatch.setattr(Skyscanner, "fetch_hotel_price", mock_fetch_hotel_price)
+    monkeypatch.setattr(Skyscanner, "fetch_car_price", mock_fetch_car_price)
 
 
 @pytest.fixture
@@ -61,6 +71,58 @@ def mock_confirm_reserve_return_retries(monkeypatch, mock_skyscanner_error):
         return retries
 
     monkeypatch.setattr(Reservation, "_confirm_flights", mock_confirm_reserve)
+
+
+@pytest.fixture
+def mock_booking_retries(monkeypatch, mock_booking_error):
+    def mock_confirm_reserve(*args):
+        retries = 0
+        while retries < 3:
+            try:
+                return Booking.confirm_reserve(*args)
+            except ConnectionRefusedError:
+                retries += 1
+        return retries
+
+    monkeypatch.setattr(Reservation, "_confirm_hotels", mock_confirm_reserve)
+
+
+@pytest.fixture
+def mock_rentalcars_retries(monkeypatch, mock_rentalcars_error):
+    def mock_confirm_reserve(*args):
+        retries = 0
+        while retries < 3:
+            try:
+                return Rentalcars.confirm_reserve(*args)
+            except ConnectionRefusedError:
+                retries += 1
+        return retries
+
+    monkeypatch.setattr(Reservation, "_confirm_cars", mock_confirm_reserve)
+
+
+@pytest.fixture
+def mock_skyscanner_error(monkeypatch):
+    def mock_confirm_reserve_error(*args):
+        raise ConnectionRefusedError(Response.SKYSCANNER_ERROR)
+
+    monkeypatch.setattr(Skyscanner, "confirm_reserve", mock_confirm_reserve_error)
+
+
+@pytest.fixture
+def mock_booking_error(monkeypatch):
+    def mock_confirm_reserve_error(*args):
+        raise ConnectionRefusedError(Response.BOOKING_ERROR)
+
+    monkeypatch.setattr(Skyscanner, "confirm_reserve", mock_confirm_reserve_error)
+
+
+@pytest.fixture
+def mock_rentalcars_error(monkeypatch):
+    def mock_confirm_reserve_error(*args):
+        raise ConnectionRefusedError(Response.RENTALCARS_ERROR)
+
+    monkeypatch.setattr(Skyscanner, "confirm_reserve", mock_confirm_reserve_error)
 
 
 @pytest.fixture

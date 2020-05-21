@@ -14,5 +14,5 @@ class Booking:
         return True
 
     @staticmethod
-    def fetch_room_price() -> float:
+    def fetch_hotel_price() -> float:
         pass
