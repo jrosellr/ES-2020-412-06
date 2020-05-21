@@ -52,7 +52,7 @@ class Reservation:
         try:
             payment_data = self._process_payment_data(name, card_number, security_code, credit_card_type)
             if Bank.do_payment(self._user, payment_data):
-                if self._confirm_flights():
+                if self._confirm_flights() and self._confirm_hotels() and self._confirm_cars():
                     response = Response.CONFIRMATION_SUCCESSFUL
         except Exception as e:
             response = e.args[0]
@@ -67,6 +67,24 @@ class Reservation:
             except ConnectionRefusedError:
                 retries += 1
         raise ConnectionRefusedError(Response.SKYSCANNER_ERROR)
+
+    def _confirm_hotels(self) -> bool:
+        retries = 0
+        while retries < 3:
+            try:
+                return Booking.confirm_reserve(self._user, self._travel._hotels)
+            except ConnectionRefusedError:
+                retries += 1
+        raise ConnectionRefusedError(Response.BOOKING_ERROR)
+
+    def _confirm_cars(self) -> bool:
+        retries = 0
+        while retries < 3:
+            try:
+                return Rentalcars.confirm_reserve(self._user, self._travel._cars)
+            except ConnectionRefusedError:
+                retries += 1
+        raise ConnectionRefusedError(Response.RENTALCARS_ERROR)
 
     def _process_payment_data(self, name: str, card_number: str, security_code: str, credit_card_type: CardType) -> PaymentData:  # FIXME: update documentation
         """ Call calculate_flights_price and create an instance of PaymentData with the amount calculated.

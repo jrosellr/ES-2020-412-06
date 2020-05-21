@@ -1,12 +1,7 @@
 from src.Reservation import Reservation
-from src.Travel import Travel
-from src.User import User
-from src.Flights import Flights
-from src.Flight import Flight
 from src.PaymentData import PaymentData
 from .test_constants import *
 from src.Response import Response
-import pytest
 
 # TODO: add documentation about fixture usage
 
@@ -37,6 +32,21 @@ def test_reservation_process_payment_data(mock_fetch_prices, default_reservation
     assert default_payment_data.amount == MOCKED_TICKET_PRICE * DEFAULT_NUM_TRAVELERS * DEFAULT_FLIGHTS_LEN
 
 
+def test_retries_confirm_flights(mock_confirm_reserve_return_retries, mock_fetch_prices, mock_skyscanner_error, default_reservation):
+
+    assert default_reservation._confirm_flights() == 3
+
+
+def test_retries_confirm_hotels(mock_booking_retries, mock_fetch_prices, mock_booking_error, default_reservation):
+
+    assert default_reservation._confirm_hotels() == 3
+
+
+def test_retries_confirm_cars(mock_rentalcars_retries, mock_fetch_prices, mock_rentalcars_error, default_reservation):
+
+    assert default_reservation._confirm_cars() == 3
+
+
 def test_confirm_payment_error(mock_fetch_prices, mock_bank_error, default_reservation):
     """ Unit test for Reservation.confirm() when Bank.do_payment returns False
 
@@ -62,6 +72,3 @@ def test_confirm_payment_done(mock_fetch_prices, mock_bank_success, default_rese
     assert reservation_response is Response.CONFIRMATION_SUCCESSFUL
 
 
-def test_retries_confirm_flights(mock_confirm_reserve_return_retries, mock_fetch_prices, mock_skyscanner_error, default_reservation):
-
-    assert default_reservation._confirm_flights() == 3
