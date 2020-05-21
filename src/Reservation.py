@@ -5,6 +5,7 @@ from src.Skyscanner import Skyscanner
 from src.Booking import Booking
 from src.Rentalcars import Rentalcars
 from src.Bank import Bank
+from src.CardType import CardType
 import copy
 
 
@@ -34,9 +35,10 @@ class Reservation:
         self._travel = copy.deepcopy(travel)
         self._user = copy.deepcopy(user)
 
-    def confirm(self, name: str, card_number: str, security_code: str, credit_card_type: str) -> bool:  # FIXME: change return type
+    def confirm(self, name: str, card_number: str, security_code: str, credit_card_type: CardType) -> bool:  # FIXME: change return type
         """ Takes the payment data with the total price and proceeds to do the payment and flights confirmation
 
+        :param credit_card_type: card type can be VISA or MASTERCARD
         :param name: string with the name of the card holder
         :param card_number: string containing the card number
         :param security_code: integer with the security code of the card
@@ -64,7 +66,7 @@ class Reservation:
                 retries += 1
         return False
 
-    def _process_payment_data(self, name: str, card_number: str, security_code: str, credit_card_type: str) -> PaymentData:  # FIXME: update documentation
+    def _process_payment_data(self, name: str, card_number: str, security_code: str, credit_card_type: CardType) -> PaymentData:  # FIXME: update documentation
         """ Call calculate_flights_price and create an instance of PaymentData with the amount calculated.
 
         :param name: string with the name of the card holder
