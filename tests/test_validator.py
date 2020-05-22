@@ -70,6 +70,12 @@ def test_validate_payment_info_error():
     assert Validator.validate_credit_card_type(credit_card_type[0]) is False
 
 
-def test_validate_billing_data(default_user: User):
+def test_validate_billing_data_correct(default_user: User):
+    assert Validator.validate_billing_data(default_user) is True
+
+def test_validate_billing_data_error(default_user: User):
     default_user.dni = '123A'
     assert Validator.validate_billing_data(default_user) is False
+
+def test_validate_payment_data(default_payment_data):
+    assert Validator.validate_payment_data(default_payment_data) is True

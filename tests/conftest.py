@@ -3,6 +3,7 @@ from src.Skyscanner import Skyscanner
 from src.Booking import Booking
 from src.Rentalcars import Rentalcars
 from src.Reservation import Reservation
+from src.PaymentData import PaymentData
 from src.Bank import Bank
 from src.Travel import Travel
 from src.Flight import Flight
@@ -156,7 +157,12 @@ def default_car_list():
     c0 = Car(DEFAULT_CAR_CODE_0, DEFAULT_CAR_BRAND, DEFAULT_CAR_PICK_UP_PLACE, DEFAULT_CAR_DAYS_RESERVED)
     c1 = Car(DEFAULT_CAR_CODE_1, DEFAULT_CAR_BRAND, DEFAULT_CAR_PICK_UP_PLACE, DEFAULT_CAR_DAYS_RESERVED)
     return [c0, c1]
-  
+
+
+@pytest.fixture
+def default_payment_data():
+    return PaymentData(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV, DEFAULT_PAYMENT_AMOUNT, DEFAULT_CARD_TYPE)
+
 
 @pytest.fixture
 def default_cars(default_car_list):
