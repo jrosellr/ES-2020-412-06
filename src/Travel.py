@@ -39,8 +39,8 @@ class Travel:
         """
 
         self._flights: Flights = copy.deepcopy(flights)
-        self._hotels = copy.deepcopy(hotels) if hotels else hotels
-        self._cars = copy.deepcopy(hotels) if cars else cars
+        self._hotels: Hotels = copy.deepcopy(hotels) if hotels else hotels
+        self._cars: Cars = copy.deepcopy(hotels) if cars else cars
         self._num_travelers: int = num_travelers
         self._ticket_price: float = self._default_price
         self._room_price: float = self._default_price

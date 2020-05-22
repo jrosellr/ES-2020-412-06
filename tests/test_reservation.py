@@ -1,5 +1,6 @@
 from src.Reservation import Reservation
 from src.PaymentData import PaymentData
+from src.Booking import Booking
 from .test_constants import *
 from src.Response import Response
 
@@ -17,7 +18,7 @@ def test_reservation_ctor(default_user, default_travel):
     assert isinstance(reservation, Reservation)
 
 
-def test_reservation_process_payment_data(mock_fetch_prices, default_reservation):
+def test_reservation_process_payment_data(default_reservation):
     """ Unit test for Reservation._process_payment_data()
 
         Amount in payment_data should be != 0 and == number of flights * flight price
@@ -32,22 +33,51 @@ def test_reservation_process_payment_data(mock_fetch_prices, default_reservation
     assert default_payment_data.amount == MOCKED_TICKET_PRICE * DEFAULT_NUM_TRAVELERS * DEFAULT_FLIGHTS_LEN
 
 
-def test_retries_confirm_flights(mock_confirm_reserve_return_retries, mock_fetch_prices, mock_skyscanner_error, default_reservation):
+def test_retries_confirm_flights_error(mock_confirm_reserve_return_retries, default_reservation):
 
     assert default_reservation._confirm_flights() == 3
 
 
-def test_retries_confirm_hotels(mock_booking_retries, mock_fetch_prices, mock_booking_error, default_reservation):
+def test_confirm_flights(default_reservation):
+
+    assert default_reservation._confirm_flights() is True
+
+
+def test_retries_confirm_hotels(mock_booking_retries, default_reservation):
 
     assert default_reservation._confirm_hotels() == 3
 
 
-def test_retries_confirm_cars(mock_rentalcars_retries, mock_fetch_prices, mock_rentalcars_error, default_reservation):
+def test_confirm_hotels(default_reservation, default_hotels):
+    default_reservation._travel._hotels = default_hotels
+
+    assert default_reservation._travel._hotels is not None
+    assert default_reservation._confirm_hotels() is True
+
+
+def test_confirm_hotels_no_hotels(default_reservation):
+    assert default_reservation._travel._hotels is None
+    assert default_reservation._confirm_hotels() is True
+
+
+def test_retries_confirm_cars(mock_rentalcars_retries, default_reservation):
 
     assert default_reservation._confirm_cars() == 3
 
 
-def test_confirm_payment_error(mock_fetch_prices, mock_bank_error, default_reservation):
+def test_confirm_cars(default_reservation, default_cars):
+    default_reservation._travel._cars = default_cars
+
+    assert default_reservation._travel._cars is not None
+    assert default_reservation._confirm_cars() is True
+
+
+def test_confirm_cars_no_cars(default_reservation):
+    assert default_reservation._travel._cars is None
+    assert default_reservation._confirm_cars() is True
+
+
+def test_confirm_payment_error(mock_bank_error, default_reservation):
     """ Unit test for Reservation.confirm() when Bank.do_payment returns False
 
         reservation.confirm() should be False
@@ -57,3 +87,15 @@ def test_confirm_payment_error(mock_fetch_prices, mock_bank_error, default_reser
 
     assert reservation_response is not ''
     assert reservation_response is Response.BANK_ERROR
+
+
+def test_confirm_payment_done(default_reservation):
+    """ Unit test for Reservation.confirm() when Bank.do_payment returns False
+
+        reservation.confirm() should be False
+        :return: None
+    """
+    reservation_response = default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV, DEFAULT_CARD_TYPE)
+
+    assert reservation_response is not ''
+    assert reservation_response is Response.CONFIRMATION_SUCCESSFUL

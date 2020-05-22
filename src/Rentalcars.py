@@ -10,7 +10,7 @@ class Rentalcars:
         pass
 
     @staticmethod
-    def confirm_reserve(self, user: User, cars: Cars) -> bool:
+    def confirm_reserve(user: User, cars: Cars) -> bool:
         return True
 
     @staticmethod
