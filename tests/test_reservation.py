@@ -190,3 +190,19 @@ def test_full_process_payment_data(full_reservation):
     assert isinstance(default_payment_data, PaymentData)
     assert default_payment_data.amount != 0.0
     assert full_reservation._travel.cost == DEFAULT_FLIGHT_TOTAL_COST + DEFAULT_HOTEL_TOTAL_COST + DEFAULT_CAR_TOTAL_COST
+
+
+def test_invalid_billing_data(default_reservation):
+    default_reservation._user.dni = '123A'
+    assert default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER,
+                                       DEFAULT_CARD_CVV, DEFAULT_CARD_TYPE) is Response.INVALID_BILLING_INFO
+
+
+def test_invalid_credit_card_type(default_reservation):
+    assert default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER,
+                                       DEFAULT_CARD_CVV, 'EXPRESS') is Response.INVALID_CARD_TYPE
+
+
+def test_invalid_payment_data(default_reservation):
+    assert default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER,
+                                       '1234', DEFAULT_CARD_TYPE) is Response.INVALID_PAYMENT_INFO

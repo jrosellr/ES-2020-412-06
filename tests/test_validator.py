@@ -78,4 +78,5 @@ def test_validate_billing_data_error(default_user: User):
     assert Validator.validate_billing_data(default_user) is False
 
 def test_validate_payment_data(default_payment_data):
-    assert Validator.validate_payment_data(default_payment_data) is True
+    assert Validator.validate_payment_data(default_payment_data.user_name, default_payment_data.card_number,
+                                           default_payment_data.security_code) is True
