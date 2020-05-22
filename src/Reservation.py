@@ -5,7 +5,6 @@ from src.Skyscanner import Skyscanner
 from src.Booking import Booking
 from src.Rentalcars import Rentalcars
 from src.Bank import Bank
-from src.CardType import CardType
 from src.Response import Response
 import copy
 
@@ -46,13 +45,11 @@ class Reservation:
         :return: bool that confirms the payment and flights reservation
         """
 
-        credit_card_type = CardType.VISA
-
         payment_data = self._process_payment_data(name, card_number, security_code, credit_card_type)
 
         return self._confirm_reservation(payment_data)
 
-    def _process_payment_data(self, name: str, card_number: str, security_code: str, credit_card_type: CardType) -> PaymentData:  # FIXME: update documentation
+    def _process_payment_data(self, name: str, card_number: str, security_code: str, credit_card_type: str) -> PaymentData:  # FIXME: update documentation
         """ Call calculate_flights_price and create an instance of PaymentData with the amount calculated.
 
         :param name: string with the name of the card holder
