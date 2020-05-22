@@ -51,12 +51,12 @@ def test_retries_confirm_hotels(mock_booking_retries, default_reservation):
 def test_confirm_hotels(default_reservation, default_hotels):
     default_reservation._travel._hotels = default_hotels
 
-    assert default_reservation._travel._hotels is not None
+    assert default_reservation._travel.has_hotels is True
     assert default_reservation._confirm_hotels() is True
 
 
 def test_confirm_hotels_no_hotels(default_reservation):
-    assert default_reservation._travel._hotels is None
+    assert default_reservation._travel.has_hotels is False
     assert default_reservation._confirm_hotels() is True
 
 
@@ -68,12 +68,12 @@ def test_retries_confirm_cars(mock_rentalcars_retries, default_reservation):
 def test_confirm_cars(default_reservation, default_cars):
     default_reservation._travel._cars = default_cars
 
-    assert default_reservation._travel._cars is not None
+    assert default_reservation._travel.has_cars is True
     assert default_reservation._confirm_cars() is True
 
 
 def test_confirm_cars_no_cars(default_reservation):
-    assert default_reservation._travel._cars is None
+    assert default_reservation._travel.has_cars is False
     assert default_reservation._confirm_cars() is True
 
 

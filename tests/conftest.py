@@ -65,9 +65,11 @@ def mock_confirm_reserve_return_retries(monkeypatch, mock_skyscanner_error):
         retries = 0
         while retries < 3:
             try:
-                return Skyscanner.confirm_reserve(*args)
+                if Skyscanner.confirm_reserve(*args):
+                    pass
             except ConnectionRefusedError:
                 retries += 1
+
         return retries
 
     monkeypatch.setattr(Reservation, "_confirm_flights", mock_confirm_reserve)
@@ -79,7 +81,8 @@ def mock_booking_retries(monkeypatch, mock_booking_error):
         retries = 0
         while retries < 3:
             try:
-                return Booking.confirm_reserve(*args)
+                if Booking.confirm_reserve(*args):
+                    pass
             except ConnectionRefusedError:
                 retries += 1
         return retries
@@ -93,7 +96,8 @@ def mock_rentalcars_retries(monkeypatch, mock_rentalcars_error):
         retries = 0
         while retries < 3:
             try:
-                return Rentalcars.confirm_reserve(*args)
+                if Rentalcars.confirm_reserve(*args):
+                    pass
             except ConnectionRefusedError:
                 retries += 1
         return retries

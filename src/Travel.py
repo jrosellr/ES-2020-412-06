@@ -29,7 +29,7 @@ class Travel:
     """
     _default_price: float = 0.0
 
-    def __init__(self, num_travelers, flights: Flights, hotels= None, cars= None):
+    def __init__(self, num_travelers, flights: Flights, hotels: Hotels = None, cars: Cars = None):
         """ Construct a Travel object
 
         :param num_travelers:
@@ -45,6 +45,14 @@ class Travel:
         self._ticket_price: float = self._default_price
         self._room_price: float = self._default_price
         self._car_price: float = self._default_price
+
+    @property
+    def has_hotels(self) -> bool:
+        return self._hotels is not None
+
+    @property
+    def has_cars(self) -> bool:
+        return self._cars is not None
 
     @property
     def ticket_price(self) -> float:
