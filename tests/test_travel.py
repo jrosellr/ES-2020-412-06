@@ -1,5 +1,7 @@
 from src.Travel import Travel
 from src.Flights import Flights
+from src.Hotels import Hotels
+from src.Cars import Cars
 from .test_constants import *
 import pytest
 
@@ -14,10 +16,38 @@ def test_travel_ctor(default_flights: Flights):
     :return: None
     """
 
-    travel = Travel(0, default_flights)
+    travel = Travel(DEFAULT_NUM_TRAVELERS, default_flights)
 
     assert isinstance(travel, Travel)
+
     assert len(travel._flights) != 0
+    assert len(travel._flights) == len(default_flights)
+
+    assert travel.ticket_price == travel._default_price
+    assert travel.hotel_price == travel._default_price
+    assert travel.car_price == travel._default_price
+    assert travel.cost == float()
+
+
+def test_full_travel_ctor(default_flights: Flights, default_hotels: Hotels, default_cars: Cars):
+    """ Test Travel constructor
+
+    Tests correct initialization of all Travel properties and Instance Attributes
+
+    :return: None
+    """
+
+    travel = Travel(DEFAULT_NUM_TRAVELERS, default_flights, default_hotels, default_cars)
+
+    assert isinstance(travel, Travel)
+
+    assert len(travel._flights) != 0
+    assert len(travel._hotels) != 0
+    assert len(travel._cars) != 0
+    assert len(travel._flights) == len(default_flights)
+    assert len(travel._hotels) == len(default_hotels)
+    assert len(travel._cars) == len(default_cars)
+
     assert travel.ticket_price == travel._default_price
     assert travel.hotel_price == travel._default_price
     assert travel.car_price == travel._default_price
@@ -63,8 +93,8 @@ def test_travel_set_positive_value_to_room_property(default_travel: Travel):
 
     default_travel.hotel_price = 5.0
 
-    assert default_travel._room_price != 0.0
-    assert default_travel._room_price == 5.0
+    assert default_travel._hotel_price != 0.0
+    assert default_travel._hotel_price == 5.0
 
 
 def test_travel_set_negative_value_to_room_property(default_travel: Travel):
@@ -161,6 +191,62 @@ def test_travel_cost_only_flights(default_travel: Travel):
     default_travel.ticket_price = MOCKED_TICKET_PRICE
 
     assert default_travel.cost == DEFAULT_FLIGHT_TOTAL_COST
+
+
+def test_travel_cost_hotels(default_travel: Travel, default_hotels):
+    """ Test cost property
+
+        Tests if the calculated cost is equal to the expected cost
+        with well-formed input.
+
+        Expected cost = num_flights * passengers_per_flight * ticket_price
+
+        :return: None
+    """
+
+    default_travel.ticket_price = MOCKED_TICKET_PRICE
+    default_travel.hotel_price = MOCKED_HOTEL_PRICE
+    default_travel._hotels = default_hotels
+
+    assert default_travel.cost == DEFAULT_FLIGHT_TOTAL_COST + DEFAULT_HOTEL_TOTAL_COST
+
+
+def test_travel_cost_cars(default_travel: Travel, default_cars):
+    """ Test cost property
+
+        Tests if the calculated cost is equal to the expected cost
+        with well-formed input.
+
+        Expected cost = num_flights * passengers_per_flight * ticket_price
+
+        :return: None
+    """
+
+    default_travel.ticket_price = MOCKED_TICKET_PRICE
+    default_travel.car_price = MOCKED_CAR_PRICE
+    default_travel._cars = default_cars
+
+    assert default_travel.cost == DEFAULT_FLIGHT_TOTAL_COST + DEFAULT_CAR_TOTAL_COST
+
+
+def test_full_travel_cost(default_travel: Travel, default_hotels, default_cars):
+    """ Test cost property
+
+        Tests if the calculated cost is equal to the expected cost
+        with well-formed input.
+
+        Expected cost = num_flights * passengers_per_flight * ticket_price
+
+        :return: None
+    """
+
+    default_travel.ticket_price = MOCKED_TICKET_PRICE
+    default_travel.hotel_price = MOCKED_HOTEL_PRICE
+    default_travel.car_price = MOCKED_CAR_PRICE
+    default_travel._hotels = default_hotels
+    default_travel._cars = default_cars
+
+    assert default_travel.cost == DEFAULT_FLIGHT_TOTAL_COST + DEFAULT_CAR_TOTAL_COST + DEFAULT_HOTEL_TOTAL_COST
 
 
 def test_travel_cost_cannot_be_set(default_travel: Travel):

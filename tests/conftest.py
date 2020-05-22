@@ -149,9 +149,9 @@ def default_new_flight():
 
 @pytest.fixture
 def default_hotel_list():
-    h0 = Hotel(DEFAULT_HOTEL_CODE_0, DEFAULT_HOTEL_NAME_0, DEFAULT_HOTEL_DAYS_RESERVED_0)
-    h1 = Hotel(DEFAULT_HOTEL_CODE_1, DEFAULT_HOTEL_NAME_1, DEFAULT_HOTEL_DAYS_RESERVED_0)
-    h2 = Hotel(DEFAULT_HOTEL_CODE_2, DEFAULT_HOTEL_NAME_2, DEFAULT_HOTEL_DAYS_RESERVED_0)
+    h0 = Hotel(DEFAULT_HOTEL_CODE_0, DEFAULT_HOTEL_NAME_0, DEFAULT_HOTEL_DAYS_RESERVED)
+    h1 = Hotel(DEFAULT_HOTEL_CODE_1, DEFAULT_HOTEL_NAME_1, DEFAULT_HOTEL_DAYS_RESERVED)
+    h2 = Hotel(DEFAULT_HOTEL_CODE_2, DEFAULT_HOTEL_NAME_2, DEFAULT_HOTEL_DAYS_RESERVED)
     return [h0, h1, h2]
 
   
@@ -190,3 +190,8 @@ def default_user():
 @pytest.fixture
 def default_reservation(default_travel, default_user, mock_fetch_prices):
     return Reservation(default_travel, default_user)
+
+
+@pytest.fixture
+def full_reservation(default_flights, default_user, default_hotels, default_cars, mock_fetch_prices):
+    return Reservation(Travel(DEFAULT_NUM_TRAVELERS, default_flights, default_hotels, default_cars), default_user)
