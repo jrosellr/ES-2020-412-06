@@ -156,7 +156,4 @@ def test_full_process_payment_data(full_reservation):
 
     assert isinstance(default_payment_data, PaymentData)
     assert default_payment_data.amount != 0.0
-    assert len(full_reservation._travel._flights) == DEFAULT_FLIGHTS_LEN
-    assert len(full_reservation._travel._hotels) == DEFAULT_HOTELS_LEN
-    assert len(full_reservation._travel._cars) == DEFAULT_CARS_LEN
     assert full_reservation._travel.cost == DEFAULT_FLIGHT_TOTAL_COST + DEFAULT_HOTEL_TOTAL_COST + DEFAULT_CAR_TOTAL_COST
