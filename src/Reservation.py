@@ -36,7 +36,7 @@ class Reservation:
         self._travel = copy.deepcopy(travel)
         self._user = copy.deepcopy(user)
 
-    def confirm(self, name: str, card_number: str, security_code: str, credit_card_type: str) -> Response:  # FIXME: change return type
+    def confirm(self, name: str, card_number: str, security_code: str, credit_card_type: str) -> Response:
         """ Takes the payment data with the total price and proceeds to do the payment and flights confirmation
 
         :param credit_card_type: card type can be VISA or MASTERCARD, we need to construct a CardType object
@@ -47,50 +47,10 @@ class Reservation:
         """
 
         credit_card_type = CardType.VISA
-        response = ''
 
-        try:
-            payment_data = self._process_payment_data(name, card_number, security_code, credit_card_type)
-            if Bank.do_payment(self._user, payment_data):
-                if self._confirm_flights() and self._confirm_hotels() and self._confirm_cars():
-                    response = Response.CONFIRMATION_SUCCESSFUL
-        except ConnectionRefusedError as e:
-            response = e.args[0]
+        payment_data = self._process_payment_data(name, card_number, security_code, credit_card_type)
 
-        return response
-
-    def _confirm_flights(self) -> bool:
-        retries = 0
-        while retries < 3:
-            try:
-                return Skyscanner.confirm_reserve(self._user, self._travel._flights)
-            except ConnectionRefusedError:
-                retries += 1
-        raise ConnectionRefusedError(Response.SKYSCANNER_ERROR)
-
-    def _confirm_hotels(self) -> bool:
-        if self._travel._hotels is not None:
-            retries = 0
-            while retries < 3:
-                try:
-                    return Booking.confirm_reserve(self._user, self._travel._hotels)
-                except ConnectionRefusedError:
-                    retries += 1
-            raise ConnectionRefusedError(Response.BOOKING_ERROR)
-        else:
-            return True
-
-    def _confirm_cars(self) -> bool:
-        if self._travel._cars is not None:
-            retries = 0
-            while retries < 3:
-                try:
-                    return Rentalcars.confirm_reserve(self._user, self._travel._cars)
-                except ConnectionRefusedError:
-                    retries += 1
-            raise ConnectionRefusedError(Response.RENTALCARS_ERROR)
-        else:
-            return True
+        return self._confirm_reservation(payment_data)
 
     def _process_payment_data(self, name: str, card_number: str, security_code: str, credit_card_type: CardType) -> PaymentData:  # FIXME: update documentation
         """ Call calculate_flights_price and create an instance of PaymentData with the amount calculated.
@@ -102,20 +62,69 @@ class Reservation:
         """
 
         self._configure_travel()
-        # TODO: add user input validation before returning the PaymentData instance
         return PaymentData(name, card_number, security_code, self._travel.cost, credit_card_type)
 
     def _configure_travel(self):
         self._travel.ticket_price = self._fetch_ticket_price()
+        self._travel.hotel_price = self._fetch_hotel_price()
+        self._travel.car_price = self._fetch_car_price()
 
     @staticmethod
     def _fetch_ticket_price() -> float:
         return Skyscanner.fetch_ticket_price()
 
     @staticmethod
-    def _fetch_room_price() -> float:
+    def _fetch_hotel_price() -> float:
         return Booking.fetch_hotel_price()
 
     @staticmethod
     def _fetch_car_price() -> float:
         return Rentalcars.fetch_car_price()
+
+    def _confirm_reservation(self, payment_data: PaymentData) -> Response:
+        try:
+            if self._confirm_payment(payment_data) and self._confirm_flights() and self._confirm_hotels() and self._confirm_cars():
+                return Response.CONFIRMATION_SUCCESSFUL
+        except ConnectionRefusedError as e:
+            return e.args[0]
+
+    def _confirm_payment(self, payment_data: PaymentData) -> bool:
+        return Bank.do_payment(self._user, payment_data)
+
+    def _confirm_flights(self) -> bool:
+        retries = 0
+        while retries < 3:
+            try:
+                return Skyscanner.confirm_reserve(self._user, self._travel._flights)
+            except ConnectionRefusedError:
+                retries += 1
+
+        raise ConnectionRefusedError(Response.SKYSCANNER_ERROR)
+
+    def _confirm_hotels(self) -> bool:
+        if self._travel.has_hotels:
+            retries = 0
+            while retries < 3:
+                try:
+                    return Booking.confirm_reserve(self._user, self._travel._hotels)
+                except ConnectionRefusedError:
+                    retries += 1
+            raise ConnectionRefusedError(Response.BOOKING_ERROR)
+        else:
+            return True
+
+    def _confirm_cars(self) -> bool:
+        if self._travel.has_cars:
+            retries = 0
+            while retries < 3:
+                try:
+                    return  Rentalcars.confirm_reserve(self._user, self._travel._cars)
+                except ConnectionRefusedError:
+                    retries += 1
+            raise ConnectionRefusedError(Response.RENTALCARS_ERROR)
+        else:
+            return True
+
+
+
+
