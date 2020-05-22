@@ -137,17 +137,26 @@ def test_full_confirm_rentalcars_error(full_reservation, mock_rentalcars_error):
     assert reservation_response is Response.RENTALCARS_ERROR
 
 
+def test_configure_travel(full_reservation):
+    full_reservation._configure_travel()
+
+    assert full_reservation._travel.ticket_price == MOCKED_TICKET_PRICE
+    assert full_reservation._travel.hotel_price == MOCKED_HOTEL_PRICE
+    assert full_reservation._travel.car_price == MOCKED_CAR_PRICE
+
+
 def test_full_process_payment_data(full_reservation):
     """ Unit test for Reservation._process_payment_data()
 
         Amount in payment_data should be != 0 and == number of flights * flight price
         :return: None
     """
-
-    # 2. Process the payment data:
     default_payment_data = full_reservation._process_payment_data(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER,
                                                                   DEFAULT_CARD_CVV, DEFAULT_CARD_TYPE)
 
     assert isinstance(default_payment_data, PaymentData)
     assert default_payment_data.amount != 0.0
-    assert default_payment_data.amount == DEFAULT_FLIGHT_TOTAL_COST + DEFAULT_HOTEL_TOTAL_COST + DEFAULT_CAR_TOTAL_COST
+    assert len(full_reservation._travel._flights) == DEFAULT_FLIGHTS_LEN
+    assert len(full_reservation._travel._hotels) == DEFAULT_HOTELS_LEN
+    assert len(full_reservation._travel._cars) == DEFAULT_CARS_LEN
+    assert full_reservation._travel.cost == DEFAULT_FLIGHT_TOTAL_COST + DEFAULT_HOTEL_TOTAL_COST + DEFAULT_CAR_TOTAL_COST

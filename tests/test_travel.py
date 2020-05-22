@@ -1,5 +1,7 @@
 from src.Travel import Travel
 from src.Flights import Flights
+from src.Hotels import Hotels
+from src.Cars import Cars
 from .test_constants import *
 import pytest
 
@@ -14,10 +16,38 @@ def test_travel_ctor(default_flights: Flights):
     :return: None
     """
 
-    travel = Travel(0, default_flights)
+    travel = Travel(DEFAULT_NUM_TRAVELERS, default_flights)
 
     assert isinstance(travel, Travel)
+
     assert len(travel._flights) != 0
+    assert len(travel._flights) == len(default_flights)
+
+    assert travel.ticket_price == travel._default_price
+    assert travel.hotel_price == travel._default_price
+    assert travel.car_price == travel._default_price
+    assert travel.cost == float()
+
+
+def test_full_travel_ctor(default_flights: Flights, default_hotels: Hotels, default_cars: Cars):
+    """ Test Travel constructor
+
+    Tests correct initialization of all Travel properties and Instance Attributes
+
+    :return: None
+    """
+
+    travel = Travel(DEFAULT_NUM_TRAVELERS, default_flights, default_hotels, default_cars)
+
+    assert isinstance(travel, Travel)
+
+    assert len(travel._flights) != 0
+    assert len(travel._hotels) != 0
+    assert len(travel._cars) != 0
+    assert len(travel._flights) == len(default_flights)
+    assert len(travel._hotels) == len(default_hotels)
+    assert len(travel._cars) == len(default_cars)
+
     assert travel.ticket_price == travel._default_price
     assert travel.hotel_price == travel._default_price
     assert travel.car_price == travel._default_price
