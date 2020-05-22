@@ -63,8 +63,8 @@ def test_travel_set_positive_value_to_room_property(default_travel: Travel):
 
     default_travel.hotel_price = 5.0
 
-    assert default_travel._room_price != 0.0
-    assert default_travel._room_price == 5.0
+    assert default_travel._hotel_price != 0.0
+    assert default_travel._hotel_price == 5.0
 
 
 def test_travel_set_negative_value_to_room_property(default_travel: Travel):
@@ -161,6 +161,62 @@ def test_travel_cost_only_flights(default_travel: Travel):
     default_travel.ticket_price = MOCKED_TICKET_PRICE
 
     assert default_travel.cost == DEFAULT_FLIGHT_TOTAL_COST
+
+
+def test_travel_cost_hotels(default_travel: Travel, default_hotels):
+    """ Test cost property
+
+        Tests if the calculated cost is equal to the expected cost
+        with well-formed input.
+
+        Expected cost = num_flights * passengers_per_flight * ticket_price
+
+        :return: None
+    """
+
+    default_travel.ticket_price = MOCKED_TICKET_PRICE
+    default_travel.hotel_price = MOCKED_HOTEL_PRICE
+    default_travel._hotels = default_hotels
+
+    assert default_travel.cost == DEFAULT_FLIGHT_TOTAL_COST + DEFAULT_HOTEL_TOTAL_COST
+
+
+def test_travel_cost_cars(default_travel: Travel, default_cars):
+    """ Test cost property
+
+        Tests if the calculated cost is equal to the expected cost
+        with well-formed input.
+
+        Expected cost = num_flights * passengers_per_flight * ticket_price
+
+        :return: None
+    """
+
+    default_travel.ticket_price = MOCKED_TICKET_PRICE
+    default_travel.car_price = MOCKED_CAR_PRICE
+    default_travel._cars = default_cars
+
+    assert default_travel.cost == DEFAULT_FLIGHT_TOTAL_COST + DEFAULT_CAR_TOTAL_COST
+
+
+def test_full_travel_cost(default_travel: Travel, default_hotels, default_cars):
+    """ Test cost property
+
+        Tests if the calculated cost is equal to the expected cost
+        with well-formed input.
+
+        Expected cost = num_flights * passengers_per_flight * ticket_price
+
+        :return: None
+    """
+
+    default_travel.ticket_price = MOCKED_TICKET_PRICE
+    default_travel.hotel_price = MOCKED_HOTEL_PRICE
+    default_travel.car_price = MOCKED_CAR_PRICE
+    default_travel._hotels = default_hotels
+    default_travel._cars = default_cars
+
+    assert default_travel.cost == DEFAULT_FLIGHT_TOTAL_COST + DEFAULT_CAR_TOTAL_COST + DEFAULT_HOTEL_TOTAL_COST
 
 
 def test_travel_cost_cannot_be_set(default_travel: Travel):
