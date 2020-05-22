@@ -190,3 +190,8 @@ def default_user():
 @pytest.fixture
 def default_reservation(default_travel, default_user, mock_fetch_prices):
     return Reservation(default_travel, default_user)
+
+
+@pytest.fixture
+def full_reservation(default_flights, default_user, default_hotels, default_cars, mock_fetch_prices):
+    return Reservation(Travel(DEFAULT_NUM_TRAVELERS, default_flights, default_hotels, default_cars), default_user)

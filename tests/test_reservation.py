@@ -4,6 +4,7 @@ from src.Booking import Booking
 from .test_constants import *
 from src.Response import Response
 
+
 # TODO: add documentation about fixture usage
 
 
@@ -26,7 +27,8 @@ def test_reservation_process_payment_data(default_reservation):
     """
 
     # 2. Process the payment data:
-    default_payment_data = default_reservation._process_payment_data(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV, DEFAULT_CARD_TYPE)
+    default_payment_data = default_reservation._process_payment_data(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER,
+                                                                     DEFAULT_CARD_CVV, DEFAULT_CARD_TYPE)
 
     assert isinstance(default_payment_data, PaymentData)
     assert default_payment_data.amount != 0.0
@@ -34,17 +36,14 @@ def test_reservation_process_payment_data(default_reservation):
 
 
 def test_retries_confirm_flights_error(mock_confirm_reserve_return_retries, default_reservation):
-
     assert default_reservation._confirm_flights() == 3
 
 
 def test_confirm_flights(default_reservation):
-
     assert default_reservation._confirm_flights() is True
 
 
 def test_retries_confirm_hotels(mock_booking_retries, default_reservation):
-
     assert default_reservation._confirm_hotels() == 3
 
 
@@ -61,7 +60,6 @@ def test_confirm_hotels_no_hotels(default_reservation):
 
 
 def test_retries_confirm_cars(mock_rentalcars_retries, default_reservation):
-
     assert default_reservation._confirm_cars() == 3
 
 
@@ -83,7 +81,8 @@ def test_confirm_payment_error(mock_bank_error, default_reservation):
         reservation.confirm() should be False
         :return: None
     """
-    reservation_response = default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV, DEFAULT_CARD_TYPE)
+    reservation_response = default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV,
+                                                       DEFAULT_CARD_TYPE)
 
     assert reservation_response is not ''
     assert reservation_response is Response.BANK_ERROR
@@ -95,7 +94,8 @@ def test_confirm_skyscanner_error(default_reservation, mock_skyscanner_error):
         reservation.confirm() should be False
         :return: None
     """
-    reservation_response = default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV, DEFAULT_CARD_TYPE)
+    reservation_response = default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV,
+                                                       DEFAULT_CARD_TYPE)
 
     assert reservation_response is not ''
     assert reservation_response is Response.SKYSCANNER_ERROR
@@ -116,6 +116,22 @@ def test_confirm_rentalcars_error(mock_rentalcars_error, default_reservation, de
 
     reservation_response = default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV,
                                                        DEFAULT_CARD_TYPE)
+
+    assert reservation_response is not ''
+    assert reservation_response is Response.RENTALCARS_ERROR
+
+
+def test_full_confirm_booking_error(full_reservation, mock_booking_error):
+    reservation_response = full_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV,
+                                                    DEFAULT_CARD_TYPE)
+
+    assert reservation_response is not ''
+    assert reservation_response is Response.BOOKING_ERROR
+
+
+def test_full_confirm_rentalcars_error(full_reservation, mock_rentalcars_error):
+    reservation_response = full_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV,
+                                                    DEFAULT_CARD_TYPE)
 
     assert reservation_response is not ''
     assert reservation_response is Response.RENTALCARS_ERROR
