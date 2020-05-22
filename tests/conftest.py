@@ -209,10 +209,18 @@ def default_user():
 
 
 @pytest.fixture
-def default_reservation(default_travel, default_user, mock_fetch_prices):
-    return Reservation(default_travel, default_user)
+def default_reservation(default_travel, default_user, default_payment_data, mock_fetch_prices):
+    res = Reservation(default_travel)
+    res._user = default_user
+    res._payment_method = DEFAULT_CARD_TYPE
+    res._payment_data = default_payment_data
+    return res
 
 
 @pytest.fixture
 def full_reservation(default_flights, default_user, default_hotels, default_cars, mock_fetch_prices):
-    return Reservation(Travel(DEFAULT_NUM_TRAVELERS, default_flights, default_hotels, default_cars), default_user)
+    res = Reservation(Travel(DEFAULT_NUM_TRAVELERS, default_flights, default_hotels, default_cars))
+    res._user = default_user
+    res._payment_method = DEFAULT_CARD_TYPE
+    res._payment_data = default_payment_data
+    return res

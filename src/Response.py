@@ -4,9 +4,10 @@ from enum import Enum, unique, auto
 @unique
 class Response(Enum):
     CONFIRMATION_SUCCESSFUL = auto()
-    INVALID_BILLING_INFO = auto()
-    INVALID_CARD_TYPE = auto()
-    INVALID_PAYMENT_INFO = auto()
+    RESERVATION_DATA_UPDATED = auto()
+    INVALID_BILLING_DATA = auto()
+    INVALID_PAYMENT_METHOD = auto()
+    INVALID_PAYMENT_DATA = auto()
     BANK_ERROR = auto()
     SKYSCANNER_ERROR = auto()
     BOOKING_ERROR = auto()

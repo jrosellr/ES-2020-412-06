@@ -28,7 +28,7 @@ class Reservation:
 
     MAX_RETRIES = 4
 
-    def __init__(self, travel: Travel, user: User):
+    def __init__(self, travel: Travel):
         """ Copies a travel and user instance and initializes the total_price at 0
 
         :param travel: copy of Travel instance
@@ -36,42 +36,61 @@ class Reservation:
         """
 
         self._travel = copy.deepcopy(travel)
-        self._user = copy.deepcopy(user)
+        self._user = None
+        self._payment_method = None
+        self._payment_data = None
 
-    def confirm(self, name: str, card_number: str, security_code: str, credit_card_type: str) -> Response:
-        """ Takes the payment data with the total price and proceeds to do the payment and flights confirmation
+    def save_billing_data(self, full_name: str, dni: str, address: str, mobile_number: str, email: str) -> Response:
+        response = Response.INVALID_BILLING_DATA
+        usr = User(full_name, dni, address, mobile_number, email)
+        if Validator.validate_billing_data(usr):
+            self._user = copy.deepcopy(usr)
+            response = Response.RESERVATION_DATA_UPDATED
 
-        :param credit_card_type: card type can be VISA or MASTERCARD, we need to construct a CardType object
-        :param name: string with the name of the card holder
-        :param card_number: string containing the card number
-        :param security_code: integer with the security code of the card
-        :return: bool that confirms the payment and flights reservation
+        return response
+
+    def save_payment_method(self, payment_method: str) -> Response:
+        response = Response.INVALID_PAYMENT_METHOD
+        if Validator.validate_credit_card_type(payment_method):
+            self._payment_method = payment_method
+            response = Response.RESERVATION_DATA_UPDATED
+
+        return response
+
+    def save_payment_data(self, name: str, card_number: str, security_code: str) -> Response:
+        response = Response.INVALID_PAYMENT_DATA
+        if Validator.validate_payment_data(name, card_number, security_code):
+            self._payment_data = self._process_payment_data(user_name=name,
+                                                            card_number=card_number,
+                                                            security_code=security_code,
+                                                            credit_card_type=self._payment_method)
+
+            response = Response.RESERVATION_DATA_UPDATED
+
+        return response
+
+    def confirm(self) -> Response:
+        """ Confirm the reservation
+
         """
 
-        if Validator.validate_billing_data(self._user) is False:
-            return Response.INVALID_BILLING_INFO
+        try:
+            if self._confirm_payment(self._payment_data) and self._confirm_flights() and self._confirm_hotels() and self._confirm_cars():
+                return Response.CONFIRMATION_SUCCESSFUL
+        except ConnectionRefusedError as e:
+            return e.args[0]
 
-        if Validator.validate_credit_card_type(credit_card_type) is False:
-            return Response.INVALID_CARD_TYPE
+    def _process_payment_data(self, user_name: str, card_number: str, security_code: str, credit_card_type: str) -> PaymentData:  # FIXME: update documentation
+        """ Call _configure_travel and create an instance of PaymentData with the amount calculated.
 
-        if Validator.validate_payment_data(name, card_number, security_code) is False:
-            return Response.INVALID_PAYMENT_INFO
-
-        payment_data = self._process_payment_data(name, card_number, security_code, credit_card_type)
-
-        return self._confirm_reservation(payment_data)
-
-    def _process_payment_data(self, name: str, card_number: str, security_code: str, credit_card_type: str) -> PaymentData:  # FIXME: update documentation
-        """ Call calculate_flights_price and create an instance of PaymentData with the amount calculated.
-
-        :param name: string with the name of the card holder
+        :param user_name: string with the name of the card holder
         :param card_number: string containing the card number
         :param security_code: integer with the security code of the card
         :return: instance of PaymentData with the total amount of money to pay and client information
         """
 
         self._configure_travel()
-        return PaymentData(name, card_number, security_code, self._travel.cost, credit_card_type)
+        return PaymentData(user_name, card_number, security_code, self._travel.cost, credit_card_type)
 
     def _configure_travel(self):
         self._travel.ticket_price = self._fetch_ticket_price()
@@ -89,13 +108,6 @@ class Reservation:
     @staticmethod
     def _fetch_car_price() -> float:
         return Rentalcars.fetch_car_price()
-
-    def _confirm_reservation(self, payment_data: PaymentData) -> Response:
-        try:
-            if self._confirm_payment(payment_data) and self._confirm_flights() and self._confirm_hotels() and self._confirm_cars():
-                return Response.CONFIRMATION_SUCCESSFUL
-        except ConnectionRefusedError as e:
-            return e.args[0]
 
     def _confirm_payment(self, payment_data: PaymentData) -> bool:
         retries = 0

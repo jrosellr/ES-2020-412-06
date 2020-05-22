@@ -8,15 +8,55 @@ from src.Response import Response
 # TODO: add documentation about fixture usage
 
 
-def test_reservation_ctor(default_user, default_travel):
+def test_reservation_ctor(default_travel):
     """ Unit test for Reservation.__init__(**)
 
     :return: None
     """
 
-    reservation = Reservation(default_travel, default_user)
+    reservation = Reservation(default_travel)
 
     assert isinstance(reservation, Reservation)
+    assert reservation._user is None
+    assert reservation._payment_method is None
+    assert reservation._payment_data is None
+
+
+def test_save_billing_data(default_travel):
+    reservation = Reservation(default_travel)
+    assert reservation.save_billing_data(DEFAULT_USER_NAME,
+                                         DEFAULT_DNI,
+                                         DEFAULT_ADDRESS,
+                                         DEFAULT_MOBILE_NUMBER, DEFAULT_USER_EMAIL) == Response.RESERVATION_DATA_UPDATED
+
+
+def test_invalid_billing_data(default_travel):
+    reservation = Reservation(default_travel)
+    assert reservation.save_billing_data(DEFAULT_USER_NAME,
+                                         '0009CA',
+                                         DEFAULT_ADDRESS,
+                                         DEFAULT_MOBILE_NUMBER, DEFAULT_USER_EMAIL) is Response.INVALID_BILLING_DATA
+
+
+def test_save_payment_method(default_travel):
+    reservation = Reservation(default_travel)
+    assert reservation.save_payment_method(DEFAULT_CARD_TYPE) is Response.RESERVATION_DATA_UPDATED
+
+
+def test_invalid_payment_method(default_travel):
+    reservation = Reservation(default_travel)
+    assert reservation.save_payment_method('EXPRESS') is Response.INVALID_PAYMENT_METHOD
+
+
+def test_save_payment_data(default_travel, mock_fetch_prices):
+    reservation = Reservation(default_travel)
+    assert reservation.save_payment_data(DEFAULT_CARD_HOLDER_NAME,
+                                         DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV) is Response.RESERVATION_DATA_UPDATED
+
+
+def test_invalid_payment_data(default_reservation):
+    assert default_reservation.save_payment_data(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER,
+                                       '1234') is Response.INVALID_PAYMENT_DATA
 
 
 def test_retries_confirm_flights_error(mock_confirm_reserve_return_retries, default_reservation):
@@ -65,8 +105,7 @@ def test_confirm_payment_error(mock_bank_error, default_reservation):
         reservation.confirm() should be False
         :return: None
     """
-    reservation_response = default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV,
-                                                       DEFAULT_CARD_TYPE)
+    reservation_response = default_reservation.confirm()
 
     assert reservation_response is not ''
     assert reservation_response is Response.BANK_ERROR
@@ -78,8 +117,7 @@ def test_confirm_skyscanner_error(default_reservation, mock_skyscanner_error):
         reservation.confirm() should be False
         :return: None
     """
-    reservation_response = default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV,
-                                                       DEFAULT_CARD_TYPE)
+    reservation_response = default_reservation.confirm()
 
     assert reservation_response is not ''
     assert reservation_response is Response.SKYSCANNER_ERROR
@@ -88,8 +126,7 @@ def test_confirm_skyscanner_error(default_reservation, mock_skyscanner_error):
 def test_confirm_booking_error(mock_booking_error, default_reservation, default_hotels):
     default_reservation._travel._hotels = default_hotels
 
-    reservation_response = default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV,
-                                                       DEFAULT_CARD_TYPE)
+    reservation_response = default_reservation.confirm()
 
     assert reservation_response is not ''
     assert reservation_response is Response.BOOKING_ERROR
@@ -98,24 +135,21 @@ def test_confirm_booking_error(mock_booking_error, default_reservation, default_
 def test_confirm_rentalcars_error(mock_rentalcars_error, default_reservation, default_cars):
     default_reservation._travel._cars = default_cars
 
-    reservation_response = default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV,
-                                                       DEFAULT_CARD_TYPE)
+    reservation_response = default_reservation.confirm()
 
     assert reservation_response is not ''
     assert reservation_response is Response.RENTALCARS_ERROR
 
 
 def test_full_confirm_booking_error(full_reservation, mock_booking_error):
-    reservation_response = full_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV,
-                                                    DEFAULT_CARD_TYPE)
+    reservation_response = full_reservation.confirm()
 
     assert reservation_response is not ''
     assert reservation_response is Response.BOOKING_ERROR
 
 
 def test_full_confirm_rentalcars_error(full_reservation, mock_rentalcars_error):
-    reservation_response = full_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV,
-                                                    DEFAULT_CARD_TYPE)
+    reservation_response = full_reservation.confirm()
 
     assert reservation_response is not ''
     assert reservation_response is Response.RENTALCARS_ERROR
@@ -190,22 +224,6 @@ def test_full_process_payment_data(full_reservation):
     assert isinstance(default_payment_data, PaymentData)
     assert default_payment_data.amount != 0.0
     assert full_reservation._travel.cost == DEFAULT_FLIGHT_TOTAL_COST + DEFAULT_HOTEL_TOTAL_COST + DEFAULT_CAR_TOTAL_COST
-
-
-def test_invalid_billing_data(default_reservation):
-    default_reservation._user.dni = '123A'
-    assert default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER,
-                                       DEFAULT_CARD_CVV, DEFAULT_CARD_TYPE) is Response.INVALID_BILLING_INFO
-
-
-def test_invalid_credit_card_type(default_reservation):
-    assert default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER,
-                                       DEFAULT_CARD_CVV, 'EXPRESS') is Response.INVALID_CARD_TYPE
-
-
-def test_invalid_payment_data(default_reservation):
-    assert default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER,
-                                       '1234', DEFAULT_CARD_TYPE) is Response.INVALID_PAYMENT_INFO
 
 
 def test_payment_retries(mock_bank_retries, default_reservation: Reservation, default_payment_data):
