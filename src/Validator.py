@@ -1,4 +1,3 @@
-from src.Reservation import Reservation
 from src.User import User
 from src.PaymentData import PaymentData
 import re
@@ -25,10 +24,10 @@ class Validator:
         return credit_card_type is 'VISA' or credit_card_type is 'MASTERCARD'
 
     @staticmethod
-    def validate_payment_data(paymentData: PaymentData):
-        return Validator._validate_full_name(paymentData.user_name) and \
-               Validator._validate_credit_card_number(paymentData.card_number) and \
-               Validator._validate_credit_security_code(paymentData.security_code)
+    def validate_payment_data(user_name, card_number, security_code):
+        return Validator._validate_full_name(user_name) and \
+               Validator._validate_credit_card_number(card_number) and \
+               Validator._validate_credit_security_code(security_code)
 
     @staticmethod
     def _validate_full_name(name: str):

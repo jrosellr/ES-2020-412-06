@@ -6,6 +6,7 @@ from src.Booking import Booking
 from src.Rentalcars import Rentalcars
 from src.Bank import Bank
 from src.Response import Response
+from src.Validator import Validator
 import copy
 
 
@@ -44,6 +45,15 @@ class Reservation:
         :param security_code: integer with the security code of the card
         :return: bool that confirms the payment and flights reservation
         """
+
+        if Validator.validate_billing_data(self._user) is False:
+            return Response.INVALID_BILLING_INFO
+
+        if Validator.validate_credit_card_type(credit_card_type) is False:
+            return Response.INVALID_CARD_TYPE
+
+        if Validator.validate_payment_data(name, card_number, security_code) is False:
+            return Response.INVALID_PAYMENT_INFO
 
         payment_data = self._process_payment_data(name, card_number, security_code, credit_card_type)
 
