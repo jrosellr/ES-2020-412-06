@@ -10,7 +10,7 @@ class Booking:
         pass
 
     @staticmethod
-    def confirm_reserve(self, user: User, hotels: Hotels) -> bool:
+    def confirm_reserve(user: User, hotels: Hotels) -> bool:
         return True
 
     @staticmethod
