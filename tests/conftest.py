@@ -64,7 +64,7 @@ def mock_skyscanner_error(monkeypatch):
 def mock_confirm_reserve_return_retries(monkeypatch, mock_skyscanner_error):
     def mock_confirm_reserve(*args):
         retries = 0
-        while retries < 3:
+        while retries < DEFAULT_MAX_RETRIES:
             try:
                 if Skyscanner.confirm_reserve(*args):
                     pass
@@ -80,7 +80,7 @@ def mock_confirm_reserve_return_retries(monkeypatch, mock_skyscanner_error):
 def mock_booking_retries(monkeypatch, mock_booking_error):
     def mock_confirm_reserve(*args):
         retries = 0
-        while retries < 3:
+        while retries < DEFAULT_MAX_RETRIES:
             try:
                 if Booking.confirm_reserve(*args):
                     pass
@@ -95,7 +95,7 @@ def mock_booking_retries(monkeypatch, mock_booking_error):
 def mock_rentalcars_retries(monkeypatch, mock_rentalcars_error):
     def mock_confirm_reserve(*args):
         retries = 0
-        while retries < 3:
+        while retries < DEFAULT_MAX_RETRIES:
             try:
                 if Rentalcars.confirm_reserve(*args):
                     pass
@@ -104,6 +104,21 @@ def mock_rentalcars_retries(monkeypatch, mock_rentalcars_error):
         return retries
 
     monkeypatch.setattr(Reservation, "_confirm_cars", mock_confirm_reserve)
+
+
+@pytest.fixture
+def mock_bank_retries(monkeypatch, mock_bank_error):
+    def mock_confirm_payment(*args):
+        retries = 0
+        while retries < DEFAULT_MAX_RETRIES:
+            try:
+                if Bank.do_payment(*args):
+                    pass
+            except ConnectionRefusedError:
+                retries += 1
+        return retries
+
+    monkeypatch.setattr(Reservation, "_confirm_payment", mock_confirm_payment)
 
 
 @pytest.fixture

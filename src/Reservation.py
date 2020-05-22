@@ -26,6 +26,8 @@ class Reservation:
         user: The User object who makes the reservation
     """
 
+    MAX_RETRIES = 4
+
     def __init__(self, travel: Travel, user: User):
         """ Copies a travel and user instance and initializes the total_price at 0
 
@@ -96,11 +98,18 @@ class Reservation:
             return e.args[0]
 
     def _confirm_payment(self, payment_data: PaymentData) -> bool:
-        return Bank.do_payment(self._user, payment_data)
+        retries = 0
+        while retries < self.MAX_RETRIES:
+            try:
+                return Bank.do_payment(self._user, payment_data)
+            except ConnectionRefusedError:
+                retries += 1
+
+        raise ConnectionRefusedError(Response.BANK_ERROR)
 
     def _confirm_flights(self) -> bool:
         retries = 0
-        while retries < 3:
+        while retries < self.MAX_RETRIES:
             try:
                 return Skyscanner.confirm_reserve(self._user, self._travel._flights)
             except ConnectionRefusedError:
@@ -111,7 +120,7 @@ class Reservation:
     def _confirm_hotels(self) -> bool:
         if self._travel.has_hotels:
             retries = 0
-            while retries < 3:
+            while retries < self.MAX_RETRIES:
                 try:
                     return Booking.confirm_reserve(self._user, self._travel._hotels)
                 except ConnectionRefusedError:
@@ -123,7 +132,7 @@ class Reservation:
     def _confirm_cars(self) -> bool:
         if self._travel.has_cars:
             retries = 0
-            while retries < 3:
+            while retries < self.MAX_RETRIES:
                 try:
                     return  Rentalcars.confirm_reserve(self._user, self._travel._cars)
                 except ConnectionRefusedError:

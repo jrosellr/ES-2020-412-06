@@ -20,7 +20,7 @@ def test_reservation_ctor(default_user, default_travel):
 
 
 def test_retries_confirm_flights_error(mock_confirm_reserve_return_retries, default_reservation):
-    assert default_reservation._confirm_flights() == 3
+    assert default_reservation._confirm_flights() == DEFAULT_MAX_RETRIES
 
 
 def test_confirm_flights(default_reservation):
@@ -28,7 +28,7 @@ def test_confirm_flights(default_reservation):
 
 
 def test_retries_confirm_hotels(mock_booking_retries, default_reservation):
-    assert default_reservation._confirm_hotels() == 3
+    assert default_reservation._confirm_hotels() == DEFAULT_MAX_RETRIES
 
 
 def test_confirm_hotels(default_reservation, default_hotels):
@@ -44,7 +44,7 @@ def test_confirm_hotels_no_hotels(default_reservation):
 
 
 def test_retries_confirm_cars(mock_rentalcars_retries, default_reservation):
-    assert default_reservation._confirm_cars() == 3
+    assert default_reservation._confirm_cars() == DEFAULT_MAX_RETRIES
 
 
 def test_confirm_cars(default_reservation, default_cars):
@@ -206,3 +206,7 @@ def test_invalid_credit_card_type(default_reservation):
 def test_invalid_payment_data(default_reservation):
     assert default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER,
                                        '1234', DEFAULT_CARD_TYPE) is Response.INVALID_PAYMENT_INFO
+
+
+def test_payment_retries(mock_bank_retries, default_reservation: Reservation, default_payment_data):
+    assert default_reservation._confirm_payment(default_payment_data) == DEFAULT_MAX_RETRIES
