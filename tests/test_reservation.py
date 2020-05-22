@@ -89,7 +89,7 @@ def test_confirm_payment_error(mock_bank_error, default_reservation):
     assert reservation_response is Response.BANK_ERROR
 
 
-def test_confirm_payment_done(default_reservation):
+def test_confirm_skyscanner_error(default_reservation, mock_skyscanner_error):
     """ Unit test for Reservation.confirm() when Bank.do_payment returns False
 
         reservation.confirm() should be False
@@ -98,4 +98,24 @@ def test_confirm_payment_done(default_reservation):
     reservation_response = default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV, DEFAULT_CARD_TYPE)
 
     assert reservation_response is not ''
-    assert reservation_response is Response.CONFIRMATION_SUCCESSFUL
+    assert reservation_response is Response.SKYSCANNER_ERROR
+
+
+def test_confirm_booking_error(mock_booking_error, default_reservation, default_hotels):
+    default_reservation._travel._hotels = default_hotels
+
+    reservation_response = default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV,
+                                                       DEFAULT_CARD_TYPE)
+
+    assert reservation_response is not ''
+    assert reservation_response is Response.BOOKING_ERROR
+
+
+def test_confirm_rentalcars_error(mock_rentalcars_error, default_reservation, default_cars):
+    default_reservation._travel._cars = default_cars
+
+    reservation_response = default_reservation.confirm(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV,
+                                                       DEFAULT_CARD_TYPE)
+
+    assert reservation_response is not ''
+    assert reservation_response is Response.RENTALCARS_ERROR
