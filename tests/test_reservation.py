@@ -19,22 +19,6 @@ def test_reservation_ctor(default_user, default_travel):
     assert isinstance(reservation, Reservation)
 
 
-def test_reservation_process_payment_data(default_reservation):
-    """ Unit test for Reservation._process_payment_data()
-
-        Amount in payment_data should be != 0 and == number of flights * flight price
-        :return: None
-    """
-
-    # 2. Process the payment data:
-    default_payment_data = default_reservation._process_payment_data(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER,
-                                                                     DEFAULT_CARD_CVV, DEFAULT_CARD_TYPE)
-
-    assert isinstance(default_payment_data, PaymentData)
-    assert default_payment_data.amount != 0.0
-    assert default_payment_data.amount == MOCKED_TICKET_PRICE * DEFAULT_NUM_TRAVELERS * DEFAULT_FLIGHTS_LEN
-
-
 def test_retries_confirm_flights_error(mock_confirm_reserve_return_retries, default_reservation):
     assert default_reservation._confirm_flights() == 3
 
@@ -143,6 +127,55 @@ def test_configure_travel(full_reservation):
     assert full_reservation._travel.ticket_price == MOCKED_TICKET_PRICE
     assert full_reservation._travel.hotel_price == MOCKED_HOTEL_PRICE
     assert full_reservation._travel.car_price == MOCKED_CAR_PRICE
+
+def test_reservation_process_payment_data(default_reservation):
+    """ Unit test for Reservation._process_payment_data()
+
+        Amount in payment_data should be != 0 and == number of flights * flight price
+        :return: None
+    """
+
+    # 2. Process the payment data:
+    default_payment_data = default_reservation._process_payment_data(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER,
+                                                                     DEFAULT_CARD_CVV, DEFAULT_CARD_TYPE)
+
+    assert isinstance(default_payment_data, PaymentData)
+    assert default_payment_data.amount != 0.0
+    assert default_payment_data.amount == DEFAULT_FLIGHT_TOTAL_COST
+
+
+def test_reservation_process_payment_data_hotels(default_reservation, default_hotels):
+    """ Unit test for Reservation._process_payment_data()
+
+        Amount in payment_data should be != 0 and == number of flights * flight price
+        :return: None
+    """
+
+    # 2. Process the payment data:
+    default_reservation._travel._hotels = default_hotels
+    default_payment_data = default_reservation._process_payment_data(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER,
+                                                                     DEFAULT_CARD_CVV, DEFAULT_CARD_TYPE)
+
+    assert isinstance(default_payment_data, PaymentData)
+    assert default_payment_data.amount != 0.0
+    assert default_payment_data.amount == DEFAULT_FLIGHT_TOTAL_COST + DEFAULT_HOTEL_TOTAL_COST
+
+
+def test_reservation_process_payment_data_cars(default_reservation, default_cars):
+    """ Unit test for Reservation._process_payment_data()
+
+        Amount in payment_data should be != 0 and == number of flights * flight price
+        :return: None
+    """
+
+    # 2. Process the payment data:
+    default_reservation._travel._cars = default_cars
+    default_payment_data = default_reservation._process_payment_data(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER,
+                                                                     DEFAULT_CARD_CVV, DEFAULT_CARD_TYPE)
+
+    assert isinstance(default_payment_data, PaymentData)
+    assert default_payment_data.amount != 0.0
+    assert default_payment_data.amount == DEFAULT_FLIGHT_TOTAL_COST + DEFAULT_CAR_TOTAL_COST
 
 
 def test_full_process_payment_data(full_reservation):
