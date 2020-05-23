@@ -59,16 +59,30 @@ def test_invalid_payment_data(default_reservation):
                                        '1234') is Response.INVALID_PAYMENT_DATA
 
 
-def test_retries_confirm_flights_error(mock_confirm_reserve_return_retries, default_reservation):
+def test_max_retries_confirm_flights(mock_confirm_reserve_return_retries, default_reservation):
     assert default_reservation._confirm_flights() == DEFAULT_MAX_RETRIES
+
+
+def test_retries_confirm_flights(mock_confirm_reserve_return_retries, default_reservation):
+    ret_tuple = default_reservation._confirm_flights()
+
+    assert ret_tuple[0] == DEFAULT_RETRIES
+    assert ret_tuple[1] is True
 
 
 def test_confirm_flights(default_reservation):
     assert default_reservation._confirm_flights() is True
 
 
-def test_retries_confirm_hotels(mock_booking_retries, default_reservation):
+def test_max_retries_confirm_hotels(mock_booking_retries, default_reservation):
     assert default_reservation._confirm_hotels() == DEFAULT_MAX_RETRIES
+
+
+def test_retries_confirm_hotels(mock_confirm_reserve_return_retries, default_reservation):
+    ret_tuple = default_reservation._confirm_hotels()
+
+    assert ret_tuple[0] == DEFAULT_RETRIES
+    assert ret_tuple[1] is True
 
 
 def test_confirm_hotels(default_reservation, default_hotels):
@@ -83,8 +97,15 @@ def test_confirm_hotels_no_hotels(default_reservation):
     assert default_reservation._confirm_hotels() is True
 
 
-def test_retries_confirm_cars(mock_rentalcars_retries, default_reservation):
+def test_max_retries_confirm_cars(mock_rentalcars_retries, default_reservation):
     assert default_reservation._confirm_cars() == DEFAULT_MAX_RETRIES
+
+
+def test_retries_confirm_cars(mock_confirm_reserve_return_retries, default_reservation):
+    ret_tuple = default_reservation._confirm_cars()
+
+    assert ret_tuple[0] == DEFAULT_RETRIES
+    assert ret_tuple[1] is True
 
 
 def test_confirm_cars(default_reservation, default_cars):
