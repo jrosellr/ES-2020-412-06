@@ -5,8 +5,6 @@ from src.Cars import Cars
 from .test_constants import *
 import pytest
 
-# TODO: improve test documentation
-
 
 def test_travel_ctor(default_flights: Flights):
     """ Test case for Travel.__init__(**) method with Flights
