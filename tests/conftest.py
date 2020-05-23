@@ -57,122 +57,6 @@ def mock_bank_error(monkeypatch):
 
 
 @pytest.fixture
-def mock_bank_success(monkeypatch):
-    """ Fixture to simulate a successful connection with the bank.
-
-    PARCHED FUNCTIONALITY:
-        Replaces de do_payment function in Bank by a mock and returns a success response.
-    """
-
-    def mock_do_payment_successful(*args):
-        return MOCKED_BANK_SUCCESS_RET
-
-    monkeypatch.setattr(Bank, "do_payment", mock_do_payment_successful)
-
-
-@pytest.fixture
-def mock_skyscanner_error(monkeypatch):
-    """ Fixture to simulate an error with the Skyscanner API.
-
-    PARCHED FUNCTIONALITY:
-        Replaces de confirm_reserve function in Skyscanner by a mock that raises an error exception.
-    """
-
-    def mock_confirm_reserve_error(*args):
-        raise ConnectionRefusedError(Response.SKYSCANNER_ERROR)
-
-    monkeypatch.setattr(Skyscanner, "confirm_reserve", mock_confirm_reserve_error)
-
-
-@pytest.fixture
-def mock_confirm_reserve_return_retries(monkeypatch, mock_skyscanner_error):
-    """ Fixture to simulate the maximum number of retries for the Skyscanner API.
-
-    PARCHED FUNCTIONALITY:
-        Replaces de _confirm_reserve function in Reservation by a mock
-        that returns the maximum number of retries.
-    """
-
-    def mock_confirm_reserve(*args):
-        retries = 0
-        while retries < DEFAULT_MAX_RETRIES:
-            try:
-                if Skyscanner.confirm_reserve(*args):
-                    pass
-            except ConnectionRefusedError:
-                retries += 1
-
-        return retries
-
-    monkeypatch.setattr(Reservation, "_confirm_flights", mock_confirm_reserve)
-
-
-@pytest.fixture
-def mock_booking_retries(monkeypatch, mock_booking_error):
-    """ Fixture to simulate the maximum number of retries for the Booking API.
-
-    PARCHED FUNCTIONALITY:
-        Replaces de _confirm_hotels function in Reservation by a mock
-        that returns the maximum number of retries.
-    """
-
-    def mock_confirm_reserve(*args):
-        retries = 0
-        while retries < DEFAULT_MAX_RETRIES:
-            try:
-                if Booking.confirm_reserve(*args):
-                    pass
-            except ConnectionRefusedError:
-                retries += 1
-        return retries
-
-    monkeypatch.setattr(Reservation, "_confirm_hotels", mock_confirm_reserve)
-
-
-@pytest.fixture
-def mock_rentalcars_retries(monkeypatch, mock_rentalcars_error):
-    """ Fixture to simulate the maximum number of retries for the Rentalcars API.
-
-    PARCHED FUNCTIONALITY:
-        Replaces de _confirm_cars function in Reservation by a mock
-        that returns the maximum number of retries.
-    """
-    def mock_confirm_reserve(*args):
-        retries = 0
-        while retries < DEFAULT_MAX_RETRIES:
-            try:
-                if Rentalcars.confirm_reserve(*args):
-                    pass
-            except ConnectionRefusedError:
-                retries += 1
-        return retries
-
-    monkeypatch.setattr(Reservation, "_confirm_cars", mock_confirm_reserve)
-
-
-@pytest.fixture
-def mock_bank_retries(monkeypatch, mock_bank_error):
-    """ Fixture to simulate the maximum number of retries for the Bank API.
-
-    PARCHED FUNCTIONALITY:
-        Replaces de _confirm_payment function in Reservation by a mock
-        that returns the maximum number of retries.
-    """
-
-    def mock_confirm_payment(*args):
-        retries = 0
-        while retries < DEFAULT_MAX_RETRIES:
-            try:
-                if Bank.do_payment(*args):
-                    pass
-            except ConnectionRefusedError:
-                retries += 1
-        return retries
-
-    monkeypatch.setattr(Reservation, "_confirm_payment", mock_confirm_payment)
-
-
-@pytest.fixture
 def mock_skyscanner_error(monkeypatch):
     """ Fixture to simulate an error with the Skyscanner API.
 
@@ -207,10 +91,199 @@ def mock_rentalcars_error(monkeypatch):
     PARCHED FUNCTIONALITY:
         Replaces de confirm_reserve function in Rentalcars by a mock that raises an error exception.
     """
+
     def mock_confirm_rentalcars_error(*args):
         raise ConnectionRefusedError(Response.RENTALCARS_ERROR)
 
     monkeypatch.setattr(Rentalcars, "confirm_reserve", mock_confirm_rentalcars_error)
+
+
+@pytest.fixture
+def mock_max_bank_retries(monkeypatch, mock_bank_error):
+    """ Fixture to simulate the maximum number of retries for the Bank API.
+
+    PARCHED FUNCTIONALITY:
+        Replaces de _confirm_payment function in Reservation by a mock
+        that returns the maximum number of retries.
+    """
+
+    def mock_confirm_payment(*args):
+        retries = 0
+        while retries < DEFAULT_MAX_RETRIES:
+            try:
+                return Bank.do_payment(*args)
+            except ConnectionRefusedError:
+                retries += 1
+        return retries
+
+    monkeypatch.setattr(Reservation, "_confirm_payment", mock_confirm_payment)
+
+
+@pytest.fixture
+def mock_bank_retries(monkeypatch, mock_bank_error):
+    """ Fixture to simulate the maximum number of retries for the Bank API.
+
+    PARCHED FUNCTIONALITY:
+        Replaces the _confirm_payment function in Reservation by a mock
+        that returns the attempted retries and the correct Bank response
+    """
+
+    def mock_bank_success(*args):
+        return True
+
+    def mock_confirm_payment(*args):
+        retries = 0
+        while retries < DEFAULT_MAX_RETRIES:
+            try:
+                return retries, Bank.do_payment(*args)
+            except ConnectionRefusedError:
+                retries += 1
+                if retries == DEFAULT_RETRIES:
+                    monkeypatch.setattr(Bank, "do_payment", mock_bank_success)
+
+    monkeypatch.setattr(Reservation, "_confirm_payment", mock_confirm_payment)
+
+
+@pytest.fixture
+def mock_max_skyscanner_retries(monkeypatch, mock_skyscanner_error):
+    """ Fixture to simulate the maximum number of retries for the Skyscanner API.
+
+    PARCHED FUNCTIONALITY:
+        Replaces the _confirm_payment function in Reservation by a mock
+        that returns the attempted retries and the correct Skyscanner response
+    """
+
+    def mock_confirm_flights(*args):
+        retries = 0
+        while retries < DEFAULT_MAX_RETRIES:
+            try:
+                if Skyscanner.confirm_reserve(*args):
+                    pass
+            except ConnectionRefusedError:
+                retries += 1
+
+        return retries
+
+    monkeypatch.setattr(Reservation, "_confirm_flights", mock_confirm_flights)
+
+
+@pytest.fixture
+def mock_skyscanner_retries(monkeypatch, mock_skyscanner_error):
+    """ Fixture to simulate the maximum number of retries for the Bank API.
+
+    PARCHED FUNCTIONALITY:
+        Replaces the _confirm_payment function in Reservation by a mock
+        that returns the attempted retries and the correct Bank response
+    """
+
+    def mock_skyscanner_success(*args):
+        return True
+
+    def mock_confirm_payment(*args):
+        retries = 0
+        while retries < DEFAULT_MAX_RETRIES:
+            try:
+                return retries, Skyscanner.confirm_reserve(*args)
+            except ConnectionRefusedError:
+                retries += 1
+                if retries == DEFAULT_RETRIES:
+                    monkeypatch.setattr(Skyscanner, "confirm_reserve", mock_skyscanner_success)
+
+    monkeypatch.setattr(Reservation, "_confirm_flights", mock_confirm_payment)
+
+
+@pytest.fixture
+def mock_max_booking_retries(monkeypatch, mock_booking_error):
+    """ Fixture to simulate the maximum number of retries for the Booking API.
+
+    PARCHED FUNCTIONALITY:
+        Replaces de _confirm_hotels function in Reservation by a mock
+        that returns the maximum number of retries.
+    """
+
+    def mock_confirm_hotels(*args):
+        retries = 0
+        while retries < DEFAULT_MAX_RETRIES:
+            try:
+                if Booking.confirm_reserve(*args):
+                    pass
+            except ConnectionRefusedError:
+                retries += 1
+        return retries
+
+    monkeypatch.setattr(Reservation, "_confirm_hotels", mock_confirm_hotels)
+
+
+@pytest.fixture
+def mock_booking_retries(monkeypatch, mock_booking_error):
+    """ Fixture to simulate the maximum number of retries for the Booking API.
+
+    PARCHED FUNCTIONALITY:
+        Replaces de _confirm_hotels function in Reservation by a mock
+        that returns the maximum number of retries.
+    """
+
+    def mock_booking_success(*args):
+        return True
+
+    def mock_confirm_hotels(*args):
+        retries = 0
+        while retries < DEFAULT_MAX_RETRIES:
+            try:
+                return retries, Booking.confirm_reserve(*args)
+            except ConnectionRefusedError:
+                retries += 1
+                if retries == DEFAULT_RETRIES:
+                    monkeypatch.setattr(Booking, "confirm_reserve", mock_booking_success)
+
+    monkeypatch.setattr(Reservation, "_confirm_hotels", mock_confirm_hotels)
+
+
+@pytest.fixture
+def mock_max_rentalcars_retries(monkeypatch, mock_rentalcars_error):
+    """ Fixture to simulate the maximum number of retries for the Rentalcars API.
+
+    PARCHED FUNCTIONALITY:
+        Replaces de _confirm_cars function in Reservation by a mock
+        that returns the maximum number of retries.
+    """
+
+    def mock_confirm_cars(*args):
+        retries = 0
+        while retries < DEFAULT_MAX_RETRIES:
+            try:
+                if Rentalcars.confirm_reserve(*args):
+                    pass
+            except ConnectionRefusedError:
+                retries += 1
+        return retries
+
+    monkeypatch.setattr(Reservation, "_confirm_cars", mock_confirm_cars)
+
+
+@pytest.fixture
+def mock_rentalcars_retries(monkeypatch, mock_rentalcars_error):
+    """ Fixture to simulate the maximum number of retries for the Rentalcars API.
+
+    PARCHED FUNCTIONALITY:
+        Replaces de _confirm_cars function in Reservation by a mock
+        that returns the maximum number of retries.
+    """
+
+    def mock_rentalcars_success(*args):
+        return True
+
+    def mock_confirm_cars(*args):
+        retries = 0
+        while retries < DEFAULT_MAX_RETRIES:
+            try:
+                return retries, Rentalcars.confirm_reserve(*args)
+            except ConnectionRefusedError:
+                retries += 1
+                if retries == DEFAULT_RETRIES:
+                    monkeypatch.setattr(Rentalcars, "confirm_reserve", mock_rentalcars_success)
+
+    monkeypatch.setattr(Reservation, "_confirm_cars", mock_confirm_cars)
 
 
 @pytest.fixture
