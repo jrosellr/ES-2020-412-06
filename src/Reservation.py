@@ -133,6 +133,7 @@ class Reservation:
 
         :return: None
         """
+
         self._travel.ticket_price = self._fetch_ticket_price()
         self._travel.hotel_price = self._fetch_hotel_price()
         self._travel.car_price = self._fetch_car_price()
