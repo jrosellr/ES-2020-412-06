@@ -38,4 +38,4 @@ Para utilizar pytest es recomendable usar el siguiente comando:
 ***IMPORTANTE Debeis ejecutarlo desde el directorio raíz del proyecto***
 
 ## Diagrama de clases
-Está la imagen y el script de PlantUML subidos en el directorio raíz del repo
+Está la imagen y el script de PlantUML en documentation/uml_diagrams
