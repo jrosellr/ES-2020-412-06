@@ -5,14 +5,13 @@ from .test_constants import *
 import pytest
 
 def test_validate_payment_info():
-    """ Test check payment info
+    """ Test case to check all the private functions of Validator with correct conditions
 
-    Tests if the payment information, containing a name, dni, email,
-    card_number and security_code, is validated with the corresponding
-    regular expression.
 
-    :return: None
+    EXPECTED BEHAVIOUR:
+        The given variables match the checked regular expressions and return True
     """
+
     name = 'This Is a Good Test'
     dni = '12345678A'
     email = 'good_email@test.uab'
@@ -38,13 +37,11 @@ def test_validate_payment_info():
 
 
 def test_validate_payment_info_error():
-    """ Test check invalid payment info
+    """ Test case to check all the private functions of Validator with error conditions
 
-    Tests if the payment information, containing a name, dni, email,
-    card_number and security_code, is invalid because doesn't match
-    with the corresponding regular expression.
 
-    :return: None
+    EXPECTED BEHAVIOUR:
+        The given variables don't match the checked regular expressions and return False
     """
 
     name = "7his_1s-a Bad 7est"
@@ -71,12 +68,32 @@ def test_validate_payment_info_error():
 
 
 def test_validate_billing_data_correct(default_user: User):
+    """ Test case to check the validate_billing_data function with correct conditions
+
+
+    EXPECTED BEHAVIOUR:
+        Variables in given User instance match the checked regular expressions and return True
+    """
     assert Validator.validate_billing_data(default_user) is True
 
 def test_validate_billing_data_error(default_user: User):
+    """ Test case to check the validate_billing_data function with error conditions
+
+
+    EXPECTED BEHAVIOUR:
+        Variables in given User instance don't match the checked regular expressions and return False
+    """
+
     default_user.dni = '123A'
     assert Validator.validate_billing_data(default_user) is False
 
 def test_validate_payment_data(default_payment_data):
+    """ Test case to check the validate_payment_data function
+
+
+    EXPECTED BEHAVIOUR:
+        Variables in given PaymentData instance match the checked regular expressions and return False
+    """
+
     assert Validator.validate_payment_data(default_payment_data.user_name, default_payment_data.card_number,
                                            default_payment_data.security_code) is True

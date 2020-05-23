@@ -1,4 +1,4 @@
-class Hotel:  # FIXME: This is supposed to be a Hotel aggregation
+class Hotel:
     """ A Value-Object used to hold the Hotel(s) an user wants to reserve
         ----
 
