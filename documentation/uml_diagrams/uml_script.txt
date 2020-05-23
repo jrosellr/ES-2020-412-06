@@ -8,7 +8,6 @@ package Confirmar_Viatges
         + __getitem__(code: str) : Flight
         + __setitem__(code: str, flight: Flight): None
         + __delitem__(code: str): None
-        + passengers_per_flight: int
         ------
         - _flights: dict<str, Flight>
     }
@@ -86,16 +85,38 @@ package Confirmar_Viatges
 
     class Reservation
     {
-        + __init__(travel: Travel, user: User) : Reservation
-        + confirm(name: str, card_number: str, security_code: str): bool
+        + __init__(travel: Travel, user: User): Reservation
+        + confirm(name: str, card_number: str, security_code: str): Response
+        + save_billing_data(self, full_name: str, dni: str, address: str, mobile_number: str, email: str) -> Response
+        + save_payment_method(payment_method: str): Response
+        + save_payment_data(holder_name: str, card_number: str, security_code: str): Response
         ----
         - _process_payment_data(name: str, card_number: str, security_code: str): PaymentData
         - _configure_travel(): None
         - _fetch_ticket_price(): float
         - _fetch_room_price(): float
         - _fetch_car_price(): float
+        - _confirm_payment(payment_data: PaymentData): bool
+        - _confirm_flights(): bool
+        - _confirm_hotels(): bool
+        - _confirm_cars(): bool
         - _travel: Travel
         - _user: User
+        - _payment_method: str
+        - _payment_data: PaymentData
+    }
+
+    enum Response
+    {
+        CONFIRMATION_SUCCESSFUL
+        RESERVATION_DATA_UPDATED
+        INVALID_BILLING_DATA
+        INVALID_PAYMENT_METHOD
+        INVALID_PAYMENT_DATA
+        BANK_ERROR
+        SKYSCANNER_ERROR
+        BOOKING_ERROR
+        RENTALCARS_ERROR
     }
 
     class PaymentData
@@ -123,32 +144,6 @@ package Confirmar_Viatges
     }
 }
 
-package Wrappers
-{
-    class Bank
-    {
-        + {static} do_payment(user: User, payment_data: PaymentData): bool
-    }
-
-    class Skyscanner
-    {
-        + {static} confirm_reserve(user: User, flights: Flights): bool
-        + {static} fetch_ticket_price(): float
-    }
-
-    class Booking
-    {
-        + {static} confirm_reserve(user: User, hotels: Hotels): bool
-        + {static} fetch_room_price(): float
-    }
-
-    class Rentalcars
-    {
-        + {static} confirm_reserve(user: User, cars: Cars): bool
-        + {static} fetch_car_price(): float
-    }
-}
-
 package Utilities
 {
     class Validator
@@ -163,6 +158,36 @@ package Utilities
     }
 }
 
+package Wrappers
+{
+    class Bank
+    {
+        + {static} do_payment(user: User, payment_data: PaymentData): bool
+        ----
+    }
+
+    class Skyscanner
+    {
+        + {static} confirm_reserve(user: User, flights: Flights): bool
+        + {static} fetch_ticket_price(): float
+        ----
+    }
+
+    class Booking
+    {
+        + {static} confirm_reserve(user: User, hotels: Hotels): bool
+        + {static} fetch_room_price(): float
+        ----
+    }
+
+    class Rentalcars
+    {
+        + {static} confirm_reserve(user: User, cars: Cars): bool
+        + {static} fetch_car_price(): float
+        ----
+    }
+}
+
 Flights "1..*" *-- "0..*" Flight
 Hotels "1..*" *-- "0..*" Hotel
 Cars "1..*" *-- "0..*" Car
@@ -170,7 +195,7 @@ Travel "1..*" *-- "1" Flights
 Travel "1..*" *-- "0..1" Hotels
 Travel "1..*" *-- "0..1" Cars
 Reservation "1..*" *-left-- "1" Travel
-Reservation "1..*" *-- "1" User
+Reservation "1..*" --> "1" User : creates
 Reservation "1" -up-> "1" Bank : uses
 Reservation "1" -up-> "1" Skyscanner : uses
 Reservation "1" -up-> "1" Rentalcars : uses
