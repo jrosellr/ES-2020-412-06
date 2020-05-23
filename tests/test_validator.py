@@ -4,6 +4,7 @@ from src.PaymentData import PaymentData
 from .test_constants import *
 import pytest
 
+
 def test_validate_payment_info():
     """ Test case to check all the private functions of Validator with correct conditions
 
@@ -76,6 +77,7 @@ def test_validate_billing_data_correct(default_user: User):
     """
     assert Validator.validate_billing_data(default_user) is True
 
+
 def test_validate_billing_data_error(default_user: User):
     """ Test case to check the validate_billing_data function with error conditions
 
@@ -86,6 +88,7 @@ def test_validate_billing_data_error(default_user: User):
 
     default_user.dni = '123A'
     assert Validator.validate_billing_data(default_user) is False
+
 
 def test_validate_payment_data(default_payment_data):
     """ Test case to check the validate_payment_data function
