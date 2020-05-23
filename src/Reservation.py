@@ -116,7 +116,8 @@ class Reservation:
 
         return response
 
-    def _process_payment_data(self, user_name: str, card_number: str, security_code: str, credit_card_type: str) -> PaymentData:
+    def _process_payment_data(self, user_name: str, card_number: str,
+                              security_code: str, credit_card_type: str) -> PaymentData:
         """ Call _configure_travel and create an instance of PaymentData with the amount calculated.
 
         :param user_name: string with the name of the card holder
@@ -186,7 +187,9 @@ class Reservation:
         """
 
         try:
-            if self._confirm_payment(self._payment_data) and self._confirm_flights() and self._confirm_hotels() and self._confirm_cars():
+            if self._confirm_payment(self._payment_data) and self._confirm_flights() and \
+                                                             self._confirm_hotels() and \
+                                                             self._confirm_cars():
                 return Response.CONFIRMATION_SUCCESSFUL
         except ConnectionRefusedError as e:
             return e.args[0]
