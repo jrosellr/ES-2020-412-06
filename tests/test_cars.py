@@ -13,16 +13,15 @@ def test_cars_ctor(default_car_list: list):
     """
 
     cars = Cars(default_car_list)
-
     assert len(cars) != 0
     assert len(cars) == DEFAULT_CARS_LEN
 
 
 def test_getitem_cars(default_cars: Cars, default_car_list: list):
-    """ Test case for Cars.__delitem__(**) method
+    """ Test case for Cars.__getitem__(**) method
 
     RESTRICTION:
-        The code of the Cart object to be searched should exist in Cars' dictionary.
+        The code of the Car object to be searched should exist in Cars' dictionary.
 
     TEST CASE:
         Get the object with the given code in the Cars' dictionary.
@@ -30,6 +29,7 @@ def test_getitem_cars(default_cars: Cars, default_car_list: list):
     EXPECTED BEHAVIOUR:
         The instance of car searched is returned.
     """
+
     car = default_car_list[0]
     assert default_cars.__getitem__(car.code) == car
     assert default_cars._cars[car.code] == car
