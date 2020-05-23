@@ -1,11 +1,7 @@
 from src.Reservation import Reservation
 from src.PaymentData import PaymentData
-from src.Booking import Booking
 from .test_constants import *
 from src.Response import Response
-
-
-# TODO: add documentation about fixture usage
 
 
 def test_reservation_ctor(default_travel):
@@ -59,30 +55,41 @@ def test_invalid_payment_data(default_reservation):
                                        '1234') is Response.INVALID_PAYMENT_DATA
 
 
-def test_max_retries_confirm_flights(mock_confirm_reserve_return_retries, default_reservation):
+def test_max_retries_confirm_payment(mock_max_bank_retries, default_reservation: Reservation, default_payment_data):
+    assert default_reservation._confirm_payment(default_payment_data) == DEFAULT_MAX_RETRIES
+
+
+def test_retries_confirm_payment(mock_bank_retries, default_reservation):
+    retries, bank_response = default_reservation._confirm_payment()
+
+    assert retries == DEFAULT_RETRIES
+    assert bank_response is True
+
+
+def test_retries_confirm_flights(mock_skyscanner_retries, default_reservation):
+    retries, skyscanner_response = default_reservation._confirm_flights()
+
+    assert retries == DEFAULT_RETRIES
+    assert skyscanner_response is True
+
+
+def test_max_retries_confirm_flights(mock_max_skyscanner_retries, default_reservation):
     assert default_reservation._confirm_flights() == DEFAULT_MAX_RETRIES
-
-
-def test_retries_confirm_flights(mock_confirm_reserve_return_retries, default_reservation):
-    ret_tuple = default_reservation._confirm_flights()
-
-    assert ret_tuple[0] == DEFAULT_RETRIES
-    assert ret_tuple[1] is True
 
 
 def test_confirm_flights(default_reservation):
     assert default_reservation._confirm_flights() is True
 
 
-def test_max_retries_confirm_hotels(mock_booking_retries, default_reservation):
+def test_max_retries_confirm_hotels(mock_max_booking_retries, default_reservation):
     assert default_reservation._confirm_hotels() == DEFAULT_MAX_RETRIES
 
 
-def test_retries_confirm_hotels(mock_confirm_reserve_return_retries, default_reservation):
-    ret_tuple = default_reservation._confirm_hotels()
+def test_retries_confirm_hotels(mock_booking_retries, default_reservation):
+    retries, hotels_ret = default_reservation._confirm_hotels()
 
-    assert ret_tuple[0] == DEFAULT_RETRIES
-    assert ret_tuple[1] is True
+    assert retries == DEFAULT_RETRIES
+    assert hotels_ret is True
 
 
 def test_confirm_hotels(default_reservation, default_hotels):
@@ -97,15 +104,15 @@ def test_confirm_hotels_no_hotels(default_reservation):
     assert default_reservation._confirm_hotels() is True
 
 
-def test_max_retries_confirm_cars(mock_rentalcars_retries, default_reservation):
+def test_max_retries_confirm_cars(mock_max_rentalcars_retries, default_reservation):
     assert default_reservation._confirm_cars() == DEFAULT_MAX_RETRIES
 
 
-def test_retries_confirm_cars(mock_confirm_reserve_return_retries, default_reservation):
-    ret_tuple = default_reservation._confirm_cars()
+def test_retries_confirm_cars(mock_rentalcars_retries, default_reservation):
+    retries, cars_ret = default_reservation._confirm_cars()
 
-    assert ret_tuple[0] == DEFAULT_RETRIES
-    assert ret_tuple[1] is True
+    assert retries == DEFAULT_RETRIES
+    assert cars_ret is True
 
 
 def test_confirm_cars(default_reservation, default_cars):
@@ -126,6 +133,7 @@ def test_confirm_payment_error(mock_bank_error, default_reservation):
         reservation.confirm() should be False
         :return: None
     """
+
     reservation_response = default_reservation.confirm()
 
     assert reservation_response is not ''
@@ -138,6 +146,7 @@ def test_confirm_skyscanner_error(default_reservation, mock_skyscanner_error):
         reservation.confirm() should be False
         :return: None
     """
+
     reservation_response = default_reservation.confirm()
 
     assert reservation_response is not ''
@@ -183,6 +192,7 @@ def test_configure_travel(full_reservation):
     assert full_reservation._travel.hotel_price == MOCKED_HOTEL_PRICE
     assert full_reservation._travel.car_price == MOCKED_CAR_PRICE
 
+
 def test_reservation_process_payment_data(default_reservation):
     """ Unit test for Reservation._process_payment_data()
 
@@ -190,7 +200,6 @@ def test_reservation_process_payment_data(default_reservation):
         :return: None
     """
 
-    # 2. Process the payment data:
     default_payment_data = default_reservation._process_payment_data(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER,
                                                                      DEFAULT_CARD_CVV, DEFAULT_CARD_TYPE)
 
@@ -206,7 +215,6 @@ def test_reservation_process_payment_data_hotels(default_reservation, default_ho
         :return: None
     """
 
-    # 2. Process the payment data:
     default_reservation._travel._hotels = default_hotels
     default_payment_data = default_reservation._process_payment_data(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER,
                                                                      DEFAULT_CARD_CVV, DEFAULT_CARD_TYPE)
@@ -223,7 +231,6 @@ def test_reservation_process_payment_data_cars(default_reservation, default_cars
         :return: None
     """
 
-    # 2. Process the payment data:
     default_reservation._travel._cars = default_cars
     default_payment_data = default_reservation._process_payment_data(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER,
                                                                      DEFAULT_CARD_CVV, DEFAULT_CARD_TYPE)
@@ -239,6 +246,7 @@ def test_full_process_payment_data(full_reservation):
         Amount in payment_data should be != 0 and == number of flights * flight price
         :return: None
     """
+
     default_payment_data = full_reservation._process_payment_data(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER,
                                                                   DEFAULT_CARD_CVV, DEFAULT_CARD_TYPE)
 
@@ -247,5 +255,3 @@ def test_full_process_payment_data(full_reservation):
     assert full_reservation._travel.cost == DEFAULT_FLIGHT_TOTAL_COST + DEFAULT_HOTEL_TOTAL_COST + DEFAULT_CAR_TOTAL_COST
 
 
-def test_payment_retries(mock_bank_retries, default_reservation: Reservation, default_payment_data):
-    assert default_reservation._confirm_payment(default_payment_data) == DEFAULT_MAX_RETRIES
