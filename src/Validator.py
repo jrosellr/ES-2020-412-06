@@ -2,6 +2,7 @@ from src.User import User
 from src.PaymentData import PaymentData
 import re
 
+
 class Validator:
     """ Handles the validation of regular expressions of User and paymentData
     ----
@@ -33,7 +34,6 @@ class Validator:
     _mobile_number_regexp = r'\d\d\d\d\d\d\d\d\d'
     _credit_card_number_regexp = r'\d{4} \d{4} \d{4} \d{4}'
     _credit_card_cvv_regexp = r'\d\d\d'
-
 
     @staticmethod
     def validate_billing_data(user: User):
