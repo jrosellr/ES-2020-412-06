@@ -213,16 +213,6 @@ def test_travel_cost_only_flights(default_travel: Travel):
 
 
 def test_travel_cost_hotels(default_travel: Travel, default_hotels):
-    """ Test cost property
-
-        Tests if the calculated cost is equal to the expected cost
-        with well-formed input.
-
-        Expected cost = num_flights * passengers_per_flight * ticket_price
-
-        :return: None
-    """
-
     """ Test case for Travel.cost method with Flights and Hotels
 
     TEST CASE:
