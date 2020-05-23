@@ -7,8 +7,9 @@ def test_payment_data_ctor():
     """ Test case for payment_data.__init__(**) method
 
         ---
+    EXPECTED BEHAVIOUR:
+        The object is instantiated with the default values
 
-        :return: None
     """
 
     p = PaymentData(DEFAULT_CARD_HOLDER_NAME, DEFAULT_CARD_NUMBER, DEFAULT_CARD_CVV, DEFAULT_PAYMENT_AMOUNT, DEFAULT_CARD_TYPE)
