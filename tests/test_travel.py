@@ -9,11 +9,16 @@ import pytest
 
 
 def test_travel_ctor(default_flights: Flights):
-    """ Test Travel constructor
+    """ Test case for Travel.__init__(**) method with Flights
 
-    Tests correct initialization of all Travel properties and Instance Attributes
+    RESTRICTION:
+        The Flights instance should have elements in.
 
-    :return: None
+    TEST CASE:
+        Insertion of a Travel object from Flights instance and number of travelers.
+
+    EXPECTED BEHAVIOUR:
+        The object is instantiated with the default values of Flights.
     """
 
     travel = Travel(DEFAULT_NUM_TRAVELERS, default_flights)
@@ -30,11 +35,16 @@ def test_travel_ctor(default_flights: Flights):
 
 
 def test_full_travel_ctor(default_flights: Flights, default_hotels: Hotels, default_cars: Cars):
-    """ Test Travel constructor
+    """ Test case for Travel.__init__(**) method with Flights, Hotels and Cars
 
-    Tests correct initialization of all Travel properties and Instance Attributes
+    RESTRICTION:
+        The Flights, Hotels and Cars instances should have elements in.
 
-    :return: None
+    TEST CASE:
+        Insertion of a Travel object from Flights, Hotels, Cars instances and number of travelers.
+
+    EXPECTED BEHAVIOUR:
+        The object is instantiated with the default values of Flights, Hotels and Cars.
     """
 
     travel = Travel(DEFAULT_NUM_TRAVELERS, default_flights, default_hotels, default_cars)
@@ -55,12 +65,13 @@ def test_full_travel_ctor(default_flights: Flights, default_hotels: Hotels, defa
 
 
 def test_travel_set_positive_value_to_ticket_property(default_travel: Travel):
-    """ Test ticket property setter
+    """ Test case for Travel.ticket_price and Travel._ticket_price methods
 
-        Tests ticket property setter when using a positive value,
-        we expect the property value to be the set value
+    TEST CASE:
+        Calling ticket_price method to set a flight price and _ticked_price to get that price.
 
-        :return: None
+    EXPECTED BEHAVIOUR:
+        The methods set and get the prices for a flight correctly.
     """
 
     default_travel.ticket_price = 5.0
@@ -70,12 +81,13 @@ def test_travel_set_positive_value_to_ticket_property(default_travel: Travel):
 
 
 def test_travel_set_negative_value_to_ticket_property(default_travel: Travel):
-    """ Test ticket property setter
+    """ Test case for incorrect Travel.ticket_price method use
 
-        Tests ticket property setter when using a negative value,
-        we expect to raise a ValueError exception
+    TEST CASE:
+        Calling ticket_price method to set a negative flight price.
 
-        :return: None
+    EXPECTED BEHAVIOUR:
+        The method raise a ValueError exception because the price is negative.
     """
 
     with pytest.raises(ValueError):
@@ -83,12 +95,13 @@ def test_travel_set_negative_value_to_ticket_property(default_travel: Travel):
 
 
 def test_travel_set_positive_value_to_room_property(default_travel: Travel):
-    """ Test room property setter
+    """ Test case for Travel.hotel_price and Travel._hotel_price methods
 
-        Tests room property setter when using a positive value,
-        we expect the property value to be the set value
+    TEST CASE:
+        Calling hotel_price method to set a hotel price and _hotel_price to get that price.
 
-        :return: None
+    EXPECTED BEHAVIOUR:
+        The methods set and get the prices for a hotel correctly.
     """
 
     default_travel.hotel_price = 5.0
@@ -98,12 +111,13 @@ def test_travel_set_positive_value_to_room_property(default_travel: Travel):
 
 
 def test_travel_set_negative_value_to_room_property(default_travel: Travel):
-    """ Test room property setter
+    """ Test case for incorrect Travel.hotel_price method use
 
-        Tests room property setter when using a negative value,
-        we expect to raise a ValueError exception
+    TEST CASE:
+        Calling hotel_price method to set a negative hotel price.
 
-        :return: None
+    EXPECTED BEHAVIOUR:
+        The method raise a ValueError exception because the price is negative.
     """
 
     with pytest.raises(ValueError):
@@ -111,12 +125,13 @@ def test_travel_set_negative_value_to_room_property(default_travel: Travel):
 
 
 def test_travel_set_positive_value_to_car_property(default_travel: Travel):
-    """ Test car property setter
+    """ Test case for Travel.car_price and Travel._car_price methods
 
-        Tests car property setter when using a positive value,
-        we expect the property value to be the set value
+    TEST CASE:
+        Calling car_price method to set a car price and _car_price to get that price.
 
-        :return: None
+    EXPECTED BEHAVIOUR:
+        The methods set and get the prices for a car correctly.
     """
 
     default_travel.car_price = 5.0
@@ -126,12 +141,13 @@ def test_travel_set_positive_value_to_car_property(default_travel: Travel):
 
 
 def test_travel_set_negative_value_to_car_property(default_travel: Travel):
-    """ Test car property setter
+    """ Test case for incorrect Travel.car_price method use
 
-        Tests car property setter when using a negative value,
-        we expect to raise an ValueError exception
+    TEST CASE:
+        Calling car_price method to set a negative car price.
 
-        :return: None
+    EXPECTED BEHAVIOUR:
+        The method raise a ValueError exception because the price is negative.
     """
 
     with pytest.raises(ValueError):
@@ -139,12 +155,13 @@ def test_travel_set_negative_value_to_car_property(default_travel: Travel):
 
 
 def test_travel_ticket_price_set_wrong_type(default_travel: Travel):
-    """ Test ticket property setter
+    """ Test case for incorrect Travel.ticket_price method use
 
-        Tests ticket property setter when using a value which is not of type float,
-        we expect to raise an TypeError exception
+    TEST CASE:
+        Calling ticked_price method to set non float flight price.
 
-        :return: None
+    EXPECTED BEHAVIOUR:
+        The method raise a TypeError exception because the price is non float.
     """
 
     with pytest.raises(TypeError):
@@ -152,12 +169,13 @@ def test_travel_ticket_price_set_wrong_type(default_travel: Travel):
 
 
 def test_travel_room_price_set_wrong_type(default_travel: Travel):
-    """ Test room property setter
+    """ Test case for incorrect Travel.hotel_price method use
 
-        Tests room property setter when using a value which is not of type float,
-        we expect to raise an TypeError exception
+    TEST CASE:
+        Calling hotel_price method to set non float hotel price.
 
-        :return: None
+    EXPECTED BEHAVIOUR:
+        The method raise a TypeError exception because the price is non float.
     """
 
     with pytest.raises(TypeError):
@@ -165,12 +183,13 @@ def test_travel_room_price_set_wrong_type(default_travel: Travel):
 
 
 def test_travel_car_price_set_wrong_type(default_travel: Travel):
-    """ Test car property setter
+    """ Test case for incorrect Travel.car_price method use
 
-        Tests car property setter when using a value which is not of type float,
-        we expect to raise an TypeError exception
+    TEST CASE:
+        Calling car_price method to set non float car price.
 
-        :return: None
+    EXPECTED BEHAVIOUR:
+        The method raise a TypeError exception because the price is non float.
     """
 
     with pytest.raises(TypeError):
@@ -178,14 +197,14 @@ def test_travel_car_price_set_wrong_type(default_travel: Travel):
 
 
 def test_travel_cost_only_flights(default_travel: Travel):
-    """ Test cost property
+    """ Test case for Travel.cost method with Flights
 
-        Tests if the calculated cost is equal to the expected cost
-        with well-formed input.
+    TEST CASE:
+        Calling cost method to check the total cost with only an instance of Flights
 
+    EXPECTED BEHAVIOUR:
+        The method returns only the cost of the flights.
         Expected cost = num_flights * passengers_per_flight * ticket_price
-
-        :return: None
     """
 
     default_travel.ticket_price = MOCKED_TICKET_PRICE
@@ -204,6 +223,15 @@ def test_travel_cost_hotels(default_travel: Travel, default_hotels):
         :return: None
     """
 
+    """ Test case for Travel.cost method with Flights and Hotels
+
+    TEST CASE:
+        Calling cost method to check the total cost with only an instances of Flights and Hotels
+
+    EXPECTED BEHAVIOUR:
+        The method returns only the sum of flights cost and hotels cost.
+    """
+
     default_travel.ticket_price = MOCKED_TICKET_PRICE
     default_travel.hotel_price = MOCKED_HOTEL_PRICE
     default_travel._hotels = default_hotels
@@ -212,14 +240,13 @@ def test_travel_cost_hotels(default_travel: Travel, default_hotels):
 
 
 def test_travel_cost_cars(default_travel: Travel, default_cars):
-    """ Test cost property
+    """ Test case for Travel.cost method with Flights and Cars
 
-        Tests if the calculated cost is equal to the expected cost
-        with well-formed input.
+    TEST CASE:
+        Calling cost method to check the total cost with only an instances of Flights and Cars
 
-        Expected cost = num_flights * passengers_per_flight * ticket_price
-
-        :return: None
+    EXPECTED BEHAVIOUR:
+        The method returns only the sum of flights cost and cars cost.
     """
 
     default_travel.ticket_price = MOCKED_TICKET_PRICE
@@ -230,14 +257,13 @@ def test_travel_cost_cars(default_travel: Travel, default_cars):
 
 
 def test_full_travel_cost(default_travel: Travel, default_hotels, default_cars):
-    """ Test cost property
+    """ Test case for Travel.cost method with Flights, Hotels and Cars
 
-        Tests if the calculated cost is equal to the expected cost
-        with well-formed input.
+    TEST CASE:
+        Calling cost method to check the total cost with only an instances of Flights, Hotels and Cars
 
-        Expected cost = num_flights * passengers_per_flight * ticket_price
-
-        :return: None
+    EXPECTED BEHAVIOUR:
+        The method returns only the sum of flights cost, hotels cost and cars cost.
     """
 
     default_travel.ticket_price = MOCKED_TICKET_PRICE
@@ -250,12 +276,13 @@ def test_full_travel_cost(default_travel: Travel, default_hotels, default_cars):
 
 
 def test_travel_cost_cannot_be_set(default_travel: Travel):
-    """ Test cost property setter
+    """ Test case for invalid Travel.cost set
 
-        Tests cost property setter when setting a value, it should raise
-        an AttributeError exception
+    TEST CASE:
+        Set a value to Travel.cost as if it was a variable
 
-        :return: None
+    EXPECTED BEHAVIOUR:
+        The method raises an AttributeError exception.
     """
 
     with pytest.raises(AttributeError):
