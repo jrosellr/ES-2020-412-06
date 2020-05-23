@@ -12,7 +12,7 @@ class Car:
             days_reserved: The number of days the client has paid to use the car
     """
 
-    def __init__(self, code, brand, pick_up_place, days_reserved):  # FIXME: This is supposed to be a Car aggregate
+    def __init__(self, code, brand, pick_up_place, days_reserved):
         """ Construct a new Car object
 
         :param code: The car's code

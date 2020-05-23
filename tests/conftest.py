@@ -1,3 +1,9 @@
+""" pytest configuration file
+
+    File used by pytest to set up the testing environment.
+    In this file are declared multiple test fixtures to make them available to all unit tests.
+"""
+
 import pytest
 from src.Skyscanner import Skyscanner
 from src.Booking import Booking
@@ -22,8 +28,8 @@ from .test_constants import *
 def mock_fetch_prices(monkeypatch):
     """ Fixture to simulate the price returned by each API
 
-    PARCHED FUNCTIONALITY:
-        Replaces de fetch functions of each API by mocks and returns the default prices.
+    PATCHED FUNCTIONALITY:
+        Replaces the fetch functions of each API by mocks and returns the default prices.
     """
 
     def mock_fetch_ticket_price(*args):
@@ -44,8 +50,8 @@ def mock_fetch_prices(monkeypatch):
 def mock_bank_error(monkeypatch):
     """ Fixture to simulate an error with the bank.
 
-    PARCHED FUNCTIONALITY:
-        Replaces de do_payment function in Bank by a mock that raises an error exception.
+    PATCHED FUNCTIONALITY:
+        Replaces the do_payment function in Bank by a mock that raises an error exception.
     """
 
     def mock_do_payment_error(*args):
@@ -58,8 +64,8 @@ def mock_bank_error(monkeypatch):
 def mock_skyscanner_error(monkeypatch):
     """ Fixture to simulate an error with the Skyscanner API.
 
-    PARCHED FUNCTIONALITY:
-        Replaces de confirm_reserve function in Skyscanner by a mock that raises an error exception.
+    PATCHED FUNCTIONALITY:
+        Replaces the confirm_reserve function in Skyscanner by a mock that raises an error exception.
     """
 
     def mock_confirm_reserve_error(*args):
@@ -72,8 +78,8 @@ def mock_skyscanner_error(monkeypatch):
 def mock_booking_error(monkeypatch):
     """ Fixture to simulate an error with the Booking API.
 
-    PARCHED FUNCTIONALITY:
-        Replaces de confirm_reserve function in Booking by a mock that raises an error exception.
+    PATCHED FUNCTIONALITY:
+        Replaces the confirm_reserve function in Booking by a mock that raises an error exception.
     """
 
     def mock_confirm_booking_error(*args):
@@ -86,8 +92,8 @@ def mock_booking_error(monkeypatch):
 def mock_rentalcars_error(monkeypatch):
     """ Fixture to simulate an error with the Rentalcars API.
 
-    PARCHED FUNCTIONALITY:
-        Replaces de confirm_reserve method in Rentalcars
+    PATCHED FUNCTIONALITY:
+        Replaces the confirm_reserve method in Rentalcars
         by a mock that raises an error exception.
     """
 
@@ -101,8 +107,8 @@ def mock_rentalcars_error(monkeypatch):
 def mock_max_bank_retries(monkeypatch, mock_bank_error):
     """ Fixture to simulate the maximum number of retries for the Bank API.
 
-    PARCHED FUNCTIONALITY:
-        Replaces de _confirm_payment method in Reservation by a mock
+    PATCHED FUNCTIONALITY:
+        Replaces the _confirm_payment method in Reservation by a mock
         that returns the maximum number of retries.
     """
 
@@ -122,7 +128,7 @@ def mock_max_bank_retries(monkeypatch, mock_bank_error):
 def mock_bank_retries(monkeypatch, mock_bank_error):
     """ Fixture to simulate the maximum number of retries for the Bank API.
 
-    PARCHED FUNCTIONALITY:
+    PATCHED FUNCTIONALITY:
         Replaces the _confirm_payment method in Reservation by a mock
         that returns the attempted retries and the correct Bank response
     """
@@ -147,7 +153,7 @@ def mock_bank_retries(monkeypatch, mock_bank_error):
 def mock_max_skyscanner_retries(monkeypatch, mock_skyscanner_error):
     """ Fixture to simulate the maximum number of retries for the Skyscanner API.
 
-    PARCHED FUNCTIONALITY:
+    PATCHED FUNCTIONALITY:
         Replaces the _confirm_flights method in Reservation by a mock
         that returns the attempted retries
     """
@@ -170,7 +176,7 @@ def mock_max_skyscanner_retries(monkeypatch, mock_skyscanner_error):
 def mock_skyscanner_retries(monkeypatch, mock_skyscanner_error):
     """ Fixture to simulate the maximum number of retries for the Bank API.
 
-    PARCHED FUNCTIONALITY:
+    PATCHED FUNCTIONALITY:
         Replaces the _confirm_flights method in Reservation by a mock
         that returns the attempted retries and the correct Skyscanner response
     """
@@ -195,8 +201,8 @@ def mock_skyscanner_retries(monkeypatch, mock_skyscanner_error):
 def mock_max_booking_retries(monkeypatch, mock_booking_error):
     """ Fixture to simulate the maximum number of retries for the Booking API.
 
-    PARCHED FUNCTIONALITY:
-        Replaces de _confirm_hotels method in Reservation by a mock
+    PATCHED FUNCTIONALITY:
+        Replaces the _confirm_hotels method in Reservation by a mock
         that returns the maximum number of retries.
     """
 
@@ -217,8 +223,8 @@ def mock_max_booking_retries(monkeypatch, mock_booking_error):
 def mock_booking_retries(monkeypatch, mock_booking_error):
     """ Fixture to simulate the maximum number of retries for the Booking API.
 
-    PARCHED FUNCTIONALITY:
-        Replaces de _confirm_hotels method in Reservation by a mock
+    PATCHED FUNCTIONALITY:
+        Replaces the _confirm_hotels method in Reservation by a mock
         that returns the attempted number of retries and the correct Booking response
     """
 
@@ -242,8 +248,8 @@ def mock_booking_retries(monkeypatch, mock_booking_error):
 def mock_max_rentalcars_retries(monkeypatch, mock_rentalcars_error):
     """ Fixture to simulate the maximum number of retries for the Rentalcars API.
 
-    PARCHED FUNCTIONALITY:
-        Replaces de _confirm_cars method in Reservation by a mock
+    PATCHED FUNCTIONALITY:
+        Replaces the _confirm_cars method in Reservation by a mock
         that returns the maximum number of retries.
     """
 
@@ -264,8 +270,8 @@ def mock_max_rentalcars_retries(monkeypatch, mock_rentalcars_error):
 def mock_rentalcars_retries(monkeypatch, mock_rentalcars_error):
     """ Fixture to simulate the maximum number of retries for the Rentalcars API.
 
-    PARCHED FUNCTIONALITY:
-        Replaces de _confirm_cars method in Reservation by a mock
+    PATCHED FUNCTIONALITY:
+        Replaces the _confirm_cars method in Reservation by a mock
         that returns the attempted number of retries and the correct Rentalcars error.
     """
 
