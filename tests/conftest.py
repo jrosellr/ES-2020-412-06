@@ -17,7 +17,7 @@ from src.Hotels import Hotels
 
 from .test_constants import *
 
-# TODO: add documentation to fixtures
+# TODO: check documentation for last fixtures
 
 
 @pytest.fixture
