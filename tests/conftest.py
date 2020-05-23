@@ -17,8 +17,6 @@ from src.Hotels import Hotels
 
 from .test_constants import *
 
-# TODO: add documentation to fixtures
-
 
 @pytest.fixture
 def mock_fetch_prices(monkeypatch):
