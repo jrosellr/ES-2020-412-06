@@ -89,7 +89,8 @@ def mock_rentalcars_error(monkeypatch):
     """ Fixture to simulate an error with the Rentalcars API.
 
     PARCHED FUNCTIONALITY:
-        Replaces de confirm_reserve function in Rentalcars by a mock that raises an error exception.
+        Replaces de confirm_reserve method in Rentalcars
+        by a mock that raises an error exception.
     """
 
     def mock_confirm_rentalcars_error(*args):
@@ -103,7 +104,7 @@ def mock_max_bank_retries(monkeypatch, mock_bank_error):
     """ Fixture to simulate the maximum number of retries for the Bank API.
 
     PARCHED FUNCTIONALITY:
-        Replaces de _confirm_payment function in Reservation by a mock
+        Replaces de _confirm_payment method in Reservation by a mock
         that returns the maximum number of retries.
     """
 
@@ -124,7 +125,7 @@ def mock_bank_retries(monkeypatch, mock_bank_error):
     """ Fixture to simulate the maximum number of retries for the Bank API.
 
     PARCHED FUNCTIONALITY:
-        Replaces the _confirm_payment function in Reservation by a mock
+        Replaces the _confirm_payment method in Reservation by a mock
         that returns the attempted retries and the correct Bank response
     """
 
@@ -149,8 +150,8 @@ def mock_max_skyscanner_retries(monkeypatch, mock_skyscanner_error):
     """ Fixture to simulate the maximum number of retries for the Skyscanner API.
 
     PARCHED FUNCTIONALITY:
-        Replaces the _confirm_payment function in Reservation by a mock
-        that returns the attempted retries and the correct Skyscanner response
+        Replaces the _confirm_flights method in Reservation by a mock
+        that returns the attempted retries
     """
 
     def mock_confirm_flights(*args):
@@ -172,8 +173,8 @@ def mock_skyscanner_retries(monkeypatch, mock_skyscanner_error):
     """ Fixture to simulate the maximum number of retries for the Bank API.
 
     PARCHED FUNCTIONALITY:
-        Replaces the _confirm_payment function in Reservation by a mock
-        that returns the attempted retries and the correct Bank response
+        Replaces the _confirm_flights method in Reservation by a mock
+        that returns the attempted retries and the correct Skyscanner response
     """
 
     def mock_skyscanner_success(*args):
@@ -197,7 +198,7 @@ def mock_max_booking_retries(monkeypatch, mock_booking_error):
     """ Fixture to simulate the maximum number of retries for the Booking API.
 
     PARCHED FUNCTIONALITY:
-        Replaces de _confirm_hotels function in Reservation by a mock
+        Replaces de _confirm_hotels method in Reservation by a mock
         that returns the maximum number of retries.
     """
 
@@ -219,8 +220,8 @@ def mock_booking_retries(monkeypatch, mock_booking_error):
     """ Fixture to simulate the maximum number of retries for the Booking API.
 
     PARCHED FUNCTIONALITY:
-        Replaces de _confirm_hotels function in Reservation by a mock
-        that returns the maximum number of retries.
+        Replaces de _confirm_hotels method in Reservation by a mock
+        that returns the attempted number of retries and the correct Booking response
     """
 
     def mock_booking_success(*args):
@@ -244,7 +245,7 @@ def mock_max_rentalcars_retries(monkeypatch, mock_rentalcars_error):
     """ Fixture to simulate the maximum number of retries for the Rentalcars API.
 
     PARCHED FUNCTIONALITY:
-        Replaces de _confirm_cars function in Reservation by a mock
+        Replaces de _confirm_cars method in Reservation by a mock
         that returns the maximum number of retries.
     """
 
@@ -266,8 +267,8 @@ def mock_rentalcars_retries(monkeypatch, mock_rentalcars_error):
     """ Fixture to simulate the maximum number of retries for the Rentalcars API.
 
     PARCHED FUNCTIONALITY:
-        Replaces de _confirm_cars function in Reservation by a mock
-        that returns the maximum number of retries.
+        Replaces de _confirm_cars method in Reservation by a mock
+        that returns the attempted number of retries and the correct Rentalcars error.
     """
 
     def mock_rentalcars_success(*args):
