@@ -16,4 +16,3 @@ def test_hotels_ctor(default_hotel_list: list):
 
     assert len(hotels) != 0
     assert len(hotels) == DEFAULT_HOTELS_LEN
-

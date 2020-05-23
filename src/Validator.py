@@ -51,9 +51,9 @@ class Validator:
         """
 
         return Validator._validate_full_name(user.full_name) and \
-               Validator._validate_dni(user.dni) and \
-               Validator._validate_email(user.email) and \
-               Validator._validate_mobile_number(user.mobile_number)
+            Validator._validate_dni(user.dni) and \
+            Validator._validate_email(user.email) and \
+            Validator._validate_mobile_number(user.mobile_number)
 
     @staticmethod
     def validate_credit_card_type(credit_card_type: str):
@@ -79,8 +79,8 @@ class Validator:
         """
 
         return Validator._validate_full_name(user_name) and \
-               Validator._validate_credit_card_number(card_number) and \
-               Validator._validate_credit_security_code(security_code)
+            Validator._validate_credit_card_number(card_number) and \
+            Validator._validate_credit_security_code(security_code)
 
     @staticmethod
     def _validate_full_name(name: str):

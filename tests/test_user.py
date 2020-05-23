@@ -1,6 +1,7 @@
 from src.User import User
 from .test_constants import *
 
+
 def test_user_ctor():
     """ Test case for user.__init__(**) method
 
@@ -12,7 +13,6 @@ def test_user_ctor():
 
     """
 
-    
     user = User(DEFAULT_USER_NAME, DEFAULT_DNI, DEFAULT_ADDRESS, DEFAULT_MOBILE_NUMBER, DEFAULT_USER_EMAIL)
     assert user.full_name == DEFAULT_USER_NAME
     assert user.dni == DEFAULT_DNI
