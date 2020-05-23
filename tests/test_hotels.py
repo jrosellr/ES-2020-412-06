@@ -10,7 +10,7 @@ def test_hotels_ctor(default_hotel_list: list):
 
     EXPECTED BEHAVIOUR:
         The object is instantiated with the default values
-     """
+    """
 
     hotels = Hotels(default_hotel_list)
 
